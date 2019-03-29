@@ -87,7 +87,16 @@ class Init(SoundGestionnary):
 class OptionMenuMain():
     def __init__(self):
         pass
-
+    def Start(self):
+        self.Reset()
+        self.MainCan = Canvas(self, width=750, height=750, bg="#9a9a9a", highlightthickness=0)
+        self.MainCan.pack()
+        self.CreateAllCan(330,112,75,200,self.IntTxtrList["rotation"], "")
+        self.CreateAllCan(330,112,75,350,self.IntTxtrList["one_image"], "")
+        if self.canRotate==True:
+            self.CreateAllCan(330,112,420,350,self.IntTxtrList["green"], "rotation")
+        else:
+            self.CreateAllCan(330,112,420,350,self.IntTxtrList["red"], "rotation")
 class MenuMain(OptionMenuMain):
     def __init__(self):
         OptionMenuMain.__init__(self)
@@ -127,10 +136,16 @@ class MenuMain(OptionMenuMain):
         self.CanList[len(self.CanList)-1].create_image(0,0, image=image, anchor=NW)
         self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:self.onClick(arg1, arg2))
     def onClick(self, evt, arg):
+        if arg=="rotation":
+            if self.canRotate==True:
+                self.canRotate=False
+            else:
+                self.canRotate=True
         if arg=="quit":
             self.destroy()
         if arg=="option":
             self.PlaySound("option_button_sound")
+            self.Start()
         if arg=="playOne":
             self.Played=(True, "Save_1")
             self.ConfigList[0]["save_1"]="True"
