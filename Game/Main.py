@@ -251,6 +251,10 @@ class Moving(Collider):
             if self.parent.x>725 and self.parent.canChangeMap and xDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX+1, self.parent.mapY), ColliderObject((2, self.parent.y+2), 21)):
+                    if self.parent.y<0:
+                        self.parent.y=0
+                    elif self.parent.y>750:
+                        self.parent.y=725
                     self.parent.x=0
                     self.parent.mapX+=1
                     self.move_on=False
@@ -265,6 +269,10 @@ class Moving(Collider):
             if self.parent.x<0 and self.parent.canChangeMap and xDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX-1, self.parent.mapY), ColliderObject((727, self.parent.y+2), 21)):
+                    if self.parent.y<0:
+                        self.parent.y=0
+                    elif self.parent.y>750:
+                        self.parent.y=725
                     self.parent.x=725
                     self.parent.mapX-=1
                     self.move_on=False
@@ -279,6 +287,10 @@ class Moving(Collider):
             if self.parent.y>725 and self.parent.canChangeMap and yDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY-1), ColliderObject((self.parent.x+2, 2), 21)):
+                    if self.parent.x<0:
+                        self.parent.x=0
+                    elif self.parent.x>750:
+                        self.parent.x=725
                     self.parent.y=0
                     self.parent.mapY-=1
                     self.move_on=False
@@ -293,6 +305,10 @@ class Moving(Collider):
             if self.parent.y<0 and self.parent.canChangeMap and yDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY+1), ColliderObject((self.parent.x+2, 727), 21)):
+                    if self.parent.x<0:
+                        self.parent.x=0
+                    elif self.parent.x>750:
+                        self.parent.x=725
                     self.parent.y=725
                     self.parent.mapY+=1
                     self.move_on=False
@@ -329,6 +345,10 @@ class Moving(Collider):
             if self.parent.x>725 and self.parent.canChangeMap and xDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX+1, self.parent.mapY), ColliderObject((2, self.parent.y+2), 21)):
+                    if self.parent.y<0:
+                        self.parent.y=0
+                    elif self.parent.y>750:
+                        self.parent.y=725
                     self.parent.x=0
                     self.parent.mapX+=1
                     self.move_on=False
@@ -343,6 +363,10 @@ class Moving(Collider):
             if self.parent.x<0 and self.parent.canChangeMap and xDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX-1, self.parent.mapY), ColliderObject((727, self.parent.y+2), 21)):
+                    if self.parent.y<0:
+                        self.parent.y=0
+                    elif self.parent.y>750:
+                        self.parent.y=725
                     self.parent.x=725
                     self.parent.mapX-=1
                     self.move_on=False
@@ -357,6 +381,10 @@ class Moving(Collider):
             if self.parent.y>725 and self.parent.canChangeMap and yDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY-1), ColliderObject((self.parent.x+2, 2), 21)):
+                    if self.parent.x<0:
+                        self.parent.x=0
+                    elif self.parent.x>750:
+                        self.parent.x=725
                     self.parent.y=0
                     self.parent.mapY-=1
                     self.move_on=False
@@ -371,6 +399,10 @@ class Moving(Collider):
             if self.parent.y<0 and self.parent.canChangeMap and yDir!=0:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY+1), ColliderObject((self.parent.x+2, 727), 21)):
+                    if self.parent.x<0:
+                        self.parent.x=0
+                    elif self.parent.x>750:
+                        self.parent.x=725
                     self.parent.y=725
                     self.parent.mapY+=1
                     self.move_on=False
