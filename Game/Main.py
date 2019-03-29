@@ -724,9 +724,7 @@ class Main(InitGestionnary, StoppingGestionnary):
     def __init__(self):
         InitGestionnary.__init__(self)
         self.Save()
+        self.StopAllSounds()
 
-
-
-
+        
 main=Main()
-main.StopAllSounds()
