@@ -248,7 +248,7 @@ class Moving(Collider):
                 canDecelerate=True
 
             #print(self.parent.playerCollider[0].cornerCoords["top_left"], self.parent.x, self.parent.y)
-            if self.parent.x>725 and self.parent.canChangeMap:
+            if self.parent.x>725 and self.parent.canChangeMap and xDir==1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX+1, self.parent.mapY), ColliderObject((2, self.parent.y+2), 21)):
                     self.parent.x=0
@@ -262,7 +262,7 @@ class Moving(Collider):
                     self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
                     canDecelerate=False
                 self.parent.canChangeMap=True
-            elif self.parent.x<0 and self.parent.canChangeMap:
+            elif self.parent.x<0 and self.parent.canChangeMap and xDir==-1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX-1, self.parent.mapY), ColliderObject((727, self.parent.y+2), 21)):
                     self.parent.x=725
@@ -276,7 +276,7 @@ class Moving(Collider):
                     self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
                     canDecelerate=False
                 self.parent.canChangeMap=True
-            elif self.parent.y>725 and self.parent.canChangeMap:
+            elif self.parent.y>725 and self.parent.canChangeMap and yDir==1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY-1), ColliderObject((self.parent.x+2, 2), 21)):
                     self.parent.y=0
@@ -290,7 +290,7 @@ class Moving(Collider):
                     self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
                     canDecelerate=False
                 self.parent.canChangeMap=True
-            elif self.parent.y<0 and self.parent.canChangeMap:
+            elif self.parent.y<0 and self.parent.canChangeMap and yDir==-1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY+1), ColliderObject((self.parent.x+2, 727), 21)):
                     self.parent.y=725
@@ -326,7 +326,7 @@ class Moving(Collider):
                 canDecelerate=False
                 canDecelerate=False
                 break
-            if self.parent.x>725 and self.parent.canChangeMap:
+            if self.parent.x>725 and self.parent.canChangeMap and xDir==1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX+1, self.parent.mapY), ColliderObject((2, self.parent.y+2), 21)):
                     self.parent.x=0
@@ -340,7 +340,7 @@ class Moving(Collider):
                     self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
                     canDecelerate=False
                 self.parent.canChangeMap=True
-            elif self.parent.x<0 and self.parent.canChangeMap:
+            elif self.parent.x<0 and self.parent.canChangeMap and xDir==-1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX-1, self.parent.mapY), ColliderObject((727, self.parent.y+2), 21)):
                     self.parent.x=725
@@ -354,7 +354,7 @@ class Moving(Collider):
                     self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
                     canDecelerate=False
                 self.parent.canChangeMap=True
-            elif self.parent.y>725 and self.parent.canChangeMap:
+            elif self.parent.y>725 and self.parent.canChangeMap and yDir==1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY-1), ColliderObject((self.parent.x+2, 2), 21)):
                     self.parent.y=0
@@ -368,7 +368,7 @@ class Moving(Collider):
                     self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
                     canDecelerate=False
                 self.parent.canChangeMap=True
-            elif self.parent.y<0 and self.parent.canChangeMap:
+            elif self.parent.y<0 and self.parent.canChangeMap and yDir==-1:
                 self.parent.canChangeMap=False
                 if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY+1), ColliderObject((self.parent.x+2, 727), 21)):
                     self.parent.y=725
