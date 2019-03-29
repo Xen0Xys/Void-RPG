@@ -447,6 +447,7 @@ class Player():
 class GraphicEngine(Player):
     def __init__(self):
         self.isLoading=False
+        self.Config()
     def StartGraphicEngine(self, filename):
         if self.isLoading==False:
             self.isLoading=True
@@ -468,7 +469,6 @@ class GraphicEngine(Player):
         self.oneImage=False
     def Init(self):
         self.LoadTextureList()
-        self.Config()
         self.InitInterface()
         self.List=[]
         self.notRotateList=["ap", "au", "av", "aw", "ax", "ay", "as", "aq", "ar", "ao", "an", "am"]
