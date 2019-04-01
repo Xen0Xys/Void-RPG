@@ -91,16 +91,18 @@ class OptionMenuMain():
         self.Reset()
         self.MainCan = Canvas(self, width=750, height=750, bg="#9a9a9a", highlightthickness=0)
         self.MainCan.pack()
-        self.CreateAllCan(330,112,75,200,self.IntTxtrList["rotation"], "")
-        self.CreateAllCan(330,112,75,350,self.IntTxtrList["one_image"], "")
+        self.CreateAllCan(330,90,230,10,self.IntTxtrList["option_title"], "")
+        self.CreateAllCan(90,90,650,650,self.IntTxtrList["quitter"], "retour_menu")
+        self.CreateAllCan(330,90,35,200,self.IntTxtrList["rotation"], "")
+        self.CreateAllCan(330,90,35,350,self.IntTxtrList["one_image"], "")
         if self.canRotate==True:
-            self.CreateAllCan(330,112,420,200,self.IntTxtrList["green"], "rotation")
+            self.CreateAllCan(90,90,380,200,self.IntTxtrList["green"], "rotation")
         else:
-            self.CreateAllCan(330,112,420,200,self.IntTxtrList["red"], "rotation")
+            self.CreateAllCan(90,90,380,200,self.IntTxtrList["red"], "rotation")
         if self.oneImage==True:
-            self.CreateAllCan(330,112,420,350,self.IntTxtrList["green"], "oneImage")
+            self.CreateAllCan(90,90,380,350,self.IntTxtrList["green"], "oneImage")
         else:
-            self.CreateAllCan(330,112,420,350,self.IntTxtrList["red"], "oneImage")
+            self.CreateAllCan(90,90,380,350,self.IntTxtrList["red"], "oneImage")
 
 class MenuMain(OptionMenuMain):
     def __init__(self):
@@ -141,6 +143,8 @@ class MenuMain(OptionMenuMain):
         self.CanList[len(self.CanList)-1].create_image(0,0, image=image, anchor=NW)
         self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:self.onClick(arg1, arg2))
     def onClick(self, evt, arg):
+        if arg=="retour_menu":
+            self.InitGUI()
         if arg=="rotation":
             if self.canRotate==True:
                 self.canRotate=False
