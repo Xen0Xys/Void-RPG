@@ -264,6 +264,7 @@ class TickGestionary(Collider):
         self.main_loop_on=True
         threading.Thread(target=self.MainLoop).start()
     def MainLoop(self):
+        global multiplier
         while self.main_loop_on==True:
             sleep(0.01)
             try:
@@ -282,8 +283,8 @@ class TickGestionary(Collider):
                         self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
                         self.MainCan.coords(self.player, self.x, self.y)
                     else:
-                        self.x-=(xDir*multiplier)
-                        self.y-=(yDir*multiplier)
+                        self.x-=(1.4*multiplier)
+                        self.y-=(0*multiplier)
                         self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
                         canDecelerate=False
                     self.canChangeMap=True
@@ -354,42 +355,55 @@ class Moving(Collider):
         self.move_on=False
         self.parent=parent
     def StartMove(self, xDir, yDir):
+        global multiplier
         self.parent.canChangeMap=True
         self.move_on=True
         multiplier=1
         nbre=0
         canDecelerate=True
         while self.move_on and self.parent.can_move==True:
-            #print("loading")
-            sleep(.01)
-            nbre+=1
-            if multiplier<=2.2 and nbre%9==0:
-                multiplier+=0.2
-            self.parent.x+=(xDir*multiplier)
-            self.parent.y+=(yDir*multiplier)
-            self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-
-            if self.CheckMultipleColliders(self.parent.playerCollider[0], self.parent.ColliderList):
-                self.parent.x-=(xDir*multiplier)
-                self.parent.y-=(yDir*multiplier)
+            try:
+                #print("loading")
+                sleep(.01)
+                nbre+=1
+                if multiplier<=2.2 and nbre%9==0:
+                    multiplier+=0.2
+                self.parent.x+=(xDir*multiplier)
+                self.parent.y+=(yDir*multiplier)
                 self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                canDecelerate=False
-                #break
-            else:
-                canDecelerate=True
-            #print(self.parent.playerCollider[0].cornerCoords["top_left"], self.parent.x, self.parent.y)
-            self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
-            self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
+
+                if self.CheckMultipleColliders(self.parent.playerCollider[0], self.parent.ColliderList):
+                    self.parent.x-=(xDir*multiplier)
+                    self.parent.y-=(yDir*multiplier)
+                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
+                    canDecelerate=False
+                    #break
+                else:
+                    canDecelerate=True
+                #print(self.parent.playerCollider[0].cornerCoords["top_left"], self.parent.x, self.parent.y)
+                self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
+                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
+            except TclError:
+                pass
         nbre=1
         while multiplier>1 and canDecelerate:
-            sleep(.01)
-            nbre+=1
-            if nbre%randint(1, 2)==0:
-                multiplier-=0.10
-            self.parent.x+=(xDir*multiplier)
-            self.parent.y+=(yDir*multiplier)
-            self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-            self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
+            try:
+                sleep(.01)
+                nbre+=1
+                if nbre%randint(1, 2)==0:
+                    multiplier-=0.10
+                self.parent.x+=(xDir*multiplier)
+                self.parent.y+=(yDir*multiplier)
+                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
+                if self.CheckMultipleColliders(self.parent.playerCollider[0], self.parent.ColliderList):
+                    self.parent.x-=(xDir*multiplier)
+                    self.parent.y-=(yDir*multiplier)
+                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
+                    canDecelerate=False
+                self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
+                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
+            except TclError:
+                pass
 
 class Player():
     def __init__(self):
