@@ -148,16 +148,24 @@ class MenuMain(OptionMenuMain):
         if arg=="rotation":
             if self.canRotate==True:
                 self.canRotate=False
+                self.ConfigList[0]["rotation"]="False"
+                self.SaveConfig()
                 self.Start()
             else:
                 self.canRotate=True
+                self.ConfigList[0]["rotation"]="True"
+                self.SaveConfig()
                 self.Start()
         if arg=="oneImage":
             if self.oneImage==True:
                 self.oneImage=False
+                self.ConfigList[0]["one_image"]="False"
+                self.SaveConfig()
                 self.Start()
             else:
                 self.oneImage=True
+                self.ConfigList[0]["one_image"]="True"
+                self.SaveConfig()
                 self.Start()
         if arg=="quit":
             self.destroy()
