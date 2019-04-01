@@ -371,6 +371,7 @@ class Moving(Collider):
                 canDecelerate=True
             #print(self.parent.playerCollider[0].cornerCoords["top_left"], self.parent.x, self.parent.y)
             self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
+            self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
         nbre=1
         while multiplier>1 and canDecelerate:
             sleep(.01)
