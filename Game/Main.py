@@ -94,9 +94,14 @@ class OptionMenuMain():
         self.CreateAllCan(330,112,75,200,self.IntTxtrList["rotation"], "")
         self.CreateAllCan(330,112,75,350,self.IntTxtrList["one_image"], "")
         if self.canRotate==True:
-            self.CreateAllCan(330,112,420,350,self.IntTxtrList["green"], "rotation")
+            self.CreateAllCan(330,112,420,200,self.IntTxtrList["green"], "rotation")
         else:
-            self.CreateAllCan(330,112,420,350,self.IntTxtrList["red"], "rotation")
+            self.CreateAllCan(330,112,420,200,self.IntTxtrList["red"], "rotation")
+        if self.oneImage==True:
+            self.CreateAllCan(330,112,420,350,self.IntTxtrList["green"], "oneImage")
+        else:
+            self.CreateAllCan(330,112,420,350,self.IntTxtrList["red"], "oneImage")
+
 class MenuMain(OptionMenuMain):
     def __init__(self):
         OptionMenuMain.__init__(self)
@@ -139,8 +144,17 @@ class MenuMain(OptionMenuMain):
         if arg=="rotation":
             if self.canRotate==True:
                 self.canRotate=False
+                self.Start()
             else:
                 self.canRotate=True
+                self.Start()
+        if arg=="oneImage":
+            if self.oneImage==True:
+                self.oneImage=False
+                self.Start()
+            else:
+                self.oneImage=True
+                self.Start()
         if arg=="quit":
             self.destroy()
         if arg=="option":
@@ -171,7 +185,6 @@ class MenuMain(OptionMenuMain):
                 self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
             except IndexError:
                 pass
-
 class ColliderObject():
     def __init__(self, xcord, ray):
         self.CreateColliderObject(xcord, ray)
