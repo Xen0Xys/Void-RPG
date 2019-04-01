@@ -747,7 +747,7 @@ class StoppingGestionnary():
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
-     def SaveConfig(self):
+    def SaveConfig(self):
         content=""
         for item in self.ConfigList[0].keys():
             content+=item+"="+self.ConfigList[0][item]+"\n"
