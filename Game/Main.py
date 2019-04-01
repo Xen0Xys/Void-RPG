@@ -719,6 +719,13 @@ class StoppingGestionnary():
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
+     def SaveConfig(self):
+        content=""
+        for item in self.ConfigList[0].keys():
+            content+=item+"="+self.ConfigList[0][item]+"\n"
+        file=open("ressources/save/config/MenuMain.cfg", "w")
+        file.write(content)
+        file.close()
 
 class Main(InitGestionnary, StoppingGestionnary):
     def __init__(self):
