@@ -234,6 +234,14 @@ class Collider():
         returning = self.CheckMultipleColliders(newplayercollider, ColliderList)
         return returning
 
+class TickGestionary():
+    def __init__(self):
+        self.main_loop_on=True
+        threading.Thread(target=self.MainLoop).start()
+    def MainLoop(self):
+        while self.main_loop_on==True:
+            sleep(0.01)
+
 class Moving(Collider):
     def __init__(self, parent):
         self.move_on=False
@@ -714,11 +722,14 @@ class GraphicEngine(Player):
     def Reset(self):
         self.MainCan.destroy()
 
-class PostInit(MenuMain, GraphicEngine):
+
+
+class PostInit(MenuMain, GraphicEngine, TickGestionary):
     #Traitement des donnees et affichage du menu principal
     def __init__(self):
         MenuMain.__init__(self)
         GraphicEngine.__init__(self)
+        TickGestionary.__init__(self)
         StoppingGestionnary.__init__(self)
         self.ShowWindow()
     def ShowWindow(self):
@@ -738,6 +749,9 @@ class InitGestionnary(PreInit, Init, PostInit):
 class StoppingGestionnary():
     def __init__(self):
         pass
+    def StopGame(self):
+        self.main_loop_on=False
+        self.Save()
     def Save(self):
         try:
             if self.Played[0]==True:
@@ -770,8 +784,8 @@ class StoppingGestionnary():
 class Main(InitGestionnary, StoppingGestionnary):
     def __init__(self):
         InitGestionnary.__init__(self)
-        self.Save()
+        self.StopGame()
         self.StopAllSounds()
 
-        
+
 main=Main()
