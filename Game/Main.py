@@ -279,7 +279,6 @@ class TickGestionary(Collider):
                         self.x=0
                         self.mapX+=1
                         self.move_on=False
-                        self.can_move=False
                         self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
                         self.MainCan.coords(self.player, self.x, self.y)
                     else:
@@ -298,7 +297,6 @@ class TickGestionary(Collider):
                         self.x=725
                         self.mapX-=1
                         self.move_on=False
-                        self.can_move=False
                         self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
                         self.MainCan.coords(self.player, self.x, self.y)
                     else:
@@ -317,7 +315,6 @@ class TickGestionary(Collider):
                         self.y=0
                         self.mapY-=1
                         self.move_on=False
-                        self.can_move=False
                         self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
                         self.MainCan.coords(self.player, self.x, self.y)
                     else:
@@ -336,7 +333,6 @@ class TickGestionary(Collider):
                         self.y=725
                         self.mapY+=1
                         self.move_on=False
-                        self.can_move=False
                         self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
                         self.MainCan.coords(self.player, self.x, self.y)
                     else:
