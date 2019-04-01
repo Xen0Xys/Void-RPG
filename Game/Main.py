@@ -247,13 +247,95 @@ class Collider():
         returning = self.CheckMultipleColliders(newplayercollider, ColliderList)
         return returning
 
-class TickGestionary():
+class TickGestionary(Collider):
     def __init__(self):
         self.main_loop_on=True
         threading.Thread(target=self.MainLoop).start()
     def MainLoop(self):
         while self.main_loop_on==True:
             sleep(0.01)
+            try:
+                #print(self.x, self.y)
+                if self.x>725 and self.canChangeMap:
+                    self.canChangeMap=False
+                    if not self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((2, self.y+2), 21)):
+                        if self.y<0:
+                            self.y=0
+                        elif self.y>750:
+                            self.y=725
+                        self.x=0
+                        self.mapX+=1
+                        self.move_on=False
+                        self.can_move=False
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                        self.MainCan.coords(self.player, self.x, self.y)
+                    else:
+                        self.x-=(xDir*multiplier)
+                        self.y-=(yDir*multiplier)
+                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
+                        canDecelerate=False
+                    self.canChangeMap=True
+                if self.x<0 and self.canChangeMap:
+                    self.canChangeMap=False
+                    if not self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((727, self.y+2), 21)):
+                        if self.y<0:
+                            self.y=0
+                        elif self.y>750:
+                            self.y=725
+                        self.x=725
+                        self.mapX-=1
+                        self.move_on=False
+                        self.can_move=False
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                        self.MainCan.coords(self.player, self.x, self.y)
+                    else:
+                        self.x-=(xDir*multiplier)
+                        self.y-=(yDir*multiplier)
+                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
+                        canDecelerate=False
+                    self.canChangeMap=True
+                if self.y>725 and self.canChangeMap:
+                    self.canChangeMap=False
+                    if not self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, 2), 21)):
+                        if self.x<0:
+                            self.x=0
+                        elif self.x>750:
+                            self.x=725
+                        self.y=0
+                        self.mapY-=1
+                        self.move_on=False
+                        self.can_move=False
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                        self.MainCan.coords(self.player, self.x, self.y)
+                    else:
+                        self.x-=(xDir*multiplier)
+                        self.y-=(yDir*multiplier)
+                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
+                        canDecelerate=False
+                    self.canChangeMap=True
+                if self.y<0 and self.canChangeMap:
+                    self.canChangeMap=False
+                    if not self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, 727), 21)):
+                        if self.x<0:
+                            self.x=0
+                        elif self.x>750:
+                            self.x=725
+                        self.y=725
+                        self.mapY+=1
+                        self.move_on=False
+                        self.can_move=False
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                        self.MainCan.coords(self.player, self.x, self.y)
+                    else:
+                        self.x-=(xDir*multiplier)
+                        self.y-=(yDir*multiplier)
+                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
+                        canDecelerate=False
+                    self.canChangeMap=True
+            except AttributeError:
+                    pass
+            except NameError:
+                pass
 
 class Moving(Collider):
     def __init__(self, parent):
@@ -266,6 +348,7 @@ class Moving(Collider):
         nbre=0
         canDecelerate=True
         while self.move_on and self.parent.can_move==True:
+            #print("loading")
             sleep(.01)
             nbre+=1
             if multiplier<=2.2 and nbre%9==0:
@@ -282,86 +365,8 @@ class Moving(Collider):
                 #break
             else:
                 canDecelerate=True
-
             #print(self.parent.playerCollider[0].cornerCoords["top_left"], self.parent.x, self.parent.y)
-            if self.parent.x>725 and self.parent.canChangeMap and xDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX+1, self.parent.mapY), ColliderObject((2, self.parent.y+2), 21)):
-                    if self.parent.y<0:
-                        self.parent.y=0
-                    elif self.parent.y>750:
-                        self.parent.y=725
-                    self.parent.x=0
-                    self.parent.mapX+=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            if self.parent.x<0 and self.parent.canChangeMap and xDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX-1, self.parent.mapY), ColliderObject((727, self.parent.y+2), 21)):
-                    if self.parent.y<0:
-                        self.parent.y=0
-                    elif self.parent.y>750:
-                        self.parent.y=725
-                    self.parent.x=725
-                    self.parent.mapX-=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            if self.parent.y>725 and self.parent.canChangeMap and yDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY-1), ColliderObject((self.parent.x+2, 2), 21)):
-                    if self.parent.x<0:
-                        self.parent.x=0
-                    elif self.parent.x>750:
-                        self.parent.x=725
-                    self.parent.y=0
-                    self.parent.mapY-=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            if self.parent.y<0 and self.parent.canChangeMap and yDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY+1), ColliderObject((self.parent.x+2, 727), 21)):
-                    if self.parent.x<0:
-                        self.parent.x=0
-                    elif self.parent.x>750:
-                        self.parent.x=725
-                    self.parent.y=725
-                    self.parent.mapY+=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            try:
-                self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
-            except TclError:
-                pass
-            except RuntimeError:
-                pass
+            self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
         nbre=1
         while multiplier>1 and canDecelerate:
             sleep(.01)
@@ -371,91 +376,7 @@ class Moving(Collider):
             self.parent.x+=(xDir*multiplier)
             self.parent.y+=(yDir*multiplier)
             self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-            if self.CheckMultipleColliders(self.parent.playerCollider[0], self.parent.ColliderList):
-                self.parent.x-=(xDir*multiplier)
-                self.parent.y-=(yDir*multiplier)
-                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                canDecelerate=False
-                canDecelerate=False
-                break
-            if self.parent.x>725 and self.parent.canChangeMap and xDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX+1, self.parent.mapY), ColliderObject((2, self.parent.y+2), 21)):
-                    if self.parent.y<0:
-                        self.parent.y=0
-                    elif self.parent.y>750:
-                        self.parent.y=725
-                    self.parent.x=0
-                    self.parent.mapX+=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            if self.parent.x<0 and self.parent.canChangeMap and xDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX-1, self.parent.mapY), ColliderObject((727, self.parent.y+2), 21)):
-                    if self.parent.y<0:
-                        self.parent.y=0
-                    elif self.parent.y>750:
-                        self.parent.y=725
-                    self.parent.x=725
-                    self.parent.mapX-=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            if self.parent.y>725 and self.parent.canChangeMap and yDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY-1), ColliderObject((self.parent.x+2, 2), 21)):
-                    if self.parent.x<0:
-                        self.parent.x=0
-                    elif self.parent.x>750:
-                        self.parent.x=725
-                    self.parent.y=0
-                    self.parent.mapY-=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            if self.parent.y<0 and self.parent.canChangeMap and yDir!=0:
-                self.parent.canChangeMap=False
-                if not self.CheckMapChanging((self.parent.mapX, self.parent.mapY+1), ColliderObject((self.parent.x+2, 727), 21)):
-                    if self.parent.x<0:
-                        self.parent.x=0
-                    elif self.parent.x>750:
-                        self.parent.x=725
-                    self.parent.y=725
-                    self.parent.mapY+=1
-                    self.move_on=False
-                    self.parent.can_move=False
-                    self.parent.StartGraphicEngine("earth_{}_{}".format(self.parent.mapX, self.parent.mapY))
-                else:
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.canChangeMap=True
-            try:
-                self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
-            except TclError:
-                pass
-            except RuntimeError:
-                pass
+            self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
 
 class Player():
     def __init__(self):
