@@ -459,8 +459,14 @@ class GraphicEngine(Player):
             self.can_move=True
             self.isLoading=False
     def Config(self):
-        self.canRotate=True
-        self.oneImage=False
+        if self.ConfigList[0]["rotation"]=="True":
+            self.canRotate=True
+        else:
+            self.canRotate=False
+        if self.ConfigList[0]["one_image"]=="True":
+            self.oneImage=True
+        else:
+            self.oneImage=False
     def Init(self):
         self.LoadTextureList()
         self.InitInterface()
