@@ -401,6 +401,10 @@ class Moving(Collider):
             except TclError:
                 pass
 
+class fight():
+    def __init___(self):
+        pass
+
 class Player():
     def __init__(self):
         try:
@@ -756,7 +760,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "d":self.Defense, "A":self.attack, "MD":self.MagicDefense, "MA":self.MagicAttack, "Ve":self.Velocité}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
