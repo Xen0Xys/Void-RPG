@@ -407,6 +407,10 @@ class Moving(Collider):
 class fight():
     def __init___(self):
         pass
+    def Start_Fight(self):
+        self.Reset()
+        self.MainCan = Canvas(self, width=750, height=750, bg="#9a9a9a", highlightthickness=0)
+        self.MainCan.pack()
 
 class Player():
     def __init__(self):
@@ -415,23 +419,17 @@ class Player():
             self.y=float(self.ConfigList[1]["y"])
             #stat
             self.PV=float(self.ConfigList[1]["PV"])
-            self.Defense=float(self.ConfigList[1]["D"])
-            self.Attack=float(self.ConfigList[1]["A"])
-            self.MagicDefense=float(self.ConfigList[1]["MD"])
-            self.MagicAttack=float(self.ConfigList[1]["MA"])
-            self.Velocité=float(self.ConfigList[1]["Ve"])
-            print(self.PV)
-            print(self.Velocité)
-
+            self.Speed=float(self.ConfigList[1]["speed"])
+            self.Magic_Affinity=float(self.ConfigList[1]["magic_affinity"])
+            self.Strength=float(self.ConfigList[1]["strength"])
         except IndexError:
             self.x=600.0
             self.y=500.0
             self.PV=100
-            self.Defense=0
-            self.Attack=2
-            self.MagicDefense=0
-            self.MagicAttack=0
-            self.Velocité=100
+            self.Speed=1
+            self.Strength=10
+            self.Magic_Affinity=10
+
 
         self.moveInstances={}
         self.playerImg = PhotoImage(file="ressources/textures/player/player_0.png")
@@ -763,7 +761,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "d":self.Defense, "A":self.attack, "MD":self.MagicDefense, "MA":self.MagicAttack, "Ve":self.Velocité}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity,}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
