@@ -124,6 +124,7 @@ class MenuMain(OptionMenuMain):
         Label(self.MainCan, text="Coding : Czekaj Tom\nGraphics : Duchene Guillaume, Choin Anatole", bg="#9a9a9a", justify="left").place(x=1,y=712)
         self.CreateAllCan(600,75,75,50,self.IntTxtrList["baniere"], "")
         self.CreateAllCan(50,50,610,680,self.IntTxtrList["option_wheel"], "option")
+        self.CreateAllCan(220,75,30,600,self.IntTxtrList["fight"], "fight")
         self.CreateAllCan(50,50,680,680,self.IntTxtrList["quit_button"], "quit")
         if self.ConfigList[0]["save_1"]=="False":
             self.CreateAllCan(220,75,30,300,self.IntTxtrList["create"], "playOne")
@@ -143,6 +144,8 @@ class MenuMain(OptionMenuMain):
         self.CanList[len(self.CanList)-1].create_image(0,0, image=image, anchor=NW)
         self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:self.onClick(arg1, arg2))
     def onClick(self, evt, arg):
+        if arg=="fight":
+            self.Start_Fight()
         if arg=="retour_menu":
             self.InitGUI()
         if arg=="rotation":
