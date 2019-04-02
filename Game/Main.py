@@ -406,9 +406,26 @@ class Player():
         try:
             self.x=float(self.ConfigList[1]["x"])
             self.y=float(self.ConfigList[1]["y"])
+            #stat
+            self.PV=float(self.ConfigList[1]["PV"])
+            self.Defense=float(self.ConfigList[1]["D"])
+            self.Attack=float(self.ConfigList[1]["A"])
+            self.MagicDefense=float(self.ConfigList[1]["MD"])
+            self.MagicAttack=float(self.ConfigList[1]["MA"])
+            self.Velocité=float(self.ConfigList[1]["Ve"])
+            print(self.PV)
+            print(self.Velocité)
+
         except IndexError:
             self.x=600.0
             self.y=500.0
+            self.PV=100
+            self.Defense=0
+            self.Attack=2
+            self.MagicDefense=0
+            self.MagicAttack=0
+            self.Velocité=100
+
         self.moveInstances={}
         self.playerImg = PhotoImage(file="ressources/textures/player/player_0.png")
         self.Init2()
