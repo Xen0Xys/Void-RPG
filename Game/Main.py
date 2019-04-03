@@ -506,8 +506,28 @@ class GraphicEngine(Player):
         for i in range(len(self.Matrice)):
             for j in range(len(self.Matrice[i])):
                 if self.Matrice[i][j] in isColliderList:
-                    self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
+                    if self.DoCreateCollider(i, j, isColliderList):
+                        self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
         #print(self.ColliderList)
+    def DoCreateCollider(self, i, j, isColliderList):
+        temp=False
+        try:
+            if not self.Matrice[i+1][j] in isColliderList:
+                temp=True
+        except IndexError:pass
+        try:
+            if not self.Matrice[i-1][j] in isColliderList:
+                temp=True
+        except IndexError:pass
+        try:
+            if not self.Matrice[i][j+1] in isColliderList:
+                temp=True
+        except IndexError:pass
+        try:
+            if not self.Matrice[i][j-1] in isColliderList:
+                temp=True
+        except IndexError:pass
+        return temp
     def InitMatrice(self):
         self.Matrice=[]
         for i in range(30):
