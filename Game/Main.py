@@ -7,6 +7,46 @@ from random import randint
 import shutil
 import os
 
+
+
+
+class Console(Tk):
+    def __init__(self, parent):
+        #self.Launch()
+        pass
+    def Launch(self):
+        Tk.__init__(self)
+        threading.Thread(target=self.StartConsole, args=(parent,)).start()
+        self.launched=True
+        self.mainloop()
+        self.launched=False
+    def StartConsole(self, parent):
+        self.LoadStringsVars()
+        self.LoadLabels()
+        while parent.main_loop_on==True and self.launched==True:
+            print(parent.main_loop_on)
+            try:
+                sleep(0.01)
+                self.smapX.set(parent.mapX)
+                self.smapy.set(parent.mapY)
+            except AttributeError as e:
+                print(e)
+        try:
+            self.destroy()
+        except RuntimeError:
+            pass
+    def LoadStringsVars(self):
+        self.smapX=StringVar()
+        self.smapy=StringVar()
+    def LoadLabels(self):
+        Label(self, text="mapx :").place(x=10, y=10)
+        Label(self, textvariable=self.smapX).place(x=70, y=10)
+
+
+
+
+
+
 class PreInit(Tk):
     #Recuperation des donnees et creation de la fenetre
     def __init__(self):
@@ -269,6 +309,7 @@ class TickGestionary(Collider):
         self.main_loop_on=True
         threading.Thread(target=self.MainLoop).start()
     def MainLoop(self):
+        threading.Thread(target=Console, args=(self,)).start()
         xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         while self.main_loop_on:
@@ -319,12 +360,20 @@ class TickGestionary(Collider):
                         if yinfos["decel_nbre"]%randint(1, 2)==0:
                             yinfos["decel_multiplier"]-=0.10
                             self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
-                                self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            if not self.y>725:
+                                if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            else:
+                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, 2), 21)):
+                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                         else:
                             self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
-                                self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            if not self.y>725:
+                                if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            else:
+                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, 2), 21)):
+                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                     else:
                         yinfos["deceleration"]=False
 
@@ -346,12 +395,21 @@ class TickGestionary(Collider):
                 if yinfos["multiplier"]<=2.2 and yinfos["accel_nbre"]%8==0:
                     yinfos["multiplier"]+=0.2
                     self.y+=lastydir*yinfos["multiplier"]
-                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
-                        self.y-=lastydir*yinfos["multiplier"]
+                    if not self.y>725:
+                        if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                            self.y-=lastydir*yinfos["multiplier"]
+                    else:
+                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, 2), 21)):
+                            self.y-=lastydir*yinfos["multiplier"]
+
                 else:
                     self.y+=lastydir*yinfos["multiplier"]
-                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
-                        self.y-=lastydir*yinfos["multiplier"]
+                    if not self.y>725:
+                        if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                            self.y-=lastydir*yinfos["multiplier"]
+                    else:
+                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, 2), 21)):
+                            self.y-=lastydir*yinfos["multiplier"]
 
 
                 #Changement de map
@@ -382,7 +440,7 @@ class TickGestionary(Collider):
                 #print(yinfos)
                 self.MainCan.coords(self.player, self.x, self.y)
             except AttributeError as e:
-                print(e)
+                pass
             except RuntimeError as e:
                 pass
 
@@ -556,7 +614,7 @@ class GraphicEngine(Player):
             else:
                 pass
     def InitMainGui(self):
-        self.MainFrame = Frame(self, bg="purple", width=750, height=750)
+        self.MainFrame = Frame(self, bg="light grey", width=750, height=750)
         self.MainFrame.place(x=0, y=0)
         self.MainCan = Canvas(self.MainFrame, highlightthickness=0, width=750, height=750)
         self.MainCan.place(x=0, y=0)
@@ -741,6 +799,7 @@ class StoppingGestionnary():
         pass
     def StopGame(self):
         self.main_loop_on=False
+        sleep(1)
         self.Save()
     def Save(self):
         try:
