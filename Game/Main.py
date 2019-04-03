@@ -269,8 +269,8 @@ class TickGestionary(Collider):
         self.main_loop_on=True
         threading.Thread(target=self.MainLoop).start()
     def MainLoop(self):
-        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":0, "decel_nbre":0}
-        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":0, "decel_nbre":0}
+        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
+        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         while self.main_loop_on:
             sleep(.01)
             try:
@@ -286,36 +286,62 @@ class TickGestionary(Collider):
                 if lastxdir!=xdir:
                     xinfos["deceleration"], xinfos["decel_dir"] = True, lastxdir
                     xinfos["decel_multiplier"]=xinfos["multiplier"]
+                    xinfos["accel_nbre"], xinfos["decel_nbre"] = 1, 1
+                    xinfos["multiplier"] = 1
+
+                if lastydir!=ydir:
+                    yinfos["deceleration"], yinfos["decel_dir"] = True, lastydir
+                    yinfos["decel_multiplier"]=yinfos["multiplier"]
+                    yinfos["accel_nbre"], yinfos["decel_nbre"] = 1, 1
+                    yinfos["multiplier"] = 1
+
+
 
                 #Gestion de la deceleration
                 if xinfos["deceleration"]==True:
+                    xinfos["decel_nbre"]+=1
                     if xinfos["decel_multiplier"]>1:
-                        xinfos["decel_multiplier"]-=0.10
-                        self.x+=lastxdir*xinfos["decel_multiplier"]
+                        if xinfos["decel_nbre"]%randint(1, 2)==0:
+                            xinfos["decel_multiplier"]-=0.10
+                            self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                        else:
+                            self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                     else:
                         xinfos["deceleration"]=False
 
                 if yinfos["deceleration"]==True:
+                    yinfos["decel_nbre"]+=1
                     if yinfos["decel_multiplier"]>1:
-                        yinfos["decel_multiplier"]-=0.10
-                        self.y+=lastxdir*yinfos["decel_multiplier"]
+                        if yinfos["decel_nbre"]%randint(1, 2)==0:
+                            yinfos["decel_multiplier"]-=0.10
+                            self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                        else:
+                            self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                     else:
                         yinfos["deceleration"]=False
 
                 #Acceleration dans tous les cas
-                if xinfos["multiplier"]<=2.2:
+                if xdir!=0:
+                    xinfos["accel_nbre"]+=1
+                if xinfos["multiplier"]<=2.2 and xinfos["accel_nbre"]%8==0:
                     xinfos["multiplier"]+=0.2
                     self.x+=lastxdir*xinfos["multiplier"]
                 else:
                     self.x+=lastxdir*xinfos["multiplier"]
 
-                if yinfos["multiplier"]<=2.2:
+                if ydir!=0:
+                    yinfos["accel_nbre"]+=1
+                if yinfos["multiplier"]<=2.2 and yinfos["accel_nbre"]%8==0:
                     yinfos["multiplier"]+=0.2
                     self.y+=lastydir*yinfos["multiplier"]
                 else:
                     self.y+=lastydir*yinfos["multiplier"]
 
+
+
                 #Actualisation visuelle
+                #print(xinfos)
+                #print(yinfos)
                 self.MainCan.coords(self.player, self.x, self.y)
             except AttributeError as e:
                 print(e)
