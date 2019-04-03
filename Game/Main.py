@@ -304,8 +304,12 @@ class TickGestionary(Collider):
                         if xinfos["decel_nbre"]%randint(1, 2)==0:
                             xinfos["decel_multiplier"]-=0.10
                             self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                                self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                         else:
                             self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                                self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                     else:
                         xinfos["deceleration"]=False
 
@@ -315,8 +319,12 @@ class TickGestionary(Collider):
                         if yinfos["decel_nbre"]%randint(1, 2)==0:
                             yinfos["decel_multiplier"]-=0.10
                             self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                                self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                         else:
                             self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                                self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                     else:
                         yinfos["deceleration"]=False
 
@@ -326,17 +334,47 @@ class TickGestionary(Collider):
                 if xinfos["multiplier"]<=2.2 and xinfos["accel_nbre"]%8==0:
                     xinfos["multiplier"]+=0.2
                     self.x+=lastxdir*xinfos["multiplier"]
+                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                        self.x-=lastxdir*xinfos["multiplier"]
                 else:
                     self.x+=lastxdir*xinfos["multiplier"]
+                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                        self.x-=lastxdir*xinfos["multiplier"]
 
                 if ydir!=0:
                     yinfos["accel_nbre"]+=1
                 if yinfos["multiplier"]<=2.2 and yinfos["accel_nbre"]%8==0:
                     yinfos["multiplier"]+=0.2
                     self.y+=lastydir*yinfos["multiplier"]
+                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                        self.y-=lastydir*yinfos["multiplier"]
                 else:
                     self.y+=lastydir*yinfos["multiplier"]
+                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
+                        self.y-=lastydir*yinfos["multiplier"]
 
+
+                #Changement de map
+                if self.x>725:
+                    if not self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x+2, 2), 21)):
+                        self.x=0
+                        self.mapX+=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                elif self.x<0:
+                    if not self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+2, 2), 21)):
+                        self.x=725
+                        self.mapX-=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                elif self.y>725:
+                    if not self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, 2), 21)):
+                        self.y=0
+                        self.mapY-=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                elif self.y<0:
+                    if not self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, 2), 21)):
+                        self.y=725
+                        self.mapY+=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
 
 
                 #Actualisation visuelle
