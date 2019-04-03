@@ -181,6 +181,7 @@ class MenuMain(OptionMenuMain):
             self.mapX=10
             self.mapY=9
             self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+            TickGestionary.__init__(self)
         if arg=="playOne_saved":
             try:
                 self.GetPlayerData(location="Save_1")
@@ -198,6 +199,7 @@ class MenuMain(OptionMenuMain):
                 self.mapX=int(self.ConfigList[1]["mapX"])
                 self.mapY=int(self.ConfigList[1]["mapY"])
                 self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                TickGestionary.__init__(self)
             except IndexError:
                 pass
 class ColliderObject():
@@ -267,86 +269,57 @@ class TickGestionary(Collider):
         self.main_loop_on=True
         threading.Thread(target=self.MainLoop).start()
     def MainLoop(self):
-        global multiplier
-        while self.main_loop_on==True:
-            sleep(0.01)
+        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":0, "decel_nbre":0}
+        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":0, "decel_nbre":0}
+        while self.main_loop_on:
+            sleep(.01)
             try:
-                #print(self.x, self.y)
-                if self.x>725 and self.canChangeMap:
-                    self.canChangeMap=False
-                    if not self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((2, self.y+2), 21)):
-                        if self.y<0:
-                            self.y=0
-                        elif self.y>750:
-                            self.y=725
-                        self.x=0
-                        self.mapX+=1
-                        self.move_on=False
-                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                        self.MainCan.coords(self.player, self.x, self.y)
+                try:
+                    lastxdir = xdir
+                    lastydir = ydir
+                except UnboundLocalError:
+                    lastxdir = 0
+                    lastydir = 0
+                xdir = -self.dirXm + self.dirXp
+                ydir = -self.dirYm + self.dirYp
+
+                if lastxdir!=xdir:
+                    xinfos["deceleration"], xinfos["decel_dir"] = True, lastxdir
+                    xinfos["decel_multiplier"]=xinfos["multiplier"]
+
+                #Gestion de la deceleration
+                if xinfos["deceleration"]==True:
+                    if xinfos["decel_multiplier"]>1:
+                        xinfos["decel_multiplier"]-=0.10
+                        self.x+=lastxdir*xinfos["decel_multiplier"]
                     else:
-                        self.x-=(1.4*multiplier)
-                        self.y-=(0*multiplier)
-                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
-                        canDecelerate=False
-                    self.canChangeMap=True
-                if self.x<0 and self.canChangeMap:
-                    self.canChangeMap=False
-                    if not self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((727, self.y+2), 21)):
-                        if self.y<0:
-                            self.y=0
-                        elif self.y>750:
-                            self.y=725
-                        self.x=725
-                        self.mapX-=1
-                        self.move_on=False
-                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                        self.MainCan.coords(self.player, self.x, self.y)
+                        xinfos["deceleration"]=False
+
+                if yinfos["deceleration"]==True:
+                    if yinfos["decel_multiplier"]>1:
+                        yinfos["decel_multiplier"]-=0.10
+                        self.y+=lastxdir*yinfos["decel_multiplier"]
                     else:
-                        self.x-=(xDir*multiplier)
-                        self.y-=(yDir*multiplier)
-                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
-                        canDecelerate=False
-                    self.canChangeMap=True
-                if self.y>725 and self.canChangeMap:
-                    self.canChangeMap=False
-                    if not self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, 2), 21)):
-                        if self.x<0:
-                            self.x=0
-                        elif self.x>750:
-                            self.x=725
-                        self.y=0
-                        self.mapY-=1
-                        self.move_on=False
-                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                        self.MainCan.coords(self.player, self.x, self.y)
-                    else:
-                        self.x-=(xDir*multiplier)
-                        self.y-=(yDir*multiplier)
-                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
-                        canDecelerate=False
-                    self.canChangeMap=True
-                if self.y<0 and self.canChangeMap:
-                    self.canChangeMap=False
-                    if not self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, 727), 21)):
-                        if self.x<0:
-                            self.x=0
-                        elif self.x>750:
-                            self.x=725
-                        self.y=725
-                        self.mapY+=1
-                        self.move_on=False
-                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                        self.MainCan.coords(self.player, self.x, self.y)
-                    else:
-                        self.x-=(xDir*multiplier)
-                        self.y-=(yDir*multiplier)
-                        self.playerCollider=[ColliderObject((self.x+2, self.y+2), 21)]
-                        canDecelerate=False
-                    self.canChangeMap=True
-            except AttributeError:
-                    pass
-            except NameError:
+                        yinfos["deceleration"]=False
+
+                #Acceleration dans tous les cas
+                if xinfos["multiplier"]<=2.2:
+                    xinfos["multiplier"]+=0.2
+                    self.x+=lastxdir*xinfos["multiplier"]
+                else:
+                    self.x+=lastxdir*xinfos["multiplier"]
+
+                if yinfos["multiplier"]<=2.2:
+                    yinfos["multiplier"]+=0.2
+                    self.y+=lastydir*yinfos["multiplier"]
+                else:
+                    self.y+=lastydir*yinfos["multiplier"]
+
+                #Actualisation visuelle
+                self.MainCan.coords(self.player, self.x, self.y)
+            except AttributeError as e:
+                print(e)
+            except RuntimeError as e:
                 pass
 
 class Moving(Collider):
@@ -354,55 +327,7 @@ class Moving(Collider):
         self.move_on=False
         self.parent=parent
     def StartMove(self, xDir, yDir):
-        global multiplier
-        self.parent.canChangeMap=True
-        self.move_on=True
-        multiplier=1
-        nbre=0
-        canDecelerate=True
-        while self.move_on and self.parent.can_move==True:
-            try:
-                #print("loading")
-                sleep(.01)
-                nbre+=1
-                if multiplier<=2.2 and nbre%9==0:
-                    multiplier+=0.2
-                self.parent.x+=(xDir*multiplier)
-                self.parent.y+=(yDir*multiplier)
-                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-
-                if self.CheckMultipleColliders(self.parent.playerCollider[0], self.parent.ColliderList):
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                    #break
-                else:
-                    canDecelerate=True
-                #print(self.parent.playerCollider[0].cornerCoords["top_left"], self.parent.x, self.parent.y)
-                self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
-                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-            except TclError:
-                pass
-        nbre=1
-        while multiplier>1 and canDecelerate:
-            try:
-                sleep(.01)
-                nbre+=1
-                if nbre%randint(1, 2)==0:
-                    multiplier-=0.10
-                self.parent.x+=(xDir*multiplier)
-                self.parent.y+=(yDir*multiplier)
-                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                if self.CheckMultipleColliders(self.parent.playerCollider[0], self.parent.ColliderList):
-                    self.parent.x-=(xDir*multiplier)
-                    self.parent.y-=(yDir*multiplier)
-                    self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-                    canDecelerate=False
-                self.parent.MainCan.coords(self.parent.player, self.parent.x, self.parent.y)
-                self.parent.playerCollider=[ColliderObject((self.parent.x+2, self.parent.y+2), 21)]
-            except TclError:
-                pass
+        pass
 
 class fight():
     def __init___(self):
@@ -435,6 +360,7 @@ class Player():
         self.playerImg = PhotoImage(file="ressources/textures/player/player_0.png")
         self.Init2()
     def Init2(self):
+        self.dirYp, self.dirYm, self.dirXm, self.dirXp = 0, 0, 0, 0
         self.player = self.MainCan.create_image(self.x, self.y, image=self.playerImg, anchor=NW)
         self.playerCollider=[ColliderObject((self.x, self.y), 25)]
     def PlayerEvt(self, evt, arg):
@@ -442,41 +368,37 @@ class Player():
         if arg=="KeyPress":
             if evt.keysym.lower()=="z":
                 try:
-                    if self.moveInstances["z"].move_on==False:
-                        threading.Thread(target = self.moveInstances["z"].StartMove, args=(0, -1, )).start()
-                except KeyError:
-                    self.moveInstances["z"]=Moving(self)
-                    threading.Thread(target = self.moveInstances["z"].StartMove, args=(0, -1, )).start()
+                    if self.dirYm==0:
+                        self.dirYm=1
+                except AttributeError:
+                    self.dirYm=1
             elif evt.keysym.lower()=="s":
                 try:
-                    if self.moveInstances["s"].move_on==False:
-                        threading.Thread(target = self.moveInstances["s"].StartMove, args=(0, 1, )).start()
-                except KeyError:
-                    self.moveInstances["s"]=Moving(self)
-                    threading.Thread(target = self.moveInstances["s"].StartMove, args=(0, 1, )).start()
+                    if self.dirYp==0:
+                        self.dirYp=1
+                except AttributeError:
+                    self.dirYp=1
             elif evt.keysym.lower()=="q":
                 try:
-                    if self.moveInstances["q"].move_on==False:
-                        threading.Thread(target = self.moveInstances["q"].StartMove, args=(-1, 0, )).start()
-                except KeyError:
-                    self.moveInstances["q"]=Moving(self)
-                    threading.Thread(target = self.moveInstances["q"].StartMove, args=(-1, 0, )).start()
+                    if self.dirXm==0:
+                        self.dirXm=1
+                except AttributeError:
+                    self.dirXm=1
             elif evt.keysym.lower()=="d":
                 try:
-                    if self.moveInstances["d"].move_on==False:
-                        threading.Thread(target = self.moveInstances["d"].StartMove, args=(1, 0, )).start()
-                except KeyError:
-                    self.moveInstances["d"]=Moving(self)
-                    threading.Thread(target = self.moveInstances["d"].StartMove, args=(1, 0, )).start()
+                    if self.dirXp==0:
+                        self.dirXp=1
+                except AttributeError:
+                    self.dirXp=1
         if arg=="KeyRelease":
             if evt.keysym.lower()=="z":
-                self.moveInstances["z"].move_on=False
+                self.dirYm=0
             elif evt.keysym.lower()=="s":
-                self.moveInstances["s"].move_on=False
+                self.dirYp=0
             elif evt.keysym.lower()=="q":
-                self.moveInstances["q"].move_on=False
+                self.dirXm=0
             elif evt.keysym.lower()=="d":
-                self.moveInstances["d"].move_on=False
+                self.dirXp=0
 
 class GraphicEngine(Player):
     def __init__(self):
@@ -714,7 +636,6 @@ class PostInit(MenuMain, GraphicEngine, TickGestionary):
     def __init__(self):
         MenuMain.__init__(self)
         GraphicEngine.__init__(self)
-        TickGestionary.__init__(self)
         StoppingGestionnary.__init__(self)
         self.ShowWindow()
     def ShowWindow(self):
