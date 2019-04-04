@@ -7,14 +7,11 @@ from random import randint
 import shutil
 import os
 
-
-
-
 class Console(Tk):
     def __init__(self, parent):
-        #self.Launch()
+        #self.Launch(parent)
         pass
-    def Launch(self):
+    def Launch(self, parent):
         Tk.__init__(self)
         threading.Thread(target=self.StartConsole, args=(parent,)).start()
         self.launched=True
@@ -24,7 +21,6 @@ class Console(Tk):
         self.LoadStringsVars()
         self.LoadLabels()
         while parent.main_loop_on==True and self.launched==True:
-            print(parent.main_loop_on)
             try:
                 sleep(0.01)
                 self.smapX.set(parent.mapX)
@@ -37,15 +33,12 @@ class Console(Tk):
             pass
     def LoadStringsVars(self):
         self.smapX=StringVar()
+        self.smapX.set("")
         self.smapy=StringVar()
+        self.smapy.set("")
     def LoadLabels(self):
         Label(self, text="mapx :").place(x=10, y=10)
         Label(self, textvariable=self.smapX).place(x=70, y=10)
-
-
-
-
-
 
 class PreInit(Tk):
     #Recuperation des donnees et creation de la fenetre
