@@ -112,6 +112,7 @@ class Fight():
         self.Reset()
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
         self.MainCan.pack()
+        self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque"], "attaque", self.onClick)
         self.font=Font(family="Helvetica",size=14)
         PV=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
         PV.place(x=600, y=550)
@@ -135,7 +136,7 @@ class Fight():
     def Heal(self):
         if self.Mana>0 and self.PV<100:
             self.PV=self.PV+(10)# 10= la puissance du sort
-            self.Mana=self.Mana-(10)#10= coût en mana du sort
+            self.Mana=self.Mana-(10)#10= coÃ»t en mana du sort
         else:
             pass
         if self.PV>100:
