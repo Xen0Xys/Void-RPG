@@ -154,23 +154,12 @@ class Fight():
             self.PV=100
         self.Start_Fight()
         
-class Item():
-    def __init__(self):
-        self.name=""
-        self.damage=0
-        self.magic_damages=0
-        self.durability=0
-        self.mana_consumation=0
-        self.prot=0
-        self.magic_prot=0
-        self.type=""
-        self.texture_acces=""
-
 class Init(SoundGestionnary, Fight):
     #Classement des donnees
     def __init__(self):
         SoundGestionnary.__init__(self)
         self.LoadItems()
+        self.RenderItems()
     def AddToConfigList(self, arg):
         try:
             self.ConfigList.append(arg)
@@ -183,6 +172,9 @@ class Init(SoundGestionnary, Fight):
         for folder_name in folderList:
             with open("ressources/items/{}/root.json".format(folder_name), "r") as file:
                 self.itemObjectList.append(json.load(file, object_hook=self.Deserialiseur))
+    def RenderItems(self):
+        for item in self.itemObjectList:
+            item.texture=PhotoImage(file=item.texture_acces)
     def Deserialiseur(self, obj_dict):
         if "__class__" in obj_dict:
             if obj_dict["__class__"] == "Item":
@@ -194,6 +186,7 @@ class Init(SoundGestionnary, Fight):
                 obj.mana_consumation=obj_dict["mana_consumation"]
                 obj.prot=obj_dict["prot"]
                 obj.magic_prot=obj_dict["magic_prot"]
+                obj.drop_proba=obj_dict["drop_proba"]
                 obj.type=obj_dict["type"]
                 obj.texture_acces=obj_dict["texture_acces"]
                 return obj
