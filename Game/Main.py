@@ -142,16 +142,40 @@ class Fight():
             self.PV=100
         self.Start_Fight()
         
+class Item():
+    def __init__(self):
+        self.name=""
+        self.damage=0
+        self.magic_damages=0
+        self.durability=0
+        self.mana_consumation=0
+        self.prot=0
+        self.magic_prot=0
+        self.type=""
+
 class Init(SoundGestionnary, Fight):
     #Classement des donnees
     def __init__(self):
         SoundGestionnary.__init__(self)
+        self.LoadItems()
     def AddToConfigList(self, arg):
         try:
             self.ConfigList.append(arg)
         except AttributeError:
             self.ConfigList=[]
             self.ConfigList.append(arg)
+    def LoadItems(self):
+        folderList = os.listdir("ressources/items")
+        for folder_name in folderList:
+            with open("ressources/items/{}/root.json".format(folder_name), "r", encoding="utf-8") as fichier:
+                playlist = json.load(fichier, object_hook=deserialiseur_perso)
+    def deserialiseur_perso(obj_dict):
+        if "__class__" in obj_dict:
+            if obj_dict["__class__"] == "Playlist":
+                obj = Item(objet["nom"])
+                obj.musiques = objet["musiques"]
+                return obj
+        return objet
             
 class OptionMenuMain():
     def __init__(self):
