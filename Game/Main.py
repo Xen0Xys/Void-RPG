@@ -125,7 +125,8 @@ class Fight():
         self.Reset()
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
         self.MainCan.pack()
-        self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque"], "attaque", self.onClick)
+        self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque"], "attaque", self.onFightClick)
+        self.CreateAllCan(100,40,450,670,self.FightTxtrList["magie"], "magie", self.onFightClick)
         self.font=Font(family="Helvetica",size=14)
         PV=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
         PV.place(x=600, y=550)
@@ -135,11 +136,19 @@ class Fight():
         PVE.place(x=10, y=10)
         ManaE=Label(self.MainCan, text="Mana: "+str(int(30))+"/"+str(int(30)),font=self.font, bg="white")
         ManaE.place(x=10, y=50)
-
-
+    def onFightClick(self, evt, arg):
+        if arg=="attaque":
+            self.Attack()
+        if arg=="magie":
+            self.Magie()
     def Attack(self):
+        self.Basic_Attack()
+    def Magie(self):
+        self.Heal()
+
+    def Basic_Attack (self):
         if self.PV>=0:
-            self.PV=self.PV-(3*2)#8= degat de l'arme et 2 la force de l'E
+            self.PV=self.PV-(3*2)#3= degat de l'arme et 2 la force de l'E
         else:
             pass
         if self.PV<0:
@@ -149,7 +158,7 @@ class Fight():
     def Heal(self):
         if self.Mana>0 and self.PV<100:
             self.PV=self.PV+(10)# 10= la puissance du sort
-            self.Mana=self.Mana-(10)#10= coÃ»t en mana du sort
+            self.Mana=self.Mana-(10)#10= coÃƒÂ»t en mana du sort
         else:
             pass
         if self.PV>100:
