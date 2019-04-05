@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.font import Font
 from time import sleep
 import threading
 from PIL import Image, ImageTk
@@ -63,6 +64,16 @@ class PreInit(Tk):
         for item in temp:
             temp2=item.split("=")
             self.IntTxtrList[temp2[0]]=PhotoImage(file=temp2[1])
+    def GetFightTextureList(self):
+        self.FightTxtrList={}
+        file=open("ressources/textures/fight/textures_fight.cfg", "r")
+        content=file.read()
+        file.close()
+        content=content.replace(" ","")
+        temp=content.split("\n")
+        for item in temp:
+            temp2=item.split("=")
+            self.FightTxtrList[temp2[0]]=PhotoImage(file=temp2[1])
     def GetMenuConfig(self):
         dico={}
         file=open("ressources/save/config/MenuMain.cfg", "r")
@@ -195,18 +206,18 @@ class OptionMenuMain():
         self.Reset()
         self.MainCan = Canvas(self, width=750, height=750, bg="#9a9a9a", highlightthickness=0)
         self.MainCan.pack()
-        self.CreateAllCan(330,90,230,10,self.IntTxtrList["option_title"], "")
-        self.CreateAllCan(90,90,650,650,self.IntTxtrList["quitter"], "retour_menu")
-        self.CreateAllCan(330,90,35,200,self.IntTxtrList["rotation"], "")
-        self.CreateAllCan(330,90,35,350,self.IntTxtrList["one_image"], "")
+        self.CreateAllCan(330,90,230,10,self.IntTxtrList["option_title"], "", self.onClick)
+        self.CreateAllCan(90,90,650,650,self.IntTxtrList["quitter"], "retour_menu", self.onClick)
+        self.CreateAllCan(330,90,35,200,self.IntTxtrList["rotation"], "", self.onClick)
+        self.CreateAllCan(330,90,35,350,self.IntTxtrList["one_image"], "", self.onClick)
         if self.canRotate==True:
-            self.CreateAllCan(90,90,380,200,self.IntTxtrList["green"], "rotation")
+            self.CreateAllCan(90,90,380,200,self.IntTxtrList["green"], "rotation", self.onClick)
         else:
-            self.CreateAllCan(90,90,380,200,self.IntTxtrList["red"], "rotation")
+            self.CreateAllCan(90,90,380,200,self.IntTxtrList["red"], "rotation", self.onClick)
         if self.oneImage==True:
-            self.CreateAllCan(90,90,380,350,self.IntTxtrList["green"], "oneImage")
+            self.CreateAllCan(90,90,380,350,self.IntTxtrList["green"], "oneImage", self.onClick)
         else:
-            self.CreateAllCan(90,90,380,350,self.IntTxtrList["red"], "oneImage")
+            self.CreateAllCan(90,90,380,350,self.IntTxtrList["red"], "oneImage", self.onClick)
 
 class MenuMain(OptionMenuMain):
     def __init__(self):
@@ -226,27 +237,27 @@ class MenuMain(OptionMenuMain):
     def SetButtons(self):
         self.CanList=[]
         Label(self.MainCan, text="Coding : Czekaj Tom\nGraphics : Duchene Guillaume, Choin Anatole", bg="#9a9a9a", justify="left").place(x=1,y=712)
-        self.CreateAllCan(600,75,75,50,self.IntTxtrList["baniere"], "")
-        self.CreateAllCan(50,50,610,680,self.IntTxtrList["option_wheel"], "option")
-        self.CreateAllCan(220,75,30,600,self.IntTxtrList["fight"], "fight")
-        self.CreateAllCan(50,50,680,680,self.IntTxtrList["quit_button"], "quit")
+        self.CreateAllCan(600,75,75,50,self.IntTxtrList["baniere"], "", self.onClick)
+        self.CreateAllCan(50,50,610,680,self.IntTxtrList["option_wheel"], "option", self.onClick)
+        self.CreateAllCan(220,75,30,600,self.IntTxtrList["fight"], "fight", self.onClick)
+        self.CreateAllCan(50,50,680,680,self.IntTxtrList["quit_button"], "quit", self.onClick)
         if self.ConfigList[0]["save_1"]=="False":
-            self.CreateAllCan(220,75,30,300,self.IntTxtrList["create"], "playOne")
+            self.CreateAllCan(220,75,30,300,self.IntTxtrList["create"], "playOne", self.onClick)
         else:
-            self.CreateAllCan(220,75,30,300,self.IntTxtrList["create"], "playOne_saved")
+            self.CreateAllCan(220,75,30,300,self.IntTxtrList["create"], "playOne_saved", self.onClick)
         if self.ConfigList[0]["save_2"]=="False":
-            self.CreateAllCan(220,75,30,400,self.IntTxtrList["create"], "playTwn")
+            self.CreateAllCan(220,75,30,400,self.IntTxtrList["create"], "playTwn", self.onClick)
         else:
             pass
         if self.ConfigList[0]["save_3"]=="False":
-            self.CreateAllCan(220,75,30,500,self.IntTxtrList["create"], "playThree")
+            self.CreateAllCan(220,75,30,500,self.IntTxtrList["create"], "playThree", self.onClick)
         else:
             pass
-    def CreateAllCan(self, canwidth, canheight, x, y, image, arg):
+    def CreateAllCan(self, canwidth, canheight, x, y, image, arg, funct):
         self.CanList.append(Canvas(self.MainCan, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
         self.CanList[len(self.CanList)-1].place(x=x, y=y)
         self.CanList[len(self.CanList)-1].create_image(0,0, image=image, anchor=NW)
-        self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:self.onClick(arg1, arg2))
+        self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:funct(arg1, arg2))
     def onClick(self, evt, arg):
         if arg=="fight":
             self.Start_Fight()
