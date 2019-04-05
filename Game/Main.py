@@ -122,6 +122,26 @@ class Fight():
         ManaE=Label(self.MainCan, text="Mana: "+str(int(30))+"/"+str(int(30)),font=self.font, bg="white")
         ManaE.place(x=10, y=50)
 
+
+    def Attack(self):
+        if self.PV>=0:
+            self.PV=self.PV-(3*2)#8= degat de l'arme et 2 la force de l'E
+        else:
+            pass
+        if self.PV<0:
+            self.PV=0
+
+        self.Start_Fight()
+    def Heal(self):
+        if self.Mana>0 and self.PV<100:
+            self.PV=self.PV+(10)# 10= la puissance du sort
+            self.Mana=self.Mana-(10)#10= coût en mana du sort
+        else:
+            pass
+        if self.PV>100:
+            self.PV=100
+        self.Start_Fight()
+        
 class Init(SoundGestionnary, Fight):
     #Classement des donnees
     def __init__(self):
@@ -871,7 +891,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity,}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
