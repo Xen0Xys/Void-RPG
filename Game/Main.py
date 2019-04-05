@@ -153,7 +153,21 @@ class Fight():
         if self.PV>100:
             self.PV=100
         self.Start_Fight()
-        
+     
+class Item():
+    def __init__(self):
+        self.name=""
+        self.damage=0
+        self.magic_damages=0
+        self.durability=0
+        self.mana_consumation=0
+        self.prot=0
+        self.magic_prot=0
+        self.drop_proba=0
+        self.type=""
+        self.texture_acces=""
+        self.texture=None
+    
 class Init(SoundGestionnary, Fight):
     #Classement des donnees
     def __init__(self):
