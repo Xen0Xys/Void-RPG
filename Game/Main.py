@@ -611,6 +611,12 @@ class Player():
                 self.dirXm=0
             elif evt.keysym.lower()=="d":
                 self.dirXp=0
+            elif evt.keysym.lower()=="f":
+                self.Start_Fight()
+            elif evt.keysym.lower()=="a":
+                self.Attack()
+            elif evt.keysym.lower()=="h":
+                self.Heal()
 
 class GraphicEngine(Player):
     def __init__(self):
