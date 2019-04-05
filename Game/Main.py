@@ -105,8 +105,24 @@ class SoundGestionnary():
     def StopAllSounds(self):
         pygame.mixer.music.stop()
 
+class Fight():
+    def __init___(self):
+        pass
+    def Start_Fight(self):
+        self.Reset()
+        self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
+        self.MainCan.pack()
+        self.font=Font(family="Helvetica",size=14)
+        PV=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
+        PV.place(x=600, y=550)
+        Mana=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
+        Mana.place(x=600, y=590)
+        PVE=Label(self.MainCan, text="PV: "+str(int(125))+"/"+str(int(150)),font=self.font, bg="white")
+        PVE.place(x=10, y=10)
+        ManaE=Label(self.MainCan, text="Mana: "+str(int(30))+"/"+str(int(30)),font=self.font, bg="white")
+        ManaE.place(x=10, y=50)
 
-class Init(SoundGestionnary):
+class Init(SoundGestionnary, Fight):
     #Classement des donnees
     def __init__(self):
         SoundGestionnary.__init__(self)
@@ -116,7 +132,7 @@ class Init(SoundGestionnary):
         except AttributeError:
             self.ConfigList=[]
             self.ConfigList.append(arg)
-
+            
 class OptionMenuMain():
     def __init__(self):
         pass
@@ -483,14 +499,6 @@ class Moving(Collider):
         self.parent=parent
     def StartMove(self, xDir, yDir):
         pass
-
-class fight():
-    def __init___(self):
-        pass
-    def Start_Fight(self):
-        self.Reset()
-        self.MainCan = Canvas(self, width=750, height=750, bg="#9a9a9a", highlightthickness=0)
-        self.MainCan.pack()
 
 class Player():
     def __init__(self):
