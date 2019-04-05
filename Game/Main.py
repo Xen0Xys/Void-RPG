@@ -341,10 +341,10 @@ class TickGestionary(Collider):
                             xinfos["decel_multiplier"]-=0.10
                             self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                             if self.x<0:
-                                if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)):
+                                if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                            elif self.x>720:
-                                if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)):
+                            elif self.x>725:
+                                if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                             else:
                                 if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
@@ -352,10 +352,10 @@ class TickGestionary(Collider):
                         else:
                             self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                             if self.x<0:
-                                if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)):
+                                if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                            elif self.x>720:
-                                if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)):
+                            elif self.x>725:
+                                if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                             else:
                                 if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
@@ -370,10 +370,10 @@ class TickGestionary(Collider):
                             yinfos["decel_multiplier"]-=0.10
                             self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                             if self.y<0:
-                                if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)):
+                                if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            elif self.y>720:
-                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)):
+                            elif self.y>725:
+                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                             else:
                                 if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
@@ -381,10 +381,10 @@ class TickGestionary(Collider):
                         else:
                             self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                             if self.y<0:
-                                if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)):
+                                if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            elif self.y>720:
-                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)):
+                            elif self.y>725:
+                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                                     self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                             else:
                                 if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
@@ -399,10 +399,10 @@ class TickGestionary(Collider):
                     xinfos["multiplier"]+=0.2
                     self.x+=lastxdir*xinfos["multiplier"]
                     if self.x<0:
-                        if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)):
+                        if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.x-=lastxdir*xinfos["multiplier"]
-                    elif self.x>720:
-                        if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)):
+                    elif self.x>725:
+                        if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.x-=lastxdir*xinfos["multiplier"]
                     else:
                         if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
@@ -410,15 +410,15 @@ class TickGestionary(Collider):
                 else:
                     self.x+=lastxdir*xinfos["multiplier"]
                     if self.x<0:
-                        if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)):
+                        if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.x-=lastxdir*xinfos["multiplier"]
-                    elif self.x>720:
-                        if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)):
+                    elif self.x>725:
+                        if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.x-=lastxdir*xinfos["multiplier"]
                     else:
                         if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.x-=lastxdir*xinfos["multiplier"]
-                        
+
 
                 if ydir!=0:
                     yinfos["accel_nbre"]+=1
@@ -426,10 +426,10 @@ class TickGestionary(Collider):
                     yinfos["multiplier"]+=0.2
                     self.y+=lastydir*yinfos["multiplier"]
                     if self.y<0:
-                        if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)):
+                        if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.y-=lastydir*yinfos["multiplier"]
-                    elif self.y>720:
-                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)):
+                    elif self.y>725:
+                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.y-=lastydir*yinfos["multiplier"]
                     else:
                         if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
@@ -437,10 +437,10 @@ class TickGestionary(Collider):
                 else:
                     self.y+=lastydir*yinfos["multiplier"]
                     if self.y<0:
-                        if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)):
+                        if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.y-=lastydir*yinfos["multiplier"]
-                    elif self.y>720:
-                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)):
+                    elif self.y>725:
+                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
                             self.y-=lastydir*yinfos["multiplier"]
                     else:
                         if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList):
@@ -452,7 +452,7 @@ class TickGestionary(Collider):
                     self.x=0
                     self.mapX+=1
                     self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                elif self.x<-2:
+                elif self.x<-5:
                     self.x=725
                     self.mapX-=1
                     self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
@@ -460,7 +460,7 @@ class TickGestionary(Collider):
                     self.y=0
                     self.mapY-=1
                     self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                elif self.y<-2:
+                elif self.y<-5:
                     self.y=725
                     self.mapY+=1
                     self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
