@@ -7,6 +7,7 @@ import pygame.mixer
 from random import randint
 import shutil
 import os
+import json
 
 class Console(Tk):
     def __init__(self, parent):
@@ -47,6 +48,7 @@ class PreInit(Tk):
         self.UnzipRessourcesFolder()
         self.InitWindow()
         self.GetMenuTextureList()
+        self.GetFightTextureList()
         self.GetMenuConfig()
     def UnzipRessourcesFolder(self):
         if not os.path.isdir("ressources"):
