@@ -152,6 +152,7 @@ class Item():
         self.prot=0
         self.magic_prot=0
         self.type=""
+        self.texture_acces=""
 
 class Init(SoundGestionnary, Fight):
     #Classement des donnees
@@ -165,17 +166,26 @@ class Init(SoundGestionnary, Fight):
             self.ConfigList=[]
             self.ConfigList.append(arg)
     def LoadItems(self):
+        self.itemObjectList=[]
         folderList = os.listdir("ressources/items")
         for folder_name in folderList:
-            with open("ressources/items/{}/root.json".format(folder_name), "r", encoding="utf-8") as fichier:
-                playlist = json.load(fichier, object_hook=deserialiseur_perso)
-    def deserialiseur_perso(obj_dict):
+            with open("ressources/items/{}/root.json".format(folder_name), "r") as file:
+                self.itemObjectList.append(json.load(file, object_hook=self.Deserialiseur))
+    def Deserialiseur(self, obj_dict):
         if "__class__" in obj_dict:
-            if obj_dict["__class__"] == "Playlist":
-                obj = Item(objet["nom"])
-                obj.musiques = objet["musiques"]
+            if obj_dict["__class__"] == "Item":
+                obj = Item()
+                obj.name=obj_dict["name"]
+                obj.damage=obj_dict["damage"]
+                obj.magic_damages=obj_dict["magic_damages"]
+                obj.durability=obj_dict["durability"]
+                obj.mana_consumation=obj_dict["mana_consumation"]
+                obj.prot=obj_dict["prot"]
+                obj.magic_prot=obj_dict["magic_prot"]
+                obj.type=obj_dict["type"]
+                obj.texture_acces=obj_dict["texture_acces"]
                 return obj
-        return objet
+        return obj_dict
             
 class OptionMenuMain():
     def __init__(self):
