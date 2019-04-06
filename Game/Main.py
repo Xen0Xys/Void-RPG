@@ -9,7 +9,7 @@ import shutil
 import os
 import json
 
-class Console(Tk):
+class LiveInfos(Tk):
     def __init__(self, parent):
         #self.Launch(parent)
         pass
@@ -41,15 +41,47 @@ class Console(Tk):
     def LoadLabels(self):
         Label(self, text="mapx :").place(x=10, y=10)
         Label(self, textvariable=self.smapX).place(x=70, y=10)
+        
+class IntegratedConsole():
+    def __init__(self):
+        self.__args={}
+        self.__LinesList=[]
+        with open("ressources/save/config/IntegratedConsole.cfg", "r") as file:
+            content=file.read()
+            temp=content.split("\n")
+            for line in temp:
+                temp2=line.split("=")
+                self.__args[temp2[0]]=temp2[1]
+        if self.__args["do_start"]=="True":
+            threading.Thread(target=self.__RunConsole).start()
+    def __RunConsole(self):
+        self.__window=Tk()
+        self.__window.title("Console")
+        self.__window.geometry("750x400")
+        Canvas(self.__window, width=750, height=400, bg="light grey").pack()
+        self.__window.mainloop()
+        pass
+    def Console(self, arg):
+        line = "[CONSOLE] : {}".format(arg)
+        try:
+            self.__AddLine(line)
+        except IndentationError:
+            pass
+    def __AddLine(self, line):
+        pass
 
-class PreInit(Tk):
+class PreInit(Tk, IntegratedConsole):
     #Recuperation des donnees et creation de la fenetre
     def __init__(self):
-        self.UnzipRessourcesFolder()
         self.InitWindow()
+        self.CreateConsole()
+        self.UnzipRessourcesFolder()
         self.GetMenuTextureList()
         self.GetFightTextureList()
         self.GetMenuConfig()
+    def CreateConsole(self):
+        IntegratedConsole()
+        self.Console("Starting init")
     def UnzipRessourcesFolder(self):
         if not os.path.isdir("ressources"):
             import zipfile
@@ -404,7 +436,7 @@ class TickGestionary(Collider):
         self.main_loop_on=True
         threading.Thread(target=self.MainLoop).start()
     def MainLoop(self):
-        threading.Thread(target=Console, args=(self,)).start()
+        threading.Thread(target=LiveInfos, args=(self,)).start()
         xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         while self.main_loop_on:
