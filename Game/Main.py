@@ -45,7 +45,7 @@ class LiveInfos(Tk):
 class IntegratedConsole():
     def __init__(self):
         self.args={}
-        self.__LinesList=[]
+        self.LinesList=[]
         with open("ressources/save/config/IntegratedConsole.cfg", "r") as file:
             content=file.read()
             temp=content.split("\n")
@@ -54,26 +54,38 @@ class IntegratedConsole():
                 self.args[temp2[0]]=temp2[1]
         if self.args["do_start"]=="True":
             threading.Thread(target=self.__RunConsole).start()
+            sleep(.01)
     def __RunConsole(self):
         self.window=Tk()
         self.window.title("Console")
         self.window.geometry("750x400")
-        Canvas(self.window, width=750, height=400, bg="light grey").pack()
+        self.linesCan = Canvas(self.window, width=750, height=400, bg="light grey")
+        self.linesCan.pack()
         self.window.mainloop()
     def ClosingConsole(self):
-        print(self.args["do_closing_on_window_closing"])
         if self.args["do_closing_on_window_closing"]=="True":
-            print("destroy")
-            self.window.destroy()
-            print("destroyed")
-    def Console(self, arg):
-        line = "[CONSOLE] : {}".format(arg)
+            with open("ressources/log/log.txt", "w") as file:
+                content=""
+                for line in self.LinesList:
+                    content+=line["text"]+"\n"
+                file.write(content)
+            try:
+                self.window.destroy()
+            except RuntimeError:
+                pass
+    def Console(self, arg, warn_type="CONSOLE"):
+        line = "[{}] : {}".format(warn_type, arg)
         try:
             self.__AddLine(line)
         except IndentationError:
             pass
     def __AddLine(self, line):
-        pass
+        dico={"text":line, "x_coord":10, "y_coord":375}
+        dico["text_on_screen"] = self.linesCan.create_text(dico["x_coord"], dico["y_coord"], text=dico["text"], anchor=W)
+        for text in self.LinesList:
+            text["y_coord"]-=20
+            self.linesCan.coords(text["text_on_screen"], text["x_coord"], text["y_coord"])
+        self.LinesList.append(dico)
 
 class PreInit(Tk, IntegratedConsole):
     #Recuperation des donnees et creation de la fenetre
@@ -88,12 +100,18 @@ class PreInit(Tk, IntegratedConsole):
         self.console = IntegratedConsole()
         self.console.Console("Starting init")
     def UnzipRessourcesFolder(self):
+        self.console.Console("Check if extracting ressource folder is need")
         if not os.path.isdir("ressources"):
+            self.console.Console("STarting exracting")
             import zipfile
             zip_ref = zipfile.ZipFile("ressources.zip", 'r')
             zip_ref.extractall("")
             zip_ref.close()
+            self.console.Console("Extracting finish")
+        else:
+            self.console.Console("Don't need to extract")
     def GetMenuTextureList(self):
+        self.console.Console("Getting menu texture's list")
         self.IntTxtrList={}
         file=open("ressources/textures/interface/textures.cfg", "r")
         content=file.read()
@@ -103,7 +121,9 @@ class PreInit(Tk, IntegratedConsole):
         for item in temp:
             temp2=item.split("=")
             self.IntTxtrList[temp2[0]]=PhotoImage(file=temp2[1])
+        self.console.Console("Texture list get")
     def GetFightTextureList(self):
+        self.console.Console("Getting fignt texture's list")
         self.FightTxtrList={}
         file=open("ressources/textures/fight/textures_fight.cfg", "r")
         content=file.read()
@@ -113,6 +133,7 @@ class PreInit(Tk, IntegratedConsole):
         for item in temp:
             temp2=item.split("=")
             self.FightTxtrList[temp2[0]]=PhotoImage(file=temp2[1])
+        self.console.Console("Texture list get")
     def GetMenuConfig(self):
         dico={}
         file=open("ressources/save/config/MenuMain.cfg", "r")
