@@ -44,23 +44,28 @@ class LiveInfos(Tk):
         
 class IntegratedConsole():
     def __init__(self):
-        self.__args={}
+        self.args={}
         self.__LinesList=[]
         with open("ressources/save/config/IntegratedConsole.cfg", "r") as file:
             content=file.read()
             temp=content.split("\n")
             for line in temp:
                 temp2=line.split("=")
-                self.__args[temp2[0]]=temp2[1]
-        if self.__args["do_start"]=="True":
+                self.args[temp2[0]]=temp2[1]
+        if self.args["do_start"]=="True":
             threading.Thread(target=self.__RunConsole).start()
     def __RunConsole(self):
-        self.__window=Tk()
-        self.__window.title("Console")
-        self.__window.geometry("750x400")
-        Canvas(self.__window, width=750, height=400, bg="light grey").pack()
-        self.__window.mainloop()
-        pass
+        self.window=Tk()
+        self.window.title("Console")
+        self.window.geometry("750x400")
+        Canvas(self.window, width=750, height=400, bg="light grey").pack()
+        self.window.mainloop()
+    def ClosingConsole(self):
+        print(self.args["do_closing_on_window_closing"])
+        if self.args["do_closing_on_window_closing"]=="True":
+            print("destroy")
+            self.window.destroy()
+            print("destroyed")
     def Console(self, arg):
         line = "[CONSOLE] : {}".format(arg)
         try:
@@ -80,8 +85,8 @@ class PreInit(Tk, IntegratedConsole):
         self.GetFightTextureList()
         self.GetMenuConfig()
     def CreateConsole(self):
-        IntegratedConsole()
-        self.Console("Starting init")
+        self.console = IntegratedConsole()
+        self.console.Console("Starting init")
     def UnzipRessourcesFolder(self):
         if not os.path.isdir("ressources"):
             import zipfile
@@ -137,6 +142,9 @@ class PreInit(Tk, IntegratedConsole):
         self.geometry("750x750+10+10")
         self.title("RPG")
         self.resizable(height=False, width=False)
+        self.protocol("WM_DELETE_WINDOW", self.onWindowClosing)
+    def onWindowClosing(self):
+        self.destroy()
 
 class SoundGestionnary():
     #Gestionnaire permettant de jouer ou stopper les differents sons du jeu
@@ -336,7 +344,7 @@ class MenuMain(OptionMenuMain):
                 self.SaveConfig()
                 self.Start()
         if arg=="quit":
-            self.destroy()
+            self.onWindowClosing()
         if arg=="option":
             self.PlaySound("option_button_sound")
             self.Start()
@@ -1010,6 +1018,8 @@ class Main(InitGestionnary, StoppingGestionnary):
         InitGestionnary.__init__(self)
         self.StopGame()
         self.StopAllSounds()
+        threading.Thread(target=self.console.ClosingConsole).start()
+        
 
 
 main=Main()
