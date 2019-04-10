@@ -61,7 +61,12 @@ class IntegratedConsole():
         self.window.geometry("750x400")
         self.linesCan = Canvas(self.window, width=750, height=400, bg="light grey")
         self.linesCan.pack()
+        self.linesCan.bind("<Configure>", self.__onResize)
         self.window.mainloop()
+    def __onResize(self, evt):
+        #print(evt.x, evt.y)
+        #self.linesCan["width"]=((evt.x)*2)+750
+        pass
     def ClosingConsole(self):
         if self.args["do_closing_on_window_closing"]=="True":
             with open("ressources/log/log.txt", "w") as file:
