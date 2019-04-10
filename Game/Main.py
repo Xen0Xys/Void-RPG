@@ -73,11 +73,13 @@ class IntegratedConsole():
                 self.window.destroy()
             except RuntimeError:
                 pass
+            except AttributeError:
+                pass
     def Console(self, arg, warn_type="CONSOLE"):
         line = "[{}] : {}".format(warn_type, arg)
         try:
             self.__AddLine(line)
-        except IndentationError:
+        except AttributeError:
             pass
     def __AddLine(self, line):
         dico={"text":line, "x_coord":10, "y_coord":375}
@@ -91,8 +93,8 @@ class PreInit(Tk, IntegratedConsole):
     #Recuperation des donnees et creation de la fenetre
     def __init__(self):
         self.InitWindow()
-        self.CreateConsole()
         self.UnzipRessourcesFolder()
+        self.CreateConsole()
         self.GetMenuTextureList()
         self.GetFightTextureList()
         self.GetMenuConfig()
@@ -100,16 +102,11 @@ class PreInit(Tk, IntegratedConsole):
         self.console = IntegratedConsole()
         self.console.Console("Starting init")
     def UnzipRessourcesFolder(self):
-        self.console.Console("Check if extracting ressource folder is need")
         if not os.path.isdir("ressources"):
-            self.console.Console("STarting exracting")
             import zipfile
             zip_ref = zipfile.ZipFile("ressources.zip", 'r')
             zip_ref.extractall("")
             zip_ref.close()
-            self.console.Console("Extracting finish")
-        else:
-            self.console.Console("Don't need to extract")
     def GetMenuTextureList(self):
         self.console.Console("Getting menu texture's list")
         self.IntTxtrList={}
