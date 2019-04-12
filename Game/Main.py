@@ -656,6 +656,8 @@ class Player():
         try:
             self.x=float(self.ConfigList[1]["x"])
             self.y=float(self.ConfigList[1]["y"])
+            #Equipement
+            self.Equipment={"Hand":None}
             #stat
             self.PV=float(self.ConfigList[1]["PV"])
             self.Speed=float(self.ConfigList[1]["speed"])
