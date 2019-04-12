@@ -65,8 +65,12 @@ class IntegratedConsole():
         self.window.mainloop()
     def __onResize(self, evt):
         #print(evt.x, evt.y)
-        #self.linesCan["width"]=((evt.x)*2)+750
-        pass
+        self.linesCan["width"]=self.window.winfo_width()
+        self.linesCan["height"]=self.window.winfo_height()
+        toAdd = (self.LinesList[len(self.LinesList)-1]["y_coord"]) - self.window.winfo_height()
+        for text in self.LinesList:
+            text["y_coord"]-= 20 + toAdd
+            self.linesCan.coords(text["text_on_screen"], text["x_coord"], text["y_coord"])
     def ClosingConsole(self):
         if self.args["do_closing_on_window_closing"]=="True":
             with open("ressources/log/log.txt", "w") as file:
