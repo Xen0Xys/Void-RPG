@@ -1,0 +1,5 @@
+[CONSOLE] : Starting init
+[CONSOLE] : Getting menu texture's list
+[CONSOLE] : Texture list get
+[CONSOLE] : Getting fignt texture's list
+[CONSOLE] : Texture list get
