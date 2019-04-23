@@ -8,6 +8,7 @@ from random import randint
 import shutil
 import os
 import json
+import time
 
 class LiveInfos(Tk):
     def __init__(self, parent):
@@ -472,7 +473,7 @@ class Collider():
                     ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colType=Matrice[i][j]))
         #print(ColliderList)
         returning = self.CheckMultipleColliders(newplayercollider, ColliderList)
-        return returning
+        return returning[0]
 
 class TickGestionary(Collider):
     def __init__(self):
@@ -484,6 +485,7 @@ class TickGestionary(Collider):
         yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         while self.main_loop_on:
             sleep(.01)
+            t1=time.time()
             try:
                 try:
                     lastxdir = xdir
@@ -651,6 +653,8 @@ class TickGestionary(Collider):
                 #print(xinfos)
                 #print(yinfos)
                 self.MainCan.coords(self.player, self.x, self.y)
+                t2=time.time()
+                #print(t2-t1)
             except AttributeError as e:
                 pass
             except RuntimeError as e:
@@ -741,6 +745,21 @@ class Player():
             elif evt.keysym.lower()=="h":
                 self.Heal()
 
+
+class EnnemyIA():
+    def __init__(self, x, y):
+        self.x=x
+        self.y=y
+        self.IAOn=True
+        threading.Thread(target=self.MainLoop2).start()
+    def MainLoop2(self):
+        try:
+            while self.IAOn:
+                sleep(1)
+        except RuntimeError:
+            pass
+
+
 class GraphicEngine(Player):
     def __init__(self):
         self.isLoading=False
@@ -759,6 +778,7 @@ class GraphicEngine(Player):
                 Player.__init__(self)
             except RuntimeError:
                 pass
+            self.ia=EnnemyIA(500, 500)
             self.can_move=True
             self.isLoading=False
     def Config(self):
