@@ -228,7 +228,7 @@ class Fight():
     def Heal(self):
         if self.Mana>0 and self.PV<100:
             self.PV=self.PV+(10)# 10= la puissance du sort
-            self.Mana=self.Mana-(10)#10= coÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â»t en mana du sort
+            self.Mana=self.Mana-(10)#10= cout en mana du sort
         else:
             pass
         if self.PV>100:
