@@ -747,10 +747,13 @@ class Player():
 
 
 class EnnemyIA():
-    def __init__(self, x, y):
+    def __init__(self, x, y, mainCan):
         self.x=x
         self.y=y
+        self.MainCan=mainCan
         self.IAOn=True
+        self.EnnemyImg=PhotoImage(file="ressources/textures/player/player_0.png")
+        self.Ennemy = self.MainCan.create_image(self.x, self.y, image=self.EnnemyImg, anchor=NW)
         threading.Thread(target=self.MainLoop2).start()
     def MainLoop2(self):
         try:
@@ -758,6 +761,8 @@ class EnnemyIA():
                 sleep(1)
         except RuntimeError:
             pass
+    def Move(self):
+        pass
 
 
 class GraphicEngine(Player):
@@ -778,7 +783,7 @@ class GraphicEngine(Player):
                 Player.__init__(self)
             except RuntimeError:
                 pass
-            self.ia=EnnemyIA(500, 500)
+            self.ia=EnnemyIA(500, 500, self.MainCan)
             self.can_move=True
             self.isLoading=False
     def Config(self):
