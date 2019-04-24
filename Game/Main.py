@@ -823,7 +823,7 @@ class GraphicEngine(Player):
             self.Reset()
             self.Init()
             self.IAList=[]
-            self.IAList.append(EnnemyIA(500, 500, self.MainCan))
+            self.IAList.append(EnnemyIA(375, 500, self))
             try:
                 self.moveInstances
                 self.Init2()
