@@ -776,6 +776,7 @@ class GraphicEngine(Player):
             self.filename=filename
             self.Reset()
             self.Init()
+            self.ia=EnnemyIA(500, 500, self.MainCan)
             try:
                 self.moveInstances
                 self.Init2()
@@ -783,7 +784,6 @@ class GraphicEngine(Player):
                 Player.__init__(self)
             except RuntimeError:
                 pass
-            self.ia=EnnemyIA(500, 500, self.MainCan)
             self.can_move=True
             self.isLoading=False
     def Config(self):
