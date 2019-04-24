@@ -198,6 +198,9 @@ class Fight():
         self.MainCan.pack()
         self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque"], "attaque", self.onFightClick)
         self.CreateAllCan(100,40,450,670,self.FightTxtrList["magie"], "magie", self.onFightClick)
+        self.CreateAllCan(100,40,550,628,self.FightTxtrList["defense"], "defense", self.onFightClick)
+        self.CreateAllCan(100,40,550,670,self.FightTxtrList["sac"], "sac", self.onFightClick)
+        self.CreateAllCan(100,40,650,630,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
         self.font=Font(family="Helvetica",size=14)
         PV=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
         PV.place(x=600, y=550)
@@ -212,8 +215,27 @@ class Fight():
             self.Attack()
         if arg=="magie":
             self.Magie()
+        if arg=="defense":
+            pass
+        if arg=="sac":
+            pass
+        if arg=="fuite":
+            self.Fuite()
+
+    def Fuite(self):
+        if self.Speed>0.5: #0.5= vitesse de l'enemie
+            self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+        else:
+            pass
     def Attack(self):
-        self.Basic_Attack()
+        self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque_1"], "attaque_1", self.onAttaqueClick)
+        self.CreateAllCan(100,40,450,670,self.FightTxtrList["attaque_2"], "attaque_2", self.onAttaqueClick)
+        self.CreateAllCan(100,40,550,628,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+        self.CreateAllCan(100,40,550,670,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+        self.CreateAllCan(100,40,650,630,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+    def onAttaqueClick(self, evt, arg):
+        if arg=="attaque_1":
+            self.Basic_Attack()
     def Magie(self):
         self.Heal()
 
@@ -235,7 +257,6 @@ class Fight():
         if self.PV>100:
             self.PV=100
         self.Start_Fight()
-
 class Item():
     def __init__(self):
         self.name=""
