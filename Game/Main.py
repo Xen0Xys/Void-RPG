@@ -705,6 +705,7 @@ class Player():
             self.Mana=float(self.ConfigList[1]["mana"])
             self.PV_Max=float(self.ConfigList[1]["PV_max"])
             self.Mana_Max=float(self.ConfigList[1]["mana_max"])
+            self.Defense=float(self.ConfigList[1]["defense"])
         except IndexError:
             self.x=600.0
             self.y=500.0
@@ -715,6 +716,8 @@ class Player():
             self.Mana=100
             self.PV_Max=100
             self.Mana_Max=100
+            self.Defense=1.0
+
 
         self.moveInstances={}
         self.playerImg = PhotoImage(file="ressources/textures/player/player_0.png")
