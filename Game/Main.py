@@ -750,19 +750,39 @@ class EnnemyIA():
     def __init__(self, x, y, mainCan):
         self.x=x
         self.y=y
+        self.maxX=(int(self.x/25)-2, int(self.x/25)+2)
+        self.maxY=(int(self.y/25)-2, int(self.y/25)+2)
         self.MainCan=mainCan
         self.IAOn=True
         self.EnnemyImg=PhotoImage(file="ressources/textures/player/player_0.png")
         self.Ennemy = self.MainCan.create_image(self.x, self.y, image=self.EnnemyImg, anchor=NW)
-        threading.Thread(target=self.MainLoop2).start()
-    def MainLoop2(self):
-        try:
-            while self.IAOn:
-                sleep(1)
-        except RuntimeError:
-            pass
     def Move(self):
-        pass
+        r=randint(0, 250)
+        if r==5:
+            dirX=randint(-1, 1)
+            dirY=randint(-1, 1)
+            if dirX!=0 and dirY!=0:
+                r=randint(0, 1)
+                if r==0:
+                    self.StartMove(dirX, 0)
+                else:
+                    self.StartMove(0, dirY)
+            else:
+                self.StartMove(dirX, dirY)
+    def StartMove(self, dirX, dirY):
+        self.x+=dirX*25
+        self.y+=dirY*25
+        if not self.maxX[0] < int(self.x/25) < self.maxX[1]:
+            self.x-=dirX*25
+            self.Move()
+        elif not self.maxY[0] < int(self.y/25) < self.maxY[1]:
+            self.y-=dirY*25
+            self.Move()
+        else:
+            try:
+                self.MainCan.coords(self.Ennemy, self.x, self.y)
+            except TclError:
+                pass
 
 
 class GraphicEngine(Player):
@@ -776,7 +796,8 @@ class GraphicEngine(Player):
             self.filename=filename
             self.Reset()
             self.Init()
-            self.ia=EnnemyIA(500, 500, self.MainCan)
+            self.IAList=[]
+            self.IAList.append(EnnemyIA(500, 500, self.MainCan))
             try:
                 self.moveInstances
                 self.Init2()
