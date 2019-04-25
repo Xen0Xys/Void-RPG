@@ -500,6 +500,7 @@ class TickGestionary(Collider):
     def __init__(self):
         self.main_loop_on=True
         threading.Thread(target=self.MainLoop).start()
+        threading.Thread(target=self.MovingIA).start()
     def MainLoop(self):
         threading.Thread(target=LiveInfos, args=(self,)).start()
         xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
@@ -682,7 +683,14 @@ class TickGestionary(Collider):
                 pass
             except TclError as e:
                 pass
-
+    def MovingIA(self):
+        try:
+            while self.main_loop_on:
+                sleep(.01)
+                for ia in self.IAList:
+                    ia.Move()
+        except RuntimeError:
+            pass
 class Moving(Collider):
     def __init__(self, parent):
         self.move_on=False
