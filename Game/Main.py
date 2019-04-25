@@ -247,7 +247,7 @@ class Fight():
 
     def heavy_attack(self):
         if self.PV>=0:
-            self.PV=self.PV-((3*2)+5)
+            self.PV=self.PV-((self.itemObjectList[0].damage*2)+5)
             self.Defense=self.Defense*0.8
         else:
             pass
@@ -257,7 +257,7 @@ class Fight():
         self.Start_Fight()
     def Basic_Attack (self):
         if self.PV>=0:
-            self.PV=self.PV-(3*2)#3= degat de l'arme et 2 la force de l'E
+            self.PV=self.PV-(self.itemObjectList[0].damage*2)#3= degat de l'arme et 2 la force de l'E
         else:
             pass
         if self.PV<0:
