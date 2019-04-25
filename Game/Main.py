@@ -487,10 +487,10 @@ class Collider():
             return False
         #Collider Creating
         ColliderList=[]
-        isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
+        #self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
         for i in range(len(Matrice)):
             for j in range(len(Matrice[i])):
-                if Matrice[i][j] in isColliderList:
+                if Matrice[i][j] in self.isColliderList:
                     ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colType=Matrice[i][j]))
         #print(ColliderList)
         returning = self.CheckMultipleColliders(newplayercollider, ColliderList)
@@ -691,6 +691,7 @@ class TickGestionary(Collider):
                     ia.Move()
         except RuntimeError:
             pass
+
 class Moving(Collider):
     def __init__(self, parent):
         self.move_on=False
@@ -859,11 +860,11 @@ class GraphicEngine(Player):
         self.CreateAllColliders()
     def CreateAllColliders(self):
         self.ColliderList=[]
-        isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
+        self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
         for i in range(len(self.Matrice)):
             for j in range(len(self.Matrice[i])):
-                if self.Matrice[i][j] in isColliderList:
-                    if self.DoCreateCollider(i, j, isColliderList):
+                if self.Matrice[i][j] in self.isColliderList:
+                    if self.DoCreateCollider(i, j, self.isColliderList):
                         if self.Matrice[i][j] in ["ao", "bm"]:
                             self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="evenement":print(arg1)))
                         else:
