@@ -210,6 +210,7 @@ class Fight():
         PVE.place(x=10, y=10)
         ManaE=Label(self.MainCan, text="Mana: "+str(int(30))+"/"+str(int(30)),font=self.font, bg="white")
         ManaE.place(x=10, y=50)
+        self.Defense=1
     def onFightClick(self, evt, arg):
         if arg=="attaque":
             self.Attack()
@@ -227,18 +228,33 @@ class Fight():
             self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
         else:
             pass
-    def Attack(self):
-        self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque_1"], "attaque_1", self.onAttaqueClick)
-        self.CreateAllCan(100,40,450,670,self.FightTxtrList["attaque_2"], "attaque_2", self.onAttaqueClick)
-        self.CreateAllCan(100,40,550,628,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-        self.CreateAllCan(100,40,550,670,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-        self.CreateAllCan(100,40,650,630,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-    def onAttaqueClick(self, evt, arg):
-        if arg=="attaque_1":
-            self.Basic_Attack()
-    def Magie(self):
-        self.Heal()
 
+    def Attack(self):
+        if self.itemObjectList[0].type=="one_hand":
+            self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
+            self.CreateAllCan(100,40,450,670,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
+            self.CreateAllCan(100,40,550,628,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,550,670,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,650,630,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+    def onAttaqueClick(self, evt, arg):
+        if arg=="basic attack":
+            self.Basic_Attack()
+        if arg=="heavy attack":
+            self.heavy_attack()
+        if arg=="retour":
+            self.Start_Fight()
+
+
+    def heavy_attack(self):
+        if self.PV>=0:
+            self.PV=self.PV-((3*2)+5)
+            self.Defense=self.Defense*0.8
+        else:
+            pass
+        if self.PV<0:
+            self.PV=0
+        print(self.Defense)
+        self.Start_Fight()
     def Basic_Attack (self):
         if self.PV>=0:
             self.PV=self.PV-(3*2)#3= degat de l'arme et 2 la force de l'E
@@ -246,8 +262,18 @@ class Fight():
             pass
         if self.PV<0:
             self.PV=0
-
         self.Start_Fight()
+
+    def Magie(self):
+        self.CreateAllCan(100,40,450,630,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,450,670,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,550,628,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,550,670,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,650,630,self.FightTxtrList["retour"], "retour", self.onMagicClick)
+    def onMagicClick(self, evt, arg):
+        if arg=="retour":
+            self.Start_Fight()
+
     def Heal(self):
         if self.Mana>0 and self.PV<100:
             self.PV=self.PV+(10)# 10= la puissance du sort
@@ -257,6 +283,7 @@ class Fight():
         if self.PV>100:
             self.PV=100
         self.Start_Fight()
+       
 class Item():
     def __init__(self):
         self.name=""
