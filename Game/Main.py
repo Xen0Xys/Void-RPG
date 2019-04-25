@@ -805,7 +805,6 @@ class Player():
             elif evt.keysym.lower()=="h":
                 self.Heal()
 
-
 class EnnemyIA():
     def __init__(self, x, y, parent):
         self.x=x
@@ -818,7 +817,7 @@ class EnnemyIA():
         self.EnnemyImg=PhotoImage(file="ressources/textures/player/player_0.png")
         self.Ennemy = self.MainCan.create_image(self.x, self.y, image=self.EnnemyImg, anchor=NW)
     def Move(self):
-        r=randint(0, 5)
+        r=randint(0, 50)
         if r==5:
             dirX=randint(-1, 1)
             dirY=randint(-1, 1)
@@ -828,6 +827,8 @@ class EnnemyIA():
                     self.StartMove(dirX, 0)
                 else:
                     self.StartMove(0, dirY)
+            elif dirX==0 and dirY==0:
+                self.Move()
             else:
                 self.StartMove(dirX, dirY)
     def StartMove(self, dirX, dirY):
@@ -835,12 +836,17 @@ class EnnemyIA():
         self.y+=dirY*25
         if (not self.maxX[0] < int(self.x/25) < self.maxX[1]) or self.parent.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.parent.ColliderList)[0]:
             self.x-=dirX*25
+            self.y-=dirY*25
             self.Move()
         elif (not self.maxY[0] < int(self.y/25) < self.maxY[1]) or self.parent.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.parent.ColliderList)[0]:
+            self.x-=dirX*25
             self.y-=dirY*25
             self.Move()
         else:
             try:
+                print(dirX, dirY)
+                print(self.x, self.y)
+                print("--------------------------")
                 self.MainCan.coords(self.Ennemy, self.x, self.y)
                 self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21)
             except TclError:
