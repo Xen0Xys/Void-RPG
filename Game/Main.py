@@ -206,15 +206,17 @@ class Fight():
         self.esquiveE=5
         self.Reset_Visual()
         self.esquive=5
+        self.nbrTour=1
     def Reset_Visual(self):
         self.Reset()
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
         self.MainCan.pack()
-        self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque"], "attaque", self.onFightClick)
-        self.CreateAllCan(100,40,10,680,self.FightTxtrList["magie"], "magie", self.onFightClick)
-        self.CreateAllCan(100,40,110,638,self.FightTxtrList["defense"], "defense", self.onFightClick)
-        self.CreateAllCan(100,40,110,680,self.FightTxtrList["sac"], "sac", self.onFightClick)
-        self.CreateAllCan(100,40,210,640,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
+        self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
+        self.CreateAllCan(100,40,10,680,self.FightTxtrList["arme_secondaire"], "arme_secondaire", self.onFightClick)
+        self.CreateAllCan(100,40,110,640,self.FightTxtrList["magie"], "magie", self.onFightClick)
+        self.CreateAllCan(100,40,110,680,self.FightTxtrList["defense"], "defense", self.onFightClick)
+        self.CreateAllCan(100,40,210,640,self.FightTxtrList["sac"], "sac", self.onFightClick)
+        self.CreateAllCan(100,40,210,680,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
         self.font=Font(family="Helvetica",size=14)
         self.armure=self.defense+self.itemObjectList[0].prot
         self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
@@ -230,8 +232,10 @@ class Fight():
         self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
         self.ManaELabel.place(x=10, y=90)
     def onFightClick(self, evt, arg):
-        if arg=="attaque":
-            self.Attack()
+        if arg=="arme_principale":
+            self.arme_principale()
+        if arg=="arme_secondaire":
+            self.arme_secondaire()
         if arg=="magie":
             self.Magie()
         if arg=="defense":
@@ -247,10 +251,23 @@ class Fight():
         else:
             pass
 
-    def Attack(self):
-        if self.itemObjectList[0].type=="one_hand":
+    def arme_principale(self):
+        if self.Equipment["principal_hand"].type=="one_hand":
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+    def arme_secondaire(self):
+        if self.Equipment["secondary_hand"]==None:
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+        elif self.Equipment["secondary_hand"].type=="one_hand":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
@@ -260,7 +277,7 @@ class Fight():
         if arg=="heavy attack":
             self.heavy_attack()
         if arg=="retour":
-            self.Start_Fight()
+            self.Reset_Visual()
 
 
     def heavy_attack(self):
@@ -287,15 +304,18 @@ class Fight():
             if self.PVE<0:
                 self.PVE=0
         else:
-            print("rate")
+            pass
         self.Reset_Visual()
-
+    def PrintMessage(self, msg):#Fonction que tu appelle
+        threading.Thread(target=self.__PrintMessage, arg(msg,)).start()
+    def __PrintMessage(self, msg):
+        sleep(3)
     def Magie(self):
-        self.CreateAllCan(100,40,450,630,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,450,670,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,550,628,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,550,670,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,650,630,self.FightTxtrList["retour"], "retour", self.onMagicClick)
+        self.CreateAllCan(100,40,10,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onMagicClick)
     def onMagicClick(self, evt, arg):
         if arg=="retour":
             self.Start_Fight()
@@ -309,7 +329,6 @@ class Fight():
         if self.PV>100:
             self.PV=100
         self.Start_Fight()
-
 class Item():
     def __init__(self):
         self.name=""
