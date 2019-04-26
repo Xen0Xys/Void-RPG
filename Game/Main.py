@@ -193,6 +193,7 @@ class Fight():
     def __init___(self):
         pass
     def Start_Fight(self):
+        self.onFight=True
         self.Reset()
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
         self.MainCan.pack()
@@ -283,7 +284,7 @@ class Fight():
         if self.PV>100:
             self.PV=100
         self.Start_Fight()
-       
+
 class Item():
     def __init__(self):
         self.name=""
@@ -534,182 +535,183 @@ class TickGestionary(Collider):
         yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         while self.main_loop_on:
             sleep(.01)
-            t1=time.time()
-            try:
+            if self.onFight==False:
+                t1=time.time()
                 try:
-                    lastxdir = xdir
-                    lastydir = ydir
-                except UnboundLocalError:
-                    lastxdir = 0
-                    lastydir = 0
-                xdir = -self.dirXm + self.dirXp
-                ydir = -self.dirYm + self.dirYp
+                    try:
+                        lastxdir = xdir
+                        lastydir = ydir
+                    except UnboundLocalError:
+                        lastxdir = 0
+                        lastydir = 0
+                    xdir = -self.dirXm + self.dirXp
+                    ydir = -self.dirYm + self.dirYp
 
-                if lastxdir!=xdir:
-                    xinfos["deceleration"], xinfos["decel_dir"] = True, lastxdir
-                    xinfos["decel_multiplier"]=xinfos["multiplier"]
-                    xinfos["accel_nbre"], xinfos["decel_nbre"] = 1, 1
-                    xinfos["multiplier"] = 1
+                    if lastxdir!=xdir:
+                        xinfos["deceleration"], xinfos["decel_dir"] = True, lastxdir
+                        xinfos["decel_multiplier"]=xinfos["multiplier"]
+                        xinfos["accel_nbre"], xinfos["decel_nbre"] = 1, 1
+                        xinfos["multiplier"] = 1
 
-                if lastydir!=ydir:
-                    yinfos["deceleration"], yinfos["decel_dir"] = True, lastydir
-                    yinfos["decel_multiplier"]=yinfos["multiplier"]
-                    yinfos["accel_nbre"], yinfos["decel_nbre"] = 1, 1
-                    yinfos["multiplier"] = 1
+                    if lastydir!=ydir:
+                        yinfos["deceleration"], yinfos["decel_dir"] = True, lastydir
+                        yinfos["decel_multiplier"]=yinfos["multiplier"]
+                        yinfos["accel_nbre"], yinfos["decel_nbre"] = 1, 1
+                        yinfos["multiplier"] = 1
 
 
 
-                #Gestion de la deceleration
-                if xinfos["deceleration"]==True:
-                    xinfos["decel_nbre"]+=1
-                    if xinfos["decel_multiplier"]>1:
-                        if xinfos["decel_nbre"]%randint(1, 2)==0:
-                            xinfos["decel_multiplier"]-=0.10
-                            self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                            if self.x<0:
-                                if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                            elif self.x>725:
-                                if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                    #Gestion de la deceleration
+                    if xinfos["deceleration"]==True:
+                        xinfos["decel_nbre"]+=1
+                        if xinfos["decel_multiplier"]>1:
+                            if xinfos["decel_nbre"]%randint(1, 2)==0:
+                                xinfos["decel_multiplier"]-=0.10
+                                self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                                if self.x<0:
+                                    if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                                elif self.x>725:
+                                    if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                                else:
+                                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                             else:
-                                if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                                self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                                if self.x<0:
+                                    if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                                elif self.x>725:
+                                    if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                                else:
+                                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                         else:
-                            self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                            if self.x<0:
-                                if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                            elif self.x>725:
-                                if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                            else:
-                                if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
-                    else:
-                        xinfos["deceleration"]=False
+                            xinfos["deceleration"]=False
 
-                if yinfos["deceleration"]==True:
-                    yinfos["decel_nbre"]+=1
-                    if yinfos["decel_multiplier"]>1:
-                        if yinfos["decel_nbre"]%randint(1, 2)==0:
-                            yinfos["decel_multiplier"]-=0.10
-                            self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            if self.y<0:
-                                if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            elif self.y>725:
-                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                    if yinfos["deceleration"]==True:
+                        yinfos["decel_nbre"]+=1
+                        if yinfos["decel_multiplier"]>1:
+                            if yinfos["decel_nbre"]%randint(1, 2)==0:
+                                yinfos["decel_multiplier"]-=0.10
+                                self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                if self.y<0:
+                                    if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                elif self.y>725:
+                                    if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                else:
+                                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                        self.functionToExecute()
                             else:
-                                if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                                    self.functionToExecute()
+                                self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                if self.y<0:
+                                    if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                elif self.y>725:
+                                    if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                else:
+                                    if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                        self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                                        self.functionToExecute()
                         else:
-                            self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            if self.y<0:
-                                if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            elif self.y>725:
-                                if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                            else:
-                                if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                                    self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
-                                    self.functionToExecute()
+                            yinfos["deceleration"]=False
+
+                    #Acceleration dans tous les cas
+                    if xdir!=0:
+                        xinfos["accel_nbre"]+=1
+                    if xinfos["multiplier"]<=2.2 and xinfos["accel_nbre"]%8==0:
+                        xinfos["multiplier"]+=0.2
+                        self.x+=lastxdir*xinfos["multiplier"]
+                        if self.x<0:
+                            if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.x-=lastxdir*xinfos["multiplier"]
+                        elif self.x>725:
+                            if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.x-=lastxdir*xinfos["multiplier"]
+                        else:
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.x-=lastxdir*xinfos["multiplier"]
+                                self.functionToExecute()
                     else:
-                        yinfos["deceleration"]=False
+                        self.x+=lastxdir*xinfos["multiplier"]
+                        if self.x<0:
+                            if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.x-=lastxdir*xinfos["multiplier"]
+                        elif self.x>725:
+                            if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.x-=lastxdir*xinfos["multiplier"]
+                        else:
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.x-=lastxdir*xinfos["multiplier"]
+                                self.functionToExecute()
 
-                #Acceleration dans tous les cas
-                if xdir!=0:
-                    xinfos["accel_nbre"]+=1
-                if xinfos["multiplier"]<=2.2 and xinfos["accel_nbre"]%8==0:
-                    xinfos["multiplier"]+=0.2
-                    self.x+=lastxdir*xinfos["multiplier"]
-                    if self.x<0:
-                        if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.x-=lastxdir*xinfos["multiplier"]
-                    elif self.x>725:
-                        if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.x-=lastxdir*xinfos["multiplier"]
+
+                    if ydir!=0:
+                        yinfos["accel_nbre"]+=1
+                    if yinfos["multiplier"]<=2.2 and yinfos["accel_nbre"]%8==0:
+                        yinfos["multiplier"]+=0.2
+                        self.y+=lastydir*yinfos["multiplier"]
+                        if self.y<0:
+                            if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.y-=lastydir*yinfos["multiplier"]
+                        elif self.y>725:
+                            if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.y-=lastydir*yinfos["multiplier"]
+                        else:
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.y-=lastydir*yinfos["multiplier"]
+                                self.functionToExecute()
                     else:
-                        if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.x-=lastxdir*xinfos["multiplier"]
-                            self.functionToExecute()
-                else:
-                    self.x+=lastxdir*xinfos["multiplier"]
-                    if self.x<0:
-                        if self.CheckMapChanging((self.mapX-1, self.mapY), ColliderObject((self.x+750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.x-=lastxdir*xinfos["multiplier"]
-                    elif self.x>725:
-                        if self.CheckMapChanging((self.mapX+1, self.mapY), ColliderObject((self.x-750, self.y+2), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.x-=lastxdir*xinfos["multiplier"]
-                    else:
-                        if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.x-=lastxdir*xinfos["multiplier"]
-                            self.functionToExecute()
+                        self.y+=lastydir*yinfos["multiplier"]
+                        if self.y<0:
+                            if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.y-=lastydir*yinfos["multiplier"]
+                        elif self.y>725:
+                            if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.y-=lastydir*yinfos["multiplier"]
+                        else:
+                            if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
+                                self.y-=lastydir*yinfos["multiplier"]
+                                self.functionToExecute()
 
 
-                if ydir!=0:
-                    yinfos["accel_nbre"]+=1
-                if yinfos["multiplier"]<=2.2 and yinfos["accel_nbre"]%8==0:
-                    yinfos["multiplier"]+=0.2
-                    self.y+=lastydir*yinfos["multiplier"]
-                    if self.y<0:
-                        if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.y-=lastydir*yinfos["multiplier"]
-                    elif self.y>725:
-                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.y-=lastydir*yinfos["multiplier"]
-                    else:
-                        if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.y-=lastydir*yinfos["multiplier"]
-                            self.functionToExecute()
-                else:
-                    self.y+=lastydir*yinfos["multiplier"]
-                    if self.y<0:
-                        if self.CheckMapChanging((self.mapX, self.mapY+1), ColliderObject((self.x+2, self.y+750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.y-=lastydir*yinfos["multiplier"]
-                    elif self.y>725:
-                        if self.CheckMapChanging((self.mapX, self.mapY-1), ColliderObject((self.x+2, self.y-750), 21)) or self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.y-=lastydir*yinfos["multiplier"]
-                    else:
-                        if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.ColliderList)[0]:
-                            self.y-=lastydir*yinfos["multiplier"]
-                            self.functionToExecute()
+                    #Changement de map
+                    if self.x>730:
+                        self.x=0
+                        self.mapX+=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                    elif self.x<-5:
+                        self.x=725
+                        self.mapX-=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                    elif self.y>730:
+                        self.y=0
+                        self.mapY-=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                    elif self.y<-5:
+                        self.y=725
+                        self.mapY+=1
+                        self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
 
 
-                #Changement de map
-                if self.x>730:
-                    self.x=0
-                    self.mapX+=1
-                    self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                elif self.x<-5:
-                    self.x=725
-                    self.mapX-=1
-                    self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                elif self.y>730:
-                    self.y=0
-                    self.mapY-=1
-                    self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-                elif self.y<-5:
-                    self.y=725
-                    self.mapY+=1
-                    self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-
-
-                #Actualisation visuelle
-                #print(xinfos)
-                #print(yinfos)
-                self.MainCan.coords(self.player, self.x, self.y)
-                t2=time.time()
-                #print(t2-t1)
-            except AttributeError as e:
-                pass
-            except RuntimeError as e:
-                pass
-            except TclError as e:
-                pass
+                    #Actualisation visuelle
+                    #print(xinfos)
+                    #print(yinfos)
+                    self.MainCan.coords(self.player, self.x, self.y)
+                    t2=time.time()
+                    #print(t2-t1)
+                except AttributeError as e:
+                    pass
+                except RuntimeError as e:
+                    pass
+                except TclError as e:
+                    pass
     def MovingIA(self):
         try:
             while self.main_loop_on:
@@ -872,6 +874,7 @@ class GraphicEngine(Player):
                 pass
             self.can_move=True
             self.isLoading=False
+            self.onFight=False
     def Config(self):
         if self.ConfigList[0]["rotation"]=="True":
             self.canRotate=True
