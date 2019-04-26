@@ -10,6 +10,8 @@ import os
 import json
 import time
 
+#Com
+
 class LiveInfos(Tk):
     def __init__(self, parent):
         #self.Launch(parent)
