@@ -895,7 +895,7 @@ class EnnemyIA():
     def __init__(self, x, y, parent):
         self.x=x
         self.y=y
-        self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.StartFight(Ennemy=arg))
+        self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.parent.Start_Fight(Ennemy=arg))
         self.maxX=(int(self.x/25)-2, int(self.x/25)+2)
         self.maxY=(int(self.y/25)-2, int(self.y/25)+2)
         self.MainCan=parent.MainCan
@@ -932,7 +932,7 @@ class EnnemyIA():
         else:
             try:
                 self.MainCan.coords(self.Ennemy, self.x, self.y)
-                self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.StartFight(Ennemy=arg))
+                self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.parent.Start_Fight(Ennemy=arg))
             except TclError:
                 pass
 
