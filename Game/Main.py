@@ -817,7 +817,7 @@ class EnnemyIA():
         self.EnnemyImg=PhotoImage(file="ressources/textures/player/player_0.png")
         self.Ennemy = self.MainCan.create_image(self.x, self.y, image=self.EnnemyImg, anchor=NW)
     def Move(self):
-        r=randint(0, 50)
+        r=randint(0, 250)
         if r==5:
             dirX=randint(-1, 1)
             dirY=randint(-1, 1)
@@ -844,9 +844,6 @@ class EnnemyIA():
             self.Move()
         else:
             try:
-                print(dirX, dirY)
-                print(self.x, self.y)
-                print("--------------------------")
                 self.MainCan.coords(self.Ennemy, self.x, self.y)
                 self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21)
             except TclError:
