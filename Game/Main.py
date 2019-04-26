@@ -304,12 +304,17 @@ class Fight():
             if self.PVE<0:
                 self.PVE=0
         else:
-            pass
+            self.PrintMessage("l'enemie a esquive")
         self.Reset_Visual()
+
     def PrintMessage(self, msg):#Fonction que tu appelle
-        threading.Thread(target=self.__PrintMessage, arg(msg,)).start()
+        threading.Thread(target=self.__PrintMessage, args=(msg,)).start()
     def __PrintMessage(self, msg):
+        rateLabel=Label(self.MainCan, text=msg,font=self.font, bg="white")
+        rateLabel.place(x=375, y=375)
         sleep(3)
+        rateLabel=Label(self.MainCan, text="",font=self.font, bg="white")
+        
     def Magie(self):
         self.CreateAllCan(100,40,10,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
         self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
