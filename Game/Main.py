@@ -192,10 +192,9 @@ class SoundGestionnary():
 class Fight():
     def __init___(self):
         pass
-    def Start_Fight(self):
+    def Start_Fight(self, Ennemy=None):
         self.onFight=True
         self.Reset()
-
         self.PVE=1500000
         self.PVE_max=1500000
         self.denfenceE=1
@@ -204,7 +203,11 @@ class Fight():
         self.SpeedE=1
         self.StrengthE=10
         self.Magic_AffinityE=10
-
+        self.esquiveE=5
+        self.Reset_Visual()
+        self.esquive=5
+    def Reset_Visual(self):
+        self.Reset()
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
         self.MainCan.pack()
         self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque"], "attaque", self.onFightClick)
@@ -214,19 +217,18 @@ class Fight():
         self.CreateAllCan(100,40,210,640,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
         self.font=Font(family="Helvetica",size=14)
         self.armure=self.defense+self.itemObjectList[0].prot
-        armure=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
-        armure.place(x=600, y=590)
-        armureE=Label(self.MainCan, text="Armure: "+str(int(1)),font=self.font, bg="white")
-        armureE.place(x=10, y=10)
-        PV=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
-        PV.place(x=600, y=630)
-        Mana=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
-        Mana.place(x=600, y=670)
-        PVE=Label(self.MainCan, text="PV: "+str(int(125))+"/"+str(int(150)),font=self.font, bg="white")
-        PVE.place(x=10, y=50)
-        ManaE=Label(self.MainCan, text="Mana: "+str(int(30))+"/"+str(int(30)),font=self.font, bg="white")
-        ManaE.place(x=10, y=90)
-        self.esquive=5
+        self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
+        self.armureLabel.place(x=600, y=590)
+        self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(1)),font=self.font, bg="white")
+        self.armureELabel.place(x=10, y=10)
+        self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
+        self.PVLabel.place(x=600, y=630)
+        self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
+        self.ManaLabel.place(x=600, y=670)
+        self.PVELabel=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
+        self.PVELabel.place(x=10, y=50)
+        self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
+        self.ManaELabel.place(x=10, y=90)
     def onFightClick(self, evt, arg):
         if arg=="attaque":
             self.Attack()
@@ -247,11 +249,11 @@ class Fight():
 
     def Attack(self):
         if self.itemObjectList[0].type=="one_hand":
-            self.CreateAllCan(100,40,450,630,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
-            self.CreateAllCan(100,40,450,670,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
-            self.CreateAllCan(100,40,550,628,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,550,670,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,650,630,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
     def onAttaqueClick(self, evt, arg):
         if arg=="basic attack":
             self.Basic_Attack()
@@ -264,27 +266,29 @@ class Fight():
     def heavy_attack(self):
         self.chance_de_toucher=80
         r=randint(0,100)
-        if self.chance_de_toucher-self.esquive>r:
-            if self.PV>=0:
-                self.PV=self.PV-((self.itemObjectList[0].damage*2)+5)
+        if self.chance_de_toucher-self.esquiveE>r:
+            if self.PVE>=0:
+                self.PVE=self.PVE-((self.itemObjectList[0].damage*2)+5)
             else:
                 pass
-            if self.PV<0:
-                self.PV=0
-        self.Start_Fight()
+            if self.PVE<0:
+                self.PVE=0
+        else:
+            print("rate")
+        self.Reset_Visual()
     def Basic_Attack (self):
         self.chance_de_toucher=100
         r=randint(0,100)
-        if self.chance_de_toucher-self.esquive>r:
-            if self.PV>=0:
-                self.PV=self.PV-(self.itemObjectList[0].damage*2)#3= degat de l'arme et 2 la force de l'E
+        if self.chance_de_toucher-self.esquiveE>r:
+            if self.PVE>=0:
+                self.PVE=self.PVE-(self.itemObjectList[0].damage*2)#3= degat de l'arme et 2 la force de l'E
             else:
                 pass
-            if self.PV<0:
-                self.PV=0
+            if self.PVE<0:
+                self.PVE=0
         else:
             print("rate")
-        self.Start_Fight()
+        self.Reset_Visual()
 
     def Magie(self):
         self.CreateAllCan(100,40,450,630,self.FightTxtrList["blanc"], "", self.onMagicClick)
