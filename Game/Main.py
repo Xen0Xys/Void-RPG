@@ -356,7 +356,6 @@ class OptionMenuMain():
             self.CreateAllCan(90,90,380,350,self.IntTxtrList["green"], "oneImage", self.onClick)
         else:
             self.CreateAllCan(90,90,380,350,self.IntTxtrList["red"], "oneImage", self.onClick)
-
 class MenuMain(OptionMenuMain):
     def __init__(self):
         OptionMenuMain.__init__(self)
@@ -384,13 +383,13 @@ class MenuMain(OptionMenuMain):
         else:
             self.CreateAllCan(220,75,30,300,self.IntTxtrList["create"], "playOne_saved", self.onClick)
         if self.ConfigList[0]["save_2"]=="False":
-            self.CreateAllCan(220,75,30,400,self.IntTxtrList["create"], "playTwn", self.onClick)
+            self.CreateAllCan(220,75,30,400,self.IntTxtrList["create"], "playTwo", self.onClick)
         else:
-            pass
+            self.CreateAllCan(220,75,30,400,self.IntTxtrList["create"], "playTwo_saved", self.onClick)
         if self.ConfigList[0]["save_3"]=="False":
             self.CreateAllCan(220,75,30,500,self.IntTxtrList["create"], "playThree", self.onClick)
         else:
-            pass
+            self.CreateAllCan(220,75,30,500,self.IntTxtrList["create"], "playThree_saved", self.onClick)
     def CreateAllCan(self, canwidth, canheight, x, y, image, arg, funct):
         self.CanList.append(Canvas(self.MainCan, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
         self.CanList[len(self.CanList)-1].place(x=x, y=y)
@@ -455,6 +454,61 @@ class MenuMain(OptionMenuMain):
                 TickGestionary.__init__(self)
             except IndexError:
                 pass
+        if arg=="playTwo":
+            self.Played=(True, "Save_2")
+            self.ConfigList[0]["save_2"]="True"
+            self.mapX=10
+            self.mapY=9
+            self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+            TickGestionary.__init__(self)
+        if arg=="playTwo_saved":
+            try:
+                self.GetPlayerData(location="Save_2")
+            except FileNotFoundError:
+                content=""
+                self.ConfigList[0]["save_2"]="False"
+                for item in self.ConfigList[0].keys():
+                    content+=item+"="+self.ConfigList[0][item]+"\n"
+                file=open("ressources/save/config/MenuMain.cfg", "w")
+                file.write(content)
+                file.close()
+                self.InitGUI()
+            try:
+                self.Played=(True, "Save_2")
+                self.mapX=int(self.ConfigList[1]["mapX"])
+                self.mapY=int(self.ConfigList[1]["mapY"])
+                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                TickGestionary.__init__(self)
+            except IndexError:
+                pass
+        if arg=="playThree":
+            self.Played=(True, "Save_3")
+            self.ConfigList[0]["save_3"]="True"
+            self.mapX=10
+            self.mapY=9
+            self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+            TickGestionary.__init__(self)
+        if arg=="playThree_saved":
+            try:
+                self.GetPlayerData(location="Save_3")
+            except FileNotFoundError:
+                content=""
+                self.ConfigList[0]["save_3"]="False"
+                for item in self.ConfigList[0].keys():
+                    content+=item+"="+self.ConfigList[0][item]+"\n"
+                file=open("ressources/save/config/MenuMain.cfg", "w")
+                file.write(content)
+                file.close()
+                self.InitGUI()
+            try:
+                self.Played=(True, "Save_3")
+                self.mapX=int(self.ConfigList[1]["mapX"])
+                self.mapY=int(self.ConfigList[1]["mapY"])
+                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                TickGestionary.__init__(self)
+            except IndexError:
+                pass
+
 class ColliderObject():
     def __init__(self, xcord, ray, colType="", colliderEvt=None):
         self.CreateColliderObject(xcord, ray, colType, colliderEvt)
