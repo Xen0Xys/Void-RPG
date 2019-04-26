@@ -837,7 +837,10 @@ class Player():
             self.x=float(self.ConfigList[1]["x"])
             self.y=float(self.ConfigList[1]["y"])
             #Equipement
-            self.Equipment={"Hand":None}
+            self.Equipment={
+            "principal_hand":self.itemObjectList[0],
+            "secondary_hand":None
+            }
             #stat
             self.PV=float(self.ConfigList[1]["PV"])
             self.Speed=float(self.ConfigList[1]["speed"])
@@ -904,11 +907,7 @@ class Player():
             elif evt.keysym.lower()=="d":
                 self.dirXp=0
             elif evt.keysym.lower()=="f":
-                self.Start_Fight()
-            elif evt.keysym.lower()=="a":
-                self.Attack()
-            elif evt.keysym.lower()=="h":
-                self.Heal()
+                threading.Thread(target=self.Start_Fight).start()
 
 class EnnemyIA():
     def __init__(self, x, y, parent):
