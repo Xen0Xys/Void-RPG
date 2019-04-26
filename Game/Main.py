@@ -821,7 +821,7 @@ class Player():
             self.Mana=float(self.ConfigList[1]["mana"])
             self.PV_Max=float(self.ConfigList[1]["PV_max"])
             self.Mana_Max=float(self.ConfigList[1]["mana_max"])
-            self.Defense=float(self.ConfigList[1]["defense"])
+            self.defense=float(self.ConfigList[1]["defense"])
         except IndexError:
             self.x=600.0
             self.y=500.0
