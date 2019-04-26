@@ -15,7 +15,7 @@ class LiveInfos(Tk):
         #self.Launch(parent)
         pass
     def Launch(self, parent):
-        Tk.__init__(self)https://github.com/Xen0Xys/Void-RPG
+        Tk.__init__(self)
         threading.Thread(target=self.StartConsole, args=(parent,)).start()
         self.launched=True
         self.mainloop()
