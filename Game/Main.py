@@ -15,7 +15,7 @@ class LiveInfos(Tk):
         #self.Launch(parent)
         pass
     def Launch(self, parent):
-        Tk.__init__(self)
+        Tk.__init__(self)https://github.com/Xen0Xys/Void-RPG
         threading.Thread(target=self.StartConsole, args=(parent,)).start()
         self.launched=True
         self.mainloop()
@@ -832,7 +832,7 @@ class Player():
             self.Mana=100
             self.PV_Max=100
             self.Mana_Max=100
-            self.Defense=1.0
+            self.defense=1.0
 
 
         self.moveInstances={}
@@ -1240,7 +1240,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.Defense}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
