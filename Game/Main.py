@@ -222,9 +222,9 @@ class Fight():
         PV.place(x=600, y=630)
         Mana=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
         Mana.place(x=600, y=670)
-        PVE=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
+        PVE=Label(self.MainCan, text="PV: "+str(int(125))+"/"+str(int(150)),font=self.font, bg="white")
         PVE.place(x=10, y=50)
-        ManaE=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
+        ManaE=Label(self.MainCan, text="Mana: "+str(int(30))+"/"+str(int(30)),font=self.font, bg="white")
         ManaE.place(x=10, y=90)
         self.esquive=5
     def onFightClick(self, evt, arg):
@@ -789,10 +789,13 @@ class TickGestionary(Collider):
                     pass
     def MovingIA(self):
         try:
+            self.IAColliderList=[]
             while self.main_loop_on:
                 sleep(.01)
                 for ia in self.IAList:
                     ia.Move()
+                    for i in range(len(self.IAList)):
+                        self.IAColliderList[i]=self.IAList[i].EnnemyCollider
         except RuntimeError:
             pass
 
@@ -886,6 +889,7 @@ class EnnemyIA():
     def __init__(self, x, y, parent):
         self.x=x
         self.y=y
+        self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21)
         self.maxX=(int(self.x/25)-2, int(self.x/25)+2)
         self.maxY=(int(self.y/25)-2, int(self.y/25)+2)
         self.MainCan=parent.MainCan
