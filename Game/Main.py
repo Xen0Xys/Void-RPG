@@ -789,7 +789,7 @@ class TickGestionary(Collider):
                     pass
     def MovingIA(self):
         try:
-            self.IAColliderList=[]
+            self.IAColliderList=[None]
             while self.main_loop_on:
                 sleep(.01)
                 for ia in self.IAList:
