@@ -197,7 +197,7 @@ class Fight():
         self.Reset()
         self.PVE=1500000
         self.PVE_max=1500000
-        self.denfenceE=1
+        self.defenceE=50
         self.manaE=100
         self.manaE_max=100
         self.SpeedE=1
@@ -221,7 +221,7 @@ class Fight():
         self.armure=self.defense+self.itemObjectList[0].prot
         self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
         self.armureLabel.place(x=600, y=590)
-        self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(1)),font=self.font, bg="white")
+        self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
         self.armureELabel.place(x=10, y=10)
         self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
         self.PVLabel.place(x=600, y=630)
@@ -231,6 +231,7 @@ class Fight():
         self.PVELabel.place(x=10, y=50)
         self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
         self.ManaELabel.place(x=10, y=90)
+        x=2
     def onFightClick(self, evt, arg):
         if arg=="arme_principale":
             self.arme_principale()
@@ -284,14 +285,19 @@ class Fight():
         self.chance_de_toucher=80
         r=randint(0,100)
         if self.chance_de_toucher-self.esquiveE>r:
-            if self.PVE>=0:
-                self.PVE=self.PVE-((self.itemObjectList[0].damage*2)+5)
-            else:
-                pass
-            if self.PVE<0:
-                self.PVE=0
+            degats=(self.itemObjectList[0].damage*self.Strength)+5
+            if self.defenceE>degats:
+                self.defenceE=self.defenceE-((95/100)*degats)
+                self.PVE=self.PVE-((5/100)*degats)
+            elif self.defenceE==0:
+                self.defenceE=0
+                self.PVE=self.PVE-degats
+            elif 0<self.defenceE<degats:
+                degatsvie=degats-self.defenceE
+                self.defenceE=0
+                self.PVE=self.PVE-degatsvie
         else:
-            print("rate")
+            self.PrintMessage("l'enemie a esquive")
         self.Reset_Visual()
     def Basic_Attack (self):
         self.chance_de_toucher=100
@@ -310,10 +316,10 @@ class Fight():
     def PrintMessage(self, msg):#Fonction que tu appelle
         threading.Thread(target=self.__PrintMessage, args=(msg,)).start()
     def __PrintMessage(self, msg):
-        rateLabel=Label(self.MainCan, text=msg,font=self.font, bg="white")
+        rateLabel=Label( text=msg,font=self.font, bg="white")
         rateLabel.place(x=375, y=375)
         sleep(3)
-        rateLabel=Label(self.MainCan, text="",font=self.font, bg="white")
+        rateLabel=Label( text="",font=self.font, bg="white")
         
     def Magie(self):
         self.CreateAllCan(100,40,10,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
