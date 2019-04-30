@@ -950,6 +950,7 @@ class Player():
             self.PV_Max=float(self.ConfigList[1]["PV_max"])
             self.Mana_Max=float(self.ConfigList[1]["mana_max"])
             self.defense=float(self.ConfigList[1]["defense"])
+            self.house=int(self.ConfigList[1]["house"])
         except IndexError:
             self.Equipment={
             "principal_hand":self.itemObjectList[0],
@@ -965,6 +966,7 @@ class Player():
             self.PV_Max=100
             self.Mana_Max=100
             self.defense=1.0
+            self.house=-1
 
 
         self.moveInstances={}
@@ -1380,7 +1382,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense, "house":-1}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense, "house":-self.house}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
