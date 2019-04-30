@@ -969,8 +969,9 @@ class GraphicEngine(Player):
     def __init__(self):
         self.isLoading=False
         self.Config()
-    def StartGraphicEngine(self, filename):
+    def StartGraphicEngine(self, filename, isInMapLocation=True):
         if self.isLoading==False:
+            self.isInMapLocation=isInMapLocation
             self.isLoading=True
             self.can_move=False
             self.filename=filename
@@ -1006,6 +1007,7 @@ class GraphicEngine(Player):
         self.CreateAllColliders()
     def CreateAllColliders(self):
         self.ColliderList=[]
+        temp=0
         self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
         for i in range(len(self.Matrice)):
             for j in range(len(self.Matrice[i])):
@@ -1013,6 +1015,7 @@ class GraphicEngine(Player):
                     if self.DoCreateCollider(i, j, self.isColliderList):
                         if self.Matrice[i][j] in ["ao", "bm"]:
                             self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="evenement":print(arg1)))
+                            temp+=1
                         else:
                             self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
         #print(self.ColliderList)
@@ -1069,9 +1072,14 @@ class GraphicEngine(Player):
         self.MainCan.place(x=0, y=0)
     def Load(self, file):
         try:
-            file=open("ressources/maps/{}.map".format(file), "r")
-            content=file.read()
-            file.close()
+            if self.isInMapLocation:
+                file=open("ressources/maps/{}.map".format(file), "r")
+                content=file.read()
+                file.close()
+            else:
+                file=open("{}.map".format(file), "r")
+                content=file.read()
+                file.close()
             temp1=content.split("\n")
             self.Matrice=[]
             for i in range(len(temp1)):
