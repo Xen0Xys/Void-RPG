@@ -1371,7 +1371,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense, "house":-1}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
