@@ -1096,16 +1096,19 @@ class GraphicEngine(Player):
         self.CreateAllColliders()
     def CreateAllColliders(self):
         self.ColliderList=[]
-        temp=0
+        temp=-1
         self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
         for i in range(len(self.Matrice)):
             for j in range(len(self.Matrice[i])):
                 if self.Matrice[i][j] in self.isColliderList:
                     if self.DoCreateCollider(i, j, self.isColliderList):
-                        if self.Matrice[i][j] in ["ao", "bm"]:
-                            self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="evenement":print(arg1)))
-                            temp+=1
-                        else:
+                        try:
+                            if self.Matrice[i][j] in ["ao", "bm"]:
+                                temp+=1
+                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.ConfigList[2]["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=False:self.StartGraphicEngine(arg1, arg2)))
+                            else:
+                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
+                        except KeyError as e:
                             self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
         #print(self.ColliderList)
     def DoCreateCollider(self, i, j, isColliderList):
