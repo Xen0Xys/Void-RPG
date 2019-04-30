@@ -1173,12 +1173,12 @@ class GraphicEngine(Player):
     def Load(self, file):
         try:
             if self.isInMapLocation:
-                self.ConfigList[1]["house"]=-1
+                self.house=-1
                 file=open("ressources/maps/{}.map".format(file), "r")
                 content=file.read()
                 file.close()
             else:
-                self.ConfigList[1]["house"]=self.houseInfos
+                self.house=self.houseInfos
                 file=open("{}.map".format(file), "r")
                 content=file.read()
                 file.close()
@@ -1194,7 +1194,7 @@ class GraphicEngine(Player):
                 self.Matrice.append(temp)
             self.LoadMatrice(self.Matrice)
         except FileNotFoundError as e:
-            print(e)
+            pass
     def LoadMatrice(self, matrice):
         self.MainCan.destroy()
         self.MainCan = Canvas(self.MainFrame, highlightthickness=0, width=750, height=750)
