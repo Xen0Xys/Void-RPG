@@ -1058,12 +1058,13 @@ class GraphicEngine(Player):
     def __init__(self):
         self.isLoading=False
         self.Config()
-    def StartGraphicEngine(self, filename, isInMapLocation=True):
+    def StartGraphicEngine(self, filename, isInMapLocation=True, houseInfos=""):
         if self.isLoading==False:
             self.isInMapLocation=isInMapLocation
             self.isLoading=True
             self.can_move=False
             self.filename=filename
+            self.houseInfos=houseInfos
             self.Reset()
             self.Init()
             self.IAList=[]
@@ -1105,10 +1106,11 @@ class GraphicEngine(Player):
                         try:
                             if self.Matrice[i][j] in ["ao", "bm"]:
                                 temp+=1
-                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.ConfigList[2]["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=False:self.StartGraphicEngine(arg1, arg2)))
+                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.ConfigList[2]["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=False, arg3=temp:self.StartGraphicEngine(arg1, isInMapLocation=arg2, houseInfos=arg3)))
                             else:
                                 self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
                         except KeyError as e:
+                            print(e)
                             self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
         #print(self.ColliderList)
     def DoCreateCollider(self, i, j, isColliderList):
@@ -1165,10 +1167,12 @@ class GraphicEngine(Player):
     def Load(self, file):
         try:
             if self.isInMapLocation:
+                self.ConfigList[1]["house"]=-1
                 file=open("ressources/maps/{}.map".format(file), "r")
                 content=file.read()
                 file.close()
             else:
+                self.ConfigList[1]["house"]=self.houseInfos
                 file=open("{}.map".format(file), "r")
                 content=file.read()
                 file.close()
@@ -1184,7 +1188,7 @@ class GraphicEngine(Player):
                 self.Matrice.append(temp)
             self.LoadMatrice(self.Matrice)
         except FileNotFoundError as e:
-            pass
+            print(e)
     def LoadMatrice(self, matrice):
         self.MainCan.destroy()
         self.MainCan = Canvas(self.MainFrame, highlightthickness=0, width=750, height=750)
@@ -1319,8 +1323,6 @@ class GraphicEngine(Player):
             connected_textureList[temp[0]]="ressources/connected_textures/"+temp[1]
     def Reset(self):
         self.MainCan.destroy()
-
-
 
 class PostInit(MenuMain, GraphicEngine, TickGestionary):
     #Traitement des donnees et affichage du menu principal
