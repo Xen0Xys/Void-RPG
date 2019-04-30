@@ -168,6 +168,19 @@ class PreInit(Tk, IntegratedConsole):
                 temp2=current.split("=")
                 dico[temp2[0]]=temp2[1]
         self.AddToConfigList(dico)
+        self.GetHousesConfig()
+    def GetHousesConfig(self):
+        dico={}
+        file=open("ressources/environment/houses/houses_location.cfg")
+        content=file.read()
+        file.close()
+        content=content.replace(" ", "")
+        temp=content.split("\n")
+        for current in temp:
+            if current!="":
+                temp2=current.split("=")
+                dico[temp2[0]]=temp2[1]
+        self.AddToConfigList(dico)
     def InitWindow(self):
         Tk.__init__(self)
         self.geometry("750x750+10+10")
