@@ -1112,11 +1112,10 @@ class GraphicEngine(Player):
                         try:
                             if self.Matrice[i][j] in ["ao", "bm"]:
                                 temp+=1
-                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.ConfigList[2]["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=False, arg3=temp:self.StartGraphicEngine(arg1, isInMapLocation=arg2, houseInfos=arg3)))
+                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=False, arg3=temp:self.StartGraphicEngine(arg1, isInMapLocation=arg2, houseInfos=arg3)))
                             else:
                                 self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
                         except KeyError as e:
-                            print(e)
                             self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
         #print(self.ColliderList)
     def DoCreateCollider(self, i, j, isColliderList):
