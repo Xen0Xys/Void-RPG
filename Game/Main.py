@@ -111,6 +111,7 @@ class PreInit(Tk, IntegratedConsole):
         self.GetMenuTextureList()
         self.GetFightTextureList()
         self.GetMenuConfig()
+        self.GetHousesConfig()
     def CreateConsole(self):
         self.console = IntegratedConsole()
         self.console.Console("Starting init")
@@ -168,9 +169,8 @@ class PreInit(Tk, IntegratedConsole):
                 temp2=current.split("=")
                 dico[temp2[0]]=temp2[1]
         self.AddToConfigList(dico)
-        self.GetHousesConfig()
     def GetHousesConfig(self):
-        dico={}
+        self.MapConfig={}
         file=open("ressources/environment/houses/houses_location.cfg")
         content=file.read()
         file.close()
@@ -179,8 +179,7 @@ class PreInit(Tk, IntegratedConsole):
         for current in temp:
             if current!="":
                 temp2=current.split("=")
-                dico[temp2[0]]=temp2[1]
-        self.AddToConfigList(dico)
+                self.MapConfig[temp2[0]]=temp2[1]
     def InitWindow(self):
         Tk.__init__(self)
         self.geometry("750x750+10+10")
