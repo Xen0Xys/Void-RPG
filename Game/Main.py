@@ -951,6 +951,10 @@ class Player():
             self.Mana_Max=float(self.ConfigList[1]["mana_max"])
             self.defense=float(self.ConfigList[1]["defense"])
         except IndexError:
+            self.Equipment={
+            "principal_hand":self.itemObjectList[0],
+            "secondary_hand":None
+            }
             self.x=600.0
             self.y=500.0
             self.PV=100
