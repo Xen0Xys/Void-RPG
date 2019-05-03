@@ -248,8 +248,7 @@ class Fight():
             self.tour_enemie()
     def Reset_Visual(self):
         self.Reset()
-        if self.statut=="poison":
-            print("poison")
+        if self.statut=="Poison":
             self.PV=self.PV-(1/10*self.PV)
         print("a ton tour")
         self.statutE="RAS"
@@ -266,6 +265,8 @@ class Fight():
         self.armureLabel.place(x=600, y=590)
         self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
         self.armureELabel.place(x=10, y=10)
+        self.StatutLabel=Label(self.MainCan, text="statut:"+self.statut,font=self.font, bg="white")
+        self.StatutLabel.place(x=600, y=550)
         self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
         self.PVLabel.place(x=600, y=630)
         self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
@@ -292,6 +293,8 @@ class Fight():
             self.armureLabel.place(x=600, y=590)
             self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
             self.armureELabel.place(x=10, y=10)
+            self.StatutLabel=Label(self.MainCan, text="statut:"+self.statut,font=self.font, bg="white")
+            self.StatutLabel.place(x=600, y=550)
             self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
             self.PVLabel.place(x=600, y=630)
             self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
@@ -431,6 +434,10 @@ class Fight():
             self.statutE="stun"
             self.tour_enemie()
 
+    def protection_attaque_lourd(self):
+        self.protection_attaque_lourde="yes"
+        self.tour_enemie()
+
 
     def Heal(self):
         if self.Mana>0 and self.PV<100:
@@ -450,17 +457,23 @@ class Fight():
          r=randint(0,100)
          if self.chance_de_toucher-self.esquive>r:
             degats=(10)+5
-            if self.armure>degats:
-                self.armure=self.armure-((95/100)*degats)
-                self.PV=self.PV-((5/100)*degats)
-            elif self.armure==0:
-                self.armure=0
-                self.PV=self.PV-degats
-            elif 0<self.armure<degats:
-                degatsvie=degats-self.armure
-                self.armure=0
-                self.PV=self.PV-degatsvie
-                self.esquiveE=0
+            if self.protection_attaque_lourde=="yes":
+                if self.armure>0:
+                    self.armure=self.armure-(degats/3)
+                else:
+                    self.PV=self.PV-(degats/3)
+            else:
+                if self.armure>degats:
+                    self.armure=self.armure-((95/100)*degats)
+                    self.PV=self.PV-((5/100)*degats)
+                elif self.armure==0:
+                    self.armure=0
+                    self.PV=self.PV-degats
+                elif 0<self.armure<degats:
+                    degatsvie=degats-self.armure
+                    self.armure=0
+                    self.PV=self.PV-degatsvie
+                    self.esquiveE=0
          else:
             self.PrintMessage("vous avez esquive")
          self.Reset_Visual()
@@ -477,12 +490,14 @@ class Fight():
                 self.armure=self.armure-degats
             elif self.armure==0:
                 self.statut="Poison"
+                print("vous ête empoisonné")
                 self.PV=self.PV-degats
             elif 0<self.armure<degats:
                 degatsvie=degats-self.armure
                 self.armure=0
                 self.PV=self.PV-degatsvie
                 self.statut="Poison"
+                print("vous ête empoisonné")
         else:
             self.PrintMessage("vous avez esquive")
         self.Reset_Visual()
@@ -1018,7 +1033,7 @@ class Player():
             self.PV_Max=float(self.ConfigList[1]["PV_max"])
             self.Mana_Max=float(self.ConfigList[1]["mana_max"])
             self.defense=float(self.ConfigList[1]["defense"])
-            self.statut=self.ConfigList[1]["statut"]
+            self.statut="RAS"
             self.armure=self.defense+self.itemObjectList[0].prot
         except IndexError:
             self.Equipment={
@@ -1451,7 +1466,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense,"statut":self.statut, "house":-self.house}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense, "house":-self.house}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
