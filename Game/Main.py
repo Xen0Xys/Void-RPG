@@ -1018,6 +1018,7 @@ class Player():
             self.PV_Max=float(self.ConfigList[1]["PV_max"])
             self.Mana_Max=float(self.ConfigList[1]["mana_max"])
             self.defense=float(self.ConfigList[1]["defense"])
+            self.statut=self.ConfigList[1]["statut"]
             self.armure=self.defense+self.itemObjectList[0].prot
         except IndexError:
             self.Equipment={
@@ -1034,8 +1035,8 @@ class Player():
             self.PV_Max=100
             self.Mana_Max=100
             self.defense=1.0
+            self.statut="RAS"
             self.armure=self.defense+self.itemObjectList[0].prot
-
 
 
         self.moveInstances={}
@@ -1450,7 +1451,7 @@ class StoppingGestionnary():
         file.write(content)
         file.close()
     def CreatePlayerDataSaving(self):
-        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense, "house":-self.house}
+        dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense,"statut":self.statut, "house":-self.house}
         return dico
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
