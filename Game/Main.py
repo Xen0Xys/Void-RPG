@@ -240,10 +240,19 @@ class Fight():
         self.StrengthE=10
         self.Magic_AffinityE=10
         self.esquiveE=5
-        self.Reset_Visual()
+        self.statutE="RAS"
         self.esquive=5
+        if self.Speed>=self.SpeedE:
+            self.Reset_Visual()
+        else:
+            self.tour_enemie()
     def Reset_Visual(self):
         self.Reset()
+        if self.statut=="poison":
+            print("poison")
+            self.PV=self.PV-(1/10*self.PV)
+        print("a ton tour")
+        self.statutE="RAS"
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
         self.MainCan.pack()
         self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
@@ -267,32 +276,35 @@ class Fight():
         self.ManaELabel.place(x=10, y=90)
     def tour_enemie(self):
         self.Reset()
-        self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
-        self.MainCan.pack()
-        self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
-        self.CreateAllCan(100,40,10,680,self.FightTxtrList["arme_secondaire"], "arme_secondaire", self.onFightClick)
-        self.CreateAllCan(100,40,110,640,self.FightTxtrList["magie"], "magie", self.onFightClick)
-        self.CreateAllCan(100,40,110,680,self.FightTxtrList["sac"], "sac", self.onFightClick)
-        self.CreateAllCan(100,40,210,640,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
-        self.font=Font(family="Helvetica",size=14)
-        print("cc")
-        self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
-        self.armureLabel.place(x=600, y=590)
-        self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
-        self.armureELabel.place(x=10, y=10)
-        self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
-        self.PVLabel.place(x=600, y=630)
-        self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
-        self.ManaLabel.place(x=600, y=670)
-        self.PVELabel=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
-        self.PVELabel.place(x=10, y=50)
-        self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
-        self.ManaELabel.place(x=10, y=90)
-        r=randint(0,100)
-        if r<50:
-            threading.Thread(target=self.heavy_attackE).start()
+        if self.statutE=="stun":
+            self.Reset_Visual()
         else:
-            threading.Thread(target=self.Basic_AttackE).start()
+            print("c'est a l'enemie de jouer")
+            self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
+            self.MainCan.pack()
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["arme_secondaire"], "arme_secondaire", self.onFightClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["magie"], "magie", self.onFightClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["sac"], "sac", self.onFightClick)
+            self.CreateAllCan(100,40,210,640,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
+            self.font=Font(family="Helvetica",size=14)
+            self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
+            self.armureLabel.place(x=600, y=590)
+            self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
+            self.armureELabel.place(x=10, y=10)
+            self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
+            self.PVLabel.place(x=600, y=630)
+            self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
+            self.ManaLabel.place(x=600, y=670)
+            self.PVELabel=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
+            self.PVELabel.place(x=10, y=50)
+            self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
+            self.ManaELabel.place(x=10, y=90)
+            r=randint(0,100)
+            if r<50:
+                threading.Thread(target=self.heavy_attackE).start()
+            else:
+                threading.Thread(target=self.Basic_AttackE).start()
 
 
 
@@ -312,12 +324,17 @@ class Fight():
             self.Basic_Attack()
         if arg=="heavy attack":
             self.heavy_attack()
+        if arg=="coup_de_bouclier":
+            self.coup_de_bouclier()
+        if arg=="protection_attaque_lourd":
+            self.protection_attaque_lourd()
+        if arg=="protection_attaque_legere":
+            self.protection_attaque_legere()
         if arg=="retour":
             self.Reset_Visual()
     def onMagicClick(self, evt, arg):
         if arg=="retour":
             self.Start_Fight()
-
 
     def Fuite(self):
         if self.Speed>0.5: #0.5= vitesse de l'enemie
@@ -391,6 +408,30 @@ class Fight():
             self.PrintMessage("l'enemie a esquive")
         self.tour_enemie()
 
+    def coup_de_bouclier(self):
+        self.chance_de_toucher=100
+        r=randint(0,100)
+        degats=self.Equipment["secondary_hand"].damage*self.Strength
+        if self.chance_de_toucher-self.esquiveE>r:
+            if self.defenceE>=degats:
+                self.defenceE=self.defenceE-degats
+            elif self.defenceE==0:
+                self.PVE=self.PVE-degats
+            elif 0<self.defenceE<degats:
+                degatsvie=degats-self.defenceE
+                self.defenceE=0
+                self.PVE=self.PVE-degatsvie
+        else:
+            self.PrintMessage("l'enemie a esquive")
+        r2=randint(0,100)
+        if r2<=80:
+            self.tour_enemie()
+        else:
+            self.PrintMessage("l'enemie est stun")
+            self.statutE="stun"
+            self.tour_enemie()
+
+
     def Heal(self):
         if self.Mana>0 and self.PV<100:
             self.PV=self.PV+(10)# 10= la puissance du sort
@@ -403,7 +444,7 @@ class Fight():
 
 
     def heavy_attackE(self):
-         print("attendez h")
+         print("attendez")
          sleep(5)
          self.chance_de_toucher=80
          r=randint(0,100)
@@ -426,7 +467,7 @@ class Fight():
 
 
     def Basic_AttackE(self):
-        print("attendez b")
+        print("attendez")
         sleep(5)
         self.chance_de_toucher=100
         r=randint(0,100)
@@ -435,11 +476,13 @@ class Fight():
             if self.armure>=degats:
                 self.armure=self.armure-degats
             elif self.armure==0:
+                self.statut="Poison"
                 self.PV=self.PV-degats
             elif 0<self.armure<degats:
                 degatsvie=degats-self.armure
                 self.armure=0
                 self.PV=self.PV-degatsvie
+                self.statut="Poison"
         else:
             self.PrintMessage("vous avez esquive")
         self.Reset_Visual()
@@ -451,9 +494,8 @@ class Fight():
     def __PrintMessage(self, msg):
         rateLabel=Label( text=msg,font=self.font, bg="white")
         rateLabel.place(x=375, y=375)
-        sleep(3)
+        sleep(5)
         rateLabel=Label( text="",font=self.font, bg="white")
-
 
 class Item():
     def __init__(self):
