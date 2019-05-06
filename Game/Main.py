@@ -855,6 +855,7 @@ class TickGestionary(Collider):
                     try:
                         lastxdir = xdir
                         lastydir = ydir
+                        lastHouse = self.house
                     except UnboundLocalError:
                         lastxdir = 0
                         lastydir = 0
@@ -1017,8 +1018,6 @@ class TickGestionary(Collider):
                         self.functionToExecute()
 
                     #Actualisation visuelle
-                    #print(xinfos)
-                    #print(yinfos)
                     self.MainCan.coords(self.player, self.x, self.y)
                     t2=time.time()
                     #print(t2-t1)
