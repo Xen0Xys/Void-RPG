@@ -234,7 +234,7 @@ class Fight():
         self.manaE=100
         self.manaE_max=100
         self.SpeedE=1
-        self.StrengthE=10
+        self.StrengthE=3
         self.Magic_AffinityE=10
         self.esquiveE=5
         self.statutE="RAS"
@@ -302,7 +302,7 @@ class Fight():
             self.ManaELabel.place(x=10, y=90)
             r=randint(0,100)
             if r<50:
-                threading.Thread(target=self.heavy_attackE).start()
+                threading.Thread(target=self.Heavy_attackE).start()
             else:
                 threading.Thread(target=self.Basic_AttackE).start()
 
@@ -323,13 +323,13 @@ class Fight():
         if arg=="basic attack":
             self.Basic_Attack()
         if arg=="heavy attack":
-            self.heavy_attack()
+            self.Heavy_attack()
         if arg=="coup_de_bouclier":
-            self.coup_de_bouclier()
+            self.Coup_de_bouclier()
         if arg=="protection_attaque_lourd":
-            self.protection_attaque_lourd()
+            self.Protection_attaque_lourd()
         if arg=="protection_attaque_legere":
-            self.protection_attaque_legere()
+            self.Protection_attaque_legere()
         if arg=="retour":
             self.Reset_Visual()
     def onMagicClick(self, evt, arg):
@@ -338,10 +338,7 @@ class Fight():
 
     def Fuite(self):
         if self.Speed>0.5: #0.5= vitesse de l'enemie
-            if int(self.house)==-1:
-                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-            else:
-                self.StartGraphicEngine("ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, int(self.house))].split("*")[0], houseNbre=int(self.house))
+            self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
         else:
             pass
     def arme_principale(self):
@@ -376,17 +373,17 @@ class Fight():
         self.tour_enemie
 
 
-    def heavy_attack(self):
+    def Heavy_attack(self):
         self.chance_de_toucher=80
         r=randint(0,100)
         if self.hand=="principal":
-            degats=(self.Equipment["principal_hand"].damage*self.Strength)+5
+            degats=(self.Equipment["principal_hand"].damage*self.Strength)+10
         else:
-            degats=(self.Equipment["secondary_hand"].damage*self.Strength)+5
+            degats=(self.Equipment["secondary_hand"].damage*self.Strength)+10
         if self.chance_de_toucher-self.esquiveE>r:
             if self.defenceE>degats:
-                self.defenceE=self.defenceE-((95/100)*degats)
-                self.PVE=self.PVE-((5/100)*degats)
+                self.defenceE=self.defenceE-((90/100)*degats)
+                self.PVE=self.PVE-((10/100)*degats)
             elif self.defenceE==0:
                 self.defenceE=0
                 self.PVE=self.PVE-degats
@@ -419,10 +416,13 @@ class Fight():
             self.PrintMessage("l'enemie a esquive")
         self.tour_enemie()
 
-    def coup_de_bouclier(self):
+    def Coup_de_bouclier(self):
         self.chance_de_toucher=100
         r=randint(0,100)
-        degats=self.Equipment["secondary_hand"].damage*self.Strength
+        if self.hand=="principal":
+            degats=self.Equipment["principal_hand"].damage*self.Strength
+        else:
+            degats=self.Equipment["secondary_hand"].damage*self.Strength
         if self.chance_de_toucher-self.esquiveE>r:
             if self.defenceE>=degats:
                 self.defenceE=self.defenceE-degats
@@ -435,16 +435,23 @@ class Fight():
         else:
             self.PrintMessage("l'enemie a esquive")
         r2=randint(0,100)
-        if r2<=80:
+        if r2<=60:
             self.tour_enemie()
         else:
             self.PrintMessage("l'enemie est stun")
+            sleep(1.5)
             self.statutE="stun"
             self.tour_enemie()
 
-    def protection_attaque_lourd(self):
+    def Protection_attaque_lourd(self):
+        print("b")
         self.protection_attaque_lourde=2
-        self.protection_attaque_legere=0.5
+        self.protection_attaque_leger=0.5
+        self.tour_enemie()
+    def Protection_attaque_legere(self):
+        print("a")
+        self.protection_attaque_lourde=0.5
+        self.protection_attaque_leger=2
         self.tour_enemie()
 
 
@@ -459,16 +466,17 @@ class Fight():
         self.Start_Fight()
 
 
-    def heavy_attackE(self):
-         print("attendez")
+    def Heavy_attackE(self):
+         print("b")
+         self.PrintMessage("attendez")
          sleep(5)
          self.chance_de_toucher=80
          r=randint(0,100)
          if self.chance_de_toucher-self.esquive>r:
-            degats=(((5*self.StrengthE)+5)/self.protection_attaque_lourde)*self.protection_attaque_legere
+            degats=(((10*self.StrengthE)+10)/self.protection_attaque_lourde)*self.protection_attaque_leger
             if self.armure>degats:
-                self.armure=self.armure-((95/100)*degats)
-                self.PV=self.PV-((5/100)*degats)
+                self.armure=self.armure-((90/100)*degats)
+                self.PV=self.PV-((10/100)*degats)
             elif self.armure==0:
                 self.armure=0
                 self.PV=self.PV-degats
@@ -478,45 +486,55 @@ class Fight():
                 self.PV=self.PV-degatsvie
             self.esquiveE=0
          else:
-            self.PrintMessage("l'enemie a rate")
+            self.PrintMessage("vous avez esquive")
+            sleep(1.5)
          self.protection_attaque_lourde=1
          self.protection_attaque_legere=1
+         if self.PV<0:
+            self.PV=0
          self.Reset_Visual()
 
 
     def Basic_AttackE(self):
-        print("attendez")
+        print("a")
+        self.PrintMessage("attendez")
         sleep(5)
         self.chance_de_toucher=100
         r=randint(0,100)
-        degats=((10*self.StrengthE)/self.protection_attaque_legere)*self.protection_attaque_lourde
+        degats=((10*self.StrengthE)/self.protection_attaque_leger)*self.protection_attaque_lourde
         if self.chance_de_toucher-self.esquive>r:
             if self.armure>=degats:
                 self.armure=self.armure-degats
             elif self.armure==0:
                 self.statut="Poison"
-                print("vous etes empoisonne")
+                self.PrintMessage("vous etes empoisonne")
+                sleep(2)
                 self.PV=self.PV-degats
             elif 0<self.armure<degats:
                 degatsvie=degats-self.armure
                 self.armure=0
                 self.PV=self.PV-degatsvie
                 self.statut="Poison"
-                print("vous etes empoisonne")
+                self.PrintMessage("vous etes empoisonne")
+                sleep(2)
         else:
             self.PrintMessage("vous avez esquive")
+            sleep(1.5)
+        self.protection_attaque_lourde=1
+        self.protection_attaque_legere=1
+        if self.PV<0:
+            self.PV=0
         self.Reset_Visual()
 
 
 
-    def PrintMessage(self, msg):#Fonction que tu appelle
+    def PrintMessage(self, msg):
         threading.Thread(target=self.__PrintMessage, args=(msg,)).start()
     def __PrintMessage(self, msg):
         rateLabel=Label( text=msg,font=self.font, bg="white")
         rateLabel.place(x=375, y=375)
         sleep(5)
         rateLabel=Label( text="",font=self.font, bg="white")
-
 class Item():
     def __init__(self):
         self.name=""
