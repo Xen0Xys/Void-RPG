@@ -341,7 +341,10 @@ class Fight():
 
     def Fuite(self):
         if self.Speed>0.5: #0.5= vitesse de l'enemie
-            self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+            if int(self.house)==-1:
+                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+            else:
+                self.StartGraphicEngine("ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, int(self.house))].split("*")[0], houseNbre=int(self.house))
         else:
             pass
     def arme_principale(self):
@@ -588,6 +591,7 @@ class OptionMenuMain():
             self.CreateAllCan(90,90,380,350,self.IntTxtrList["green"], "oneImage", self.onClick)
         else:
             self.CreateAllCan(90,90,380,350,self.IntTxtrList["red"], "oneImage", self.onClick)
+            
 class MenuMain(OptionMenuMain):
     def __init__(self):
         OptionMenuMain.__init__(self)
@@ -682,7 +686,10 @@ class MenuMain(OptionMenuMain):
                 self.Played=(True, "Save_1")
                 self.mapX=int(self.ConfigList[1]["mapX"])
                 self.mapY=int(self.ConfigList[1]["mapY"])
-                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                if int(self.ConfigList[1]["house"])==-1:
+                    self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                else:
+                    self.StartGraphicEngine("ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, int(self.ConfigList[1]["house"]))].split("*")[0], houseNbre=int(self.ConfigList[1]["house"]))
                 TickGestionary.__init__(self)
             except IndexError:
                 pass
@@ -709,7 +716,10 @@ class MenuMain(OptionMenuMain):
                 self.Played=(True, "Save_2")
                 self.mapX=int(self.ConfigList[1]["mapX"])
                 self.mapY=int(self.ConfigList[1]["mapY"])
-                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                if int(self.ConfigList[1]["house"])==-1:
+                    self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                else:
+                    self.StartGraphicEngine("ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, int(self.ConfigList[1]["house"]))].split("*")[0], houseNbre=int(self.ConfigList[1]["house"]))
                 TickGestionary.__init__(self)
             except IndexError:
                 pass
@@ -736,7 +746,10 @@ class MenuMain(OptionMenuMain):
                 self.Played=(True, "Save_3")
                 self.mapX=int(self.ConfigList[1]["mapX"])
                 self.mapY=int(self.ConfigList[1]["mapY"])
-                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                if int(self.ConfigList[1]["house"])==-1:
+                    self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+                else:
+                    self.StartGraphicEngine("ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, int(self.ConfigList[1]["house"]))].split("*")[0], houseNbre=int(self.ConfigList[1]["house"]))
                 TickGestionary.__init__(self)
             except IndexError:
                 pass
@@ -758,18 +771,18 @@ class Collider():
     def __init__(self):
         pass
     def IsCollide(self, collider2, collider1):
-        returning=False
-        coords1=collider1.cornerCoords["bot_right"]
-        coords2=collider2.cornerCoords["top_left"]
-        vecteur=(coords2[0]-coords1[0],coords2[1]-coords1[1])
-        if vecteur[0]<=0 and vecteur[1]<=0:
-            coords1=collider1.cornerCoords["top_left"]
-            coords2=collider2.cornerCoords["bot_right"]
+        if not collider1 is None and not collider2 is None:
+            returning=False
+            coords1=collider1.cornerCoords["bot_right"]
+            coords2=collider2.cornerCoords["top_left"]
             vecteur=(coords2[0]-coords1[0],coords2[1]-coords1[1])
-            if vecteur[0]>=0 and vecteur[1]>=0:
-                returning=True
-
-        return returning
+            if vecteur[0]<=0 and vecteur[1]<=0:
+                coords1=collider1.cornerCoords["top_left"]
+                coords2=collider2.cornerCoords["bot_right"]
+                vecteur=(coords2[0]-coords1[0],coords2[1]-coords1[1])
+                if vecteur[0]>=0 and vecteur[1]>=0:
+                    returning=True
+            return returning
     def CheckMultipleColliders(self, collider1, colliderlist):
         returning=(False, None)
         for i in range(len(colliderlist)):
@@ -1156,30 +1169,19 @@ class EnnemyIA():
 
 class GraphicEngine(Player):
     def __init__(self):
+        """Fonction d'initialisation"""
         self.isLoading=False
-        self.Config()
-    def StartGraphicEngine(self, filename, isInMapLocation=True, houseInfos=""):
-        if self.isLoading==False:
-            self.isInMapLocation=isInMapLocation
-            self.isLoading=True
-            self.can_move=False
-            self.filename=filename
-            self.houseInfos=houseInfos
-            self.Reset()
-            self.Init()
-            self.IAList=[]
-            self.IAList.append(EnnemyIA(375, 500, self))
-            try:
-                self.moveInstances
-                self.Init2()
-            except AttributeError:
-                Player.__init__(self)
-            except RuntimeError:
-                pass
-            self.can_move=True
-            self.isLoading=False
-            self.onFight=False
-    def Config(self):
+        self.onFight=False
+        self.notRotateList=["ap", "au", "av", "aw", "ax", "ay", "as", "aq", "ar", "ao", "an", "am"]
+        self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
+        self.RandomList=[1, 0, 3, 3, 0, 3, 3, 2, 2, 3, 3, 0, 3, 0, 1, 2, 2, 3, 3, 1]
+        self.onFight=False
+        self.IAList=[]
+        self.getOptions()
+        self.LoadTexturesList()
+        self.RenderTextures()
+    def getOptions(self):
+        """Charge les options du moteur"""
         if self.ConfigList[0]["rotation"]=="True":
             self.canRotate=True
         else:
@@ -1188,14 +1190,32 @@ class GraphicEngine(Player):
             self.oneImage=True
         else:
             self.oneImage=False
-    def Init(self):
-        self.LoadTextureList()
-        self.InitInterface()
-        self.List=[]
-        self.notRotateList=["ap", "au", "av", "aw", "ax", "ay", "as", "aq", "ar", "ao", "an", "am"]
-        self.Load(self.filename)
-        self.CreateAllColliders()
+    def StartGraphicEngine(self, filename, houseNbre=-1):
+        """Point d'entree du moteur graphique"""
+        if self.isLoading==False:
+            self.house = houseNbre
+            self.isLoading=True
+            self.Reset()
+            self.InitMainGUI()
+            self.InitMatrice()
+            self.LoadMatrice(filename, houseNbre)
+            self.CreateMap()
+            self.CreateAllColliders()
+
+            self.IAList=[EnnemyIA(375, 500, self)]
+
+            #Initialise le personnage
+            try:
+                self.moveInstances
+                self.Init2()
+            except AttributeError:
+                Player.__init__(self)
+            except RuntimeError:
+                pass
+            self.onFight=False
+            self.isLoading=False
     def CreateAllColliders(self):
+        """Fonction pour creer les colliders"""
         self.ColliderList=[]
         temp=-1
         self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
@@ -1206,13 +1226,14 @@ class GraphicEngine(Player):
                         try:
                             if self.Matrice[i][j] in ["ao", "bm"]:
                                 temp+=1
-                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=False, arg3=temp:self.StartGraphicEngine(arg1, isInMapLocation=arg2, houseInfos=arg3)))
+                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=temp:self.StartGraphicEngine(arg1, houseNbre=arg2)))
                             else:
                                 self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
                         except KeyError as e:
                             self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
         #print(self.ColliderList)
     def DoCreateCollider(self, i, j, isColliderList):
+        """Fonction pour savoir si il est necessaire de creer un collider"""
         temp=False
         try:
             if not self.Matrice[i+1][j] in isColliderList:
@@ -1231,48 +1252,106 @@ class GraphicEngine(Player):
                 temp=True
         except IndexError:pass
         return temp
-    def InitMatrice(self):
-        self.Matrice=[]
-        for i in range(30):
-            temp=[]
-            for j in range(30):
-                temp.append("00")
-            self.Matrice.append(temp)
-        self.ItemMatrice=[]
-        for i in range(30):
-            temp=[]
-            for j in range(30):
-                temp.append(None)
-            self.ItemMatrice.append(temp)
-        self.select=False
-    def InitInterface(self):
-        self.LoadTextures()
-        self.InitMatrice()
-        self.InitMainGui()
-    def LoadTextures(self):
-        self.TextureList=[]
-        self.TextureEncode=[]
-        for i in self.textureList.keys():
-            if i!="00":
-                self.TextureList.append(PhotoImage(file ='ressources/textures/map/{}'.format(self.textureList[i])))
-                self.TextureEncode.append(i)
+    def CreateMap(self):
+        """Cree et place les textures de la map"""
+        self.List=[]
+        if self.oneImage==True:
+            if self.canRotate==True:
+                self.CreateRotateTextures(self.Matrice)
+                self.LevelImage=self.CreateOnePicture()
+                try:
+                    self.MainCan.create_image(0, 0, image=self.LevelImage, anchor=NW)
+                except RuntimeError:
+                    pass
+
             else:
-                pass
-    def InitMainGui(self):
-        self.MainFrame = Frame(self, bg="light grey", width=750, height=750)
-        self.MainFrame.place(x=0, y=0)
-        self.MainCan = Canvas(self.MainFrame, highlightthickness=0, width=750, height=750)
-        self.MainCan.place(x=0, y=0)
-    def Load(self, file):
+                for i in range(len(self.Matrice)):
+                    for j in range(len(self.Matrice[i])):
+                        if self.Matrice[i][j]!="00":
+                            indice=self.TextureEncode.index(self.Matrice[i][j])
+                            self.List.append(Image.open("ressources/textures/map/"+self.textureList[self.TextureEncode[indice]]))
+                self.LevelImage=self.CreateOnePicture()
+                self.MainCan.create_image(0, 0, image=self.LevelImage, anchor=NW)
+        else:
+            if self.canRotate==True:
+                self.CreateRotateTextures(self.Matrice)
+                self.PhotoimageList=[]
+                for i in range(len(self.List)):
+                    try:
+                        self.PhotoimageList.append(ImageTk.PhotoImage(self.List[i]))
+                        self.MainCan.create_image((i%30)*25, (i//30)*25, image=self.PhotoimageList[i], anchor=NW)
+                    except AttributeError:
+                        pass
+            else:
+                for i in range(len(self.Matrice)):
+                    for j in range(len(self.Matrice[i])):
+                        if self.Matrice[i][j]!="00":
+                            indice=self.TextureEncode.index(self.Matrice[i][j])
+                            self.MainCan.create_image(j*25, i*25, image=self.TextureList[indice], anchor=NW)
+    def CreateRotateTextures(self):
+        """Cree les textures tournÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©es"""
+        nbre=0
+        for i in range(len(self.Matrice)):
+            for j in range(len(self.Matrice[i])):
+                if self.Matrice[i][j]!="00":
+                    indice=self.TextureEncode.index(self.Matrice[i][j])
+                    if self.Matrice[i][j] in self.notRotateList:
+                        self.List.append(self.RotateTexture(0, indice))
+                    else:
+                        can=True
+                        try:
+                            if can==True and self.Matrice[i-1][j]!=self.Matrice[i][j]:
+                                can=False
+                        except:
+                            pass
+                        try:
+                            if can==True and self.Matrice[i+1][j]!=self.Matrice[i][j]:
+                                can=False
+                        except:
+                            pass
+                        try:
+                            if can==True and self.Matrice[i][j-1]!=self.Matrice[i][j]:
+                                can=False
+                        except:
+                            pass
+                        try:
+                            if can==True and self.Matrice[i][j+1]!=self.Matrice[i][j]:
+                                can=False
+                        except:
+                            pass
+
+                        if can==True:
+                            self.List.append(self.RotateTexture(self.RandomList[nbre%(len(self.RandomList)-1)], indice))
+                            nbre+=1
+                        else:
+                            self.List.append(self.RotateTexture(0, indice))
+    def RotateTexture(self, rotate, indice, null=False):
+        """Tourne la texture voulue avec l'inclinaison voulue"""
+        if null==False:
+            image = Image.open("ressources/textures/map/"+self.textureList[self.TextureEncode[indice]]).rotate(rotate*90)
+            return image
+        else:
+            return None
+    def CreateOnePicture(self):
+        """Cree une image a partir d'une liste d'images"""
+        self.result=Image.new("RGB", (750, 750))
+        for i in range(len(self.List)):
+            self.result.paste(im=self.List[i], box=(((i)%30)*25, ((i)//30)*25))
         try:
-            if self.isInMapLocation:
-                self.house=-1
-                file=open("ressources/maps/{}.map".format(file), "r")
+            return ImageTk.PhotoImage(self.result)
+        except RuntimeError:
+            pass
+        except AttributeError:
+            pass
+    def LoadMatrice(self, filename, houseNbre):
+        """Charge la map voulue"""
+        try:
+            if houseNbre==-1:
+                file=open("ressources/maps/{}.map".format(filename), "r")
                 content=file.read()
                 file.close()
             else:
-                self.house=self.houseInfos
-                file=open("{}.map".format(file), "r")
+                file=open("{}.map".format(filename), "r")
                 content=file.read()
                 file.close()
             temp1=content.split("\n")
@@ -1285,112 +1364,32 @@ class GraphicEngine(Player):
                     temp2+=temp1[i][j+1]
                     temp.append(temp2)
                 self.Matrice.append(temp)
-            self.LoadMatrice(self.Matrice)
         except FileNotFoundError as e:
             pass
-    def LoadMatrice(self, matrice):
-        self.MainCan.destroy()
+    def InitMatrice(self):
+        """Initialise la Matrice principale"""
+        self.Matrice=[]
+        for i in range(30):
+            temp=[]
+            for j in range(30):
+                temp.append("00")
+            self.Matrice.append(temp)
+        self.ItemMatrice=[]
+        for i in range(30):
+            temp=[]
+            for j in range(30):
+                temp.append(None)
+            self.ItemMatrice.append(temp)
+    def InitMainGUI(self):
+        """Initialise le contenu de la fenetre"""
+        self.MainFrame = Frame(self, bg="light grey", width=750, height=750)
+        self.MainFrame.place(x=0, y=0)
         self.MainCan = Canvas(self.MainFrame, highlightthickness=0, width=750, height=750)
         self.MainCan.place(x=0, y=0)
         self.bind("<KeyPress>", lambda arg1=None, arg2="KeyPress":self.PlayerEvt(arg1, arg2))
         self.bind("<KeyRelease>", lambda arg1=None, arg2="KeyRelease":self.PlayerEvt(arg1, arg2))
-        self.PlaceElements(matrice)
-        self.PlaceConnectedTextures(matrice)
-    def PlaceElements(self, matrice):
-        if self.oneImage==True:
-            if self.canRotate==True:
-                self.RandomList=[1, 0, 3, 3, 0, 3, 3, 2, 2, 3, 3, 0, 3, 0, 1, 2, 2, 3, 3, 1]
-                self.CreateTextures(matrice)
-                self.LevelImage=self.CreateOnePicture(self.List)
-                try:
-                    self.MainCan.create_image(0, 0, image=self.LevelImage, anchor=NW)
-                except RuntimeError:
-                    pass
-
-            else:
-                for i in range(len(matrice)):
-                    for j in range(len(matrice[i])):
-                        if matrice[i][j]!="00":
-                            indice=self.TextureEncode.index(matrice[i][j])
-                            self.List.append(Image.open("ressources/textures/map/"+self.textureList[self.TextureEncode[indice]]))
-                self.LevelImage=self.CreateOnePicture(self.List)
-                self.MainCan.create_image(0, 0, image=self.LevelImage, anchor=NW)
-        else:
-            if self.canRotate==True:
-                self.RandomList=[1, 0, 3, 3, 0, 3, 3, 2, 2, 3, 3, 0, 3, 0, 1, 2, 2, 3, 3, 1]
-                self.CreateTextures(matrice)
-                self.PhotoimageList=[]
-                for i in range(len(self.List)):
-                    try:
-                        self.PhotoimageList.append(ImageTk.PhotoImage(self.List[i]))
-                        self.MainCan.create_image((i%30)*25, (i//30)*25, image=self.PhotoimageList[i], anchor=NW)
-                    except AttributeError:
-                        pass
-            else:
-                for i in range(len(matrice)):
-                    for j in range(len(matrice[i])):
-                        if matrice[i][j]!="00":
-                            indice=self.TextureEncode.index(matrice[i][j])
-                            self.MainCan.create_image(j*25, i*25, image=self.TextureList[indice], anchor=NW)
-    def CreateOnePicture(self, liste):
-        self.result=Image.new("RGB", (750, 750))
-        for i in range(len(liste)):
-            self.result.paste(im=liste[i], box=(((i)%30)*25, ((i)//30)*25))
-        try:
-            return ImageTk.PhotoImage(self.result)
-        except RuntimeError:
-            pass
-        except AttributeError:
-            pass
-    def CreateTextures(self, matrice):
-        nbre=0
-        for i in range(len(matrice)):
-            for j in range(len(matrice[i])):
-                if matrice[i][j]!="00":
-                    indice=self.TextureEncode.index(matrice[i][j])
-                    if matrice[i][j] in self.notRotateList:
-                        self.List.append(self.Rotate(0, indice))
-                    else:
-                        can=True
-                        try:
-                            if can==True and matrice[i-1][j]!=matrice[i][j]:
-                                can=False
-                        except:
-                            pass
-                        try:
-                            if can==True and matrice[i+1][j]!=matrice[i][j]:
-                                can=False
-                        except:
-                            pass
-                        try:
-                            if can==True and matrice[i][j-1]!=matrice[i][j]:
-                                can=False
-                        except:
-                            pass
-                        try:
-                            if can==True and matrice[i][j+1]!=matrice[i][j]:
-                                can=False
-                        except:
-                            pass
-
-                        if can==True:
-                            self.List.append(self.Rotate(self.RandomList[nbre%(len(self.RandomList)-1)], indice))
-                            nbre+=1
-                        else:
-                            self.List.append(self.Rotate(0, indice))
-    def PlaceConnectedTextures(self, matrice):
-        for i in range(len(matrice)):
-            for j in range(len(matrice[i])):
-                pass
-    def Rotate(self, rotate, indice, null=False):
-        if null==False:
-            image = Image.open("ressources/textures/map/"+self.textureList[self.TextureEncode[indice]]).rotate(rotate*90)
-            return image
-        else:
-            return None
-    def LoadTextureList(self):
-        global textureList, encodeList, txtrnameList
-        txtrnameList=[]
+    def LoadTexturesList(self):
+        """Charge la liste des textures"""
         file=open("ressources/textures/map/textures.cfg", "r")
         content=file.read()
         file.close()
@@ -1398,29 +1397,26 @@ class GraphicEngine(Player):
         content=content.replace("\n", "")
         content=content.split(";")
         self.textureList={}
-        encodeList=[]
         for i in content:
             try:
                 if i!="" or i[0]=="#":
                     temp=i.split("=")
                     self.textureList[temp[0]]=temp[1]
-                    encodeList.append(temp[0])
-                    if temp[1]!="NONE":
-                        txtrnameList.append(temp[1])
             except IndexError:
                 pass
-    def LoadConnectedTextures(self):
-        global connected_textureList
-        file=open("ressources/config/connected_textureList.cfg", "r")
-        content=file.read()
-        file.close()
-        content=content.replace(" ","")
-        content=content.split("\n")
-        connected_textureList={}
-        for i in content:
-            temp=i.split("=")
-            connected_textureList[temp[0]]="ressources/connected_textures/"+temp[1]
+        self.RenderTextures()
+    def RenderTextures(self):
+        """Creer deux listes contenant le pre-rendu des textures"""
+        self.TextureList=[]
+        self.TextureEncode=[]
+        for i in self.textureList.keys():
+            if i!="00":
+                self.TextureList.append(PhotoImage(file ='ressources/textures/map/{}'.format(self.textureList[i])))
+                self.TextureEncode.append(i)
+            else:
+                pass
     def Reset(self):
+        """Reset la fenetre"""
         self.MainCan.destroy()
 
 class PostInit(MenuMain, GraphicEngine, TickGestionary):
