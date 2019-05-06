@@ -345,6 +345,7 @@ class Fight():
         else:
             pass
     def arme_principale(self):
+        self.hand="principal"
         if self.Equipment["principal_hand"].type=="one_hand":
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
@@ -352,6 +353,7 @@ class Fight():
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
     def arme_secondaire(self):
+        self.hand="secondary"
         if self.Equipment["secondary_hand"].type=="shield":
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "coup_de_bouclier", self.onAttaqueClick)
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "protection_attaque_lourd", self.onAttaqueClick)
@@ -359,8 +361,8 @@ class Fight():
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
         elif self.Equipment["secondary_hand"].type=="one_hand":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
             self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
@@ -377,8 +379,11 @@ class Fight():
     def heavy_attack(self):
         self.chance_de_toucher=80
         r=randint(0,100)
+        if self.hand=="principal":
+            degats=(self.Equipment["principal_hand"].damage*self.Strength)+5
+        else:
+            degats=(self.Equipment["secondary_hand"].damage*self.Strength)+5
         if self.chance_de_toucher-self.esquiveE>r:
-            degats=(self.itemObjectList[0].damage*self.Strength)+5
             if self.defenceE>degats:
                 self.defenceE=self.defenceE-((95/100)*degats)
                 self.PVE=self.PVE-((5/100)*degats)
@@ -397,7 +402,10 @@ class Fight():
     def Basic_Attack (self):
         self.chance_de_toucher=100
         r=randint(0,100)
-        degats=self.itemObjectList[0].damage*self.Strength
+        if self.hand=="principal":
+            degats=self.Equipment["principal_hand"].damage*self.Strength
+        else:
+            degats=self.Equipment["secondary_hand"].damage*self.Strength
         if self.chance_de_toucher-self.esquiveE>r:
             if self.defenceE>=degats:
                 self.defenceE=self.defenceE-degats
@@ -435,7 +443,8 @@ class Fight():
             self.tour_enemie()
 
     def protection_attaque_lourd(self):
-        self.protection_attaque_lourde="yes"
+        self.protection_attaque_lourde=2
+        self.protection_attaque_legere=0.5
         self.tour_enemie()
 
 
@@ -456,26 +465,22 @@ class Fight():
          self.chance_de_toucher=80
          r=randint(0,100)
          if self.chance_de_toucher-self.esquive>r:
-            degats=(10)+5
-            if self.protection_attaque_lourde=="yes":
-                if self.armure>0:
-                    self.armure=self.armure-(degats/3)
-                else:
-                    self.PV=self.PV-(degats/3)
-            else:
-                if self.armure>degats:
-                    self.armure=self.armure-((95/100)*degats)
-                    self.PV=self.PV-((5/100)*degats)
-                elif self.armure==0:
-                    self.armure=0
-                    self.PV=self.PV-degats
-                elif 0<self.armure<degats:
-                    degatsvie=degats-self.armure
-                    self.armure=0
-                    self.PV=self.PV-degatsvie
-                    self.esquiveE=0
+            degats=(((5*self.StrengthE)+5)/self.protection_attaque_lourde)*self.protection_attaque_legere
+            if self.armure>degats:
+                self.armure=self.armure-((95/100)*degats)
+                self.PV=self.PV-((5/100)*degats)
+            elif self.armure==0:
+                self.armure=0
+                self.PV=self.PV-degats
+            elif 0<self.armure<degats:
+                degatsvie=degats-self.armure
+                self.armure=0
+                self.PV=self.PV-degatsvie
+            self.esquiveE=0
          else:
-            self.PrintMessage("vous avez esquive")
+            self.PrintMessage("l'enemie a rate")
+         self.protection_attaque_lourde=1
+         self.protection_attaque_legere=1
          self.Reset_Visual()
 
 
@@ -484,20 +489,20 @@ class Fight():
         sleep(5)
         self.chance_de_toucher=100
         r=randint(0,100)
-        degats=10
+        degats=((10*self.StrengthE)/self.protection_attaque_legere)*self.protection_attaque_lourde
         if self.chance_de_toucher-self.esquive>r:
             if self.armure>=degats:
                 self.armure=self.armure-degats
             elif self.armure==0:
                 self.statut="Poison"
-                print("vous ête empoisonné")
+                print("vous etes empoisonne")
                 self.PV=self.PV-degats
             elif 0<self.armure<degats:
                 degatsvie=degats-self.armure
                 self.armure=0
                 self.PV=self.PV-degatsvie
                 self.statut="Poison"
-                print("vous ête empoisonné")
+                print("vous etes empoisonne")
         else:
             self.PrintMessage("vous avez esquive")
         self.Reset_Visual()
