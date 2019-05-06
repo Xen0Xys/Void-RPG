@@ -1289,7 +1289,7 @@ class GraphicEngine(Player):
                             indice=self.TextureEncode.index(self.Matrice[i][j])
                             self.MainCan.create_image(j*25, i*25, image=self.TextureList[indice], anchor=NW)
     def CreateRotateTextures(self):
-        """Cree les textures tournÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©es"""
+        """Cree les textures tournes"""
         nbre=0
         for i in range(len(self.Matrice)):
             for j in range(len(self.Matrice[i])):
