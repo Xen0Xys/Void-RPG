@@ -1054,8 +1054,8 @@ class Player():
             self.y=float(self.ConfigList[1]["y"])
             #Equipement
             self.Equipment={
-            "principal_hand":self.itemObjectList[1],
-            "secondary_hand":self.itemObjectList[2]
+            "principal_hand":self.itemObjectList[2],
+            "secondary_hand":self.itemObjectList[0]
             }
             #stat
             self.PV=float(self.ConfigList[1]["PV"])
@@ -1067,13 +1067,13 @@ class Player():
             self.Mana_Max=float(self.ConfigList[1]["mana_max"])
             self.defense=float(self.ConfigList[1]["defense"])
             self.statut="RAS"
-            self.armure=self.defense+self.itemObjectList[0].prot
-            self.protection_attaque_legere=1
+            self.armure=self.defense+self.Equipment["principal_hand"].prot+self.Equipment["secondary_hand"].prot
+            self.protection_attaque_leger=1
             self.protection_attaque_lourde=1
         except IndexError:
             self.Equipment={
-            "principal_hand":self.itemObjectList[1],
-            "secondary_hand":self.itemObjectList[2]
+            "principal_hand":self.itemObjectList[2],
+            "secondary_hand":self.itemObjectList[0]
             }
             self.x=600.0
             self.y=500.0
@@ -1086,8 +1086,8 @@ class Player():
             self.Mana_Max=100
             self.defense=1.0
             self.statut="RAS"
-            self.armure=self.defense+self.itemObjectList[0].prot
-            self.protection_attaque_legere=1
+            self.armure=self.defense+self.Equipment["principal_hand"].prot+self.Equipment["secondary_hand"].prot
+            self.protection_attaque_leger=1
             self.protection_attaque_lourde=1
 
 
