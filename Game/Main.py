@@ -335,6 +335,8 @@ class Fight():
     def onMagicClick(self, evt, arg):
         if arg=="retour":
             self.Start_Fight()
+        if arg=="heal":
+            self.Heal()
 
     def Fuite(self):
         if self.Speed>0.5: #0.5= vitesse de l'enemie
@@ -364,11 +366,17 @@ class Fight():
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
     def Magie(self):
-        self.CreateAllCan(100,40,10,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onMagicClick)
+        if self.Spells_for_fight["first_spell"].type=="heal":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["heal"], "heal", self.onAttaqueClick)
+        if self.Spells_for_fight["second_spell"].type=="heal":
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+        if self.Spells_for_fight["third_spell"].type=="heal":
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+        if self.Spells_for_fight["fourth_spell"].type=="heal":
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+        self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+
+
     def sac(self):
         self.tour_enemie
 
@@ -439,17 +447,14 @@ class Fight():
             self.tour_enemie()
         else:
             self.PrintMessage("l'enemie est stun")
-            sleep(1.5)
             self.statutE="stun"
             self.tour_enemie()
 
     def Protection_attaque_lourd(self):
-        print("b")
         self.protection_attaque_lourde=2
         self.protection_attaque_leger=0.5
         self.tour_enemie()
     def Protection_attaque_legere(self):
-        print("a")
         self.protection_attaque_lourde=0.5
         self.protection_attaque_leger=2
         self.tour_enemie()
@@ -457,17 +462,16 @@ class Fight():
 
     def Heal(self):
         if self.Mana>0 and self.PV<100:
-            self.PV=self.PV+(10)# 10= la puissance du sort
-            self.Mana=self.Mana-(10)#10= cout en mana du sort
+            self.PV=self.PV+(self.spells_for-fight["first_spell"].magic_damages*self.Magic_Affinity)# 10= la puissance du sort
+            self.Mana=self.Mana-(self.spells_for_fight["first_spell"].mana_consumation)#10= cout en mana du sort
         else:
             pass
         if self.PV>100:
             self.PV=100
-        self.Start_Fight()
+        self.tour_enemie()
 
 
     def Heavy_attackE(self):
-         print("b")
          self.PrintMessage("attendez")
          sleep(5)
          self.chance_de_toucher=80
@@ -487,7 +491,6 @@ class Fight():
             self.esquiveE=0
          else:
             self.PrintMessage("vous avez esquive")
-            sleep(1.5)
          self.protection_attaque_lourde=1
          self.protection_attaque_legere=1
          if self.PV<0:
@@ -496,7 +499,6 @@ class Fight():
 
 
     def Basic_AttackE(self):
-        print("a")
         self.PrintMessage("attendez")
         sleep(5)
         self.chance_de_toucher=100
@@ -549,11 +551,26 @@ class Item():
         self.texture_acces=""
         self.texture=None
 
+class Spells():
+    def __init__(self):
+        self.name=""
+        self.damage=0
+        self.magic_damages=0
+        self.durability=0
+        self.mana_consumation=0
+        self.prot=0
+        self.magic_prot=0
+        self.drop_proba=0
+        self.type=""
+        self.texture_acces=""
+        self.texture=None
+
 class Init(SoundGestionnary, Fight):
     #Classement des donnees
     def __init__(self):
         SoundGestionnary.__init__(self)
         self.LoadItems()
+        self.LoadSpells()
         self.RenderItems()
     def AddToConfigList(self, arg):
         try:
@@ -574,6 +591,28 @@ class Init(SoundGestionnary, Fight):
         if "__class__" in obj_dict:
             if obj_dict["__class__"] == "Item":
                 obj = Item()
+                obj.name=obj_dict["name"]
+                obj.damage=obj_dict["damage"]
+                obj.magic_damages=obj_dict["magic_damages"]
+                obj.durability=obj_dict["durability"]
+                obj.mana_consumation=obj_dict["mana_consumation"]
+                obj.prot=obj_dict["prot"]
+                obj.magic_prot=obj_dict["magic_prot"]
+                obj.drop_proba=obj_dict["drop_proba"]
+                obj.type=obj_dict["type"]
+                obj.texture_acces=obj_dict["texture_acces"]
+                return obj
+        return obj_dict
+    def LoadSpells(self):
+        self.spellsObjectList=[]
+        folderList = os.listdir("ressources/spells")
+        for folder_name in folderList:
+            with open("ressources/spells/{}/root.json".format(folder_name), "r") as file:
+                self.spellsObjectList.append(json.load(file, object_hook=self.Deserialiseur_Spells))
+    def Deserialiseur_Spells(self, obj_dict):
+        if "__class__" in obj_dict:
+            if obj_dict["__class__"] == "Spells":
+                obj = Spells()
                 obj.name=obj_dict["name"]
                 obj.damage=obj_dict["damage"]
                 obj.magic_damages=obj_dict["magic_damages"]
@@ -845,8 +884,8 @@ class TickGestionary(Collider):
         threading.Thread(target=self.MovingIA).start()
     def MainLoop(self):
         threading.Thread(target=LiveInfos, args=(self,)).start()
-        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
-        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
+        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
+        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
         while self.main_loop_on:
             sleep(.01)
             if self.onFight==False:
@@ -940,7 +979,7 @@ class TickGestionary(Collider):
                     #Acceleration dans tous les cas
                     if xdir!=0:
                         xinfos["accel_nbre"]+=1
-                    if xinfos["multiplier"]<=xinfos["speed_lim"] and xinfos["accel_nbre"]%xinfos["accel_speed"]==0:
+                    if xinfos["multiplier"]<=2.2 and xinfos["accel_nbre"]%8==0:
                         xinfos["multiplier"]+=0.2
                         self.x+=lastxdir*xinfos["multiplier"]
                         if self.x<0:
@@ -969,7 +1008,7 @@ class TickGestionary(Collider):
 
                     if ydir!=0:
                         yinfos["accel_nbre"]+=1
-                    if yinfos["multiplier"]<=yinfos["speed_lim"] and yinfos["accel_nbre"]%yinfos["accel_speed"]==0:
+                    if yinfos["multiplier"]<=2.2 and yinfos["accel_nbre"]%8==0:
                         yinfos["multiplier"]+=0.2
                         self.y+=lastydir*yinfos["multiplier"]
                         if self.y<0:
@@ -1001,18 +1040,10 @@ class TickGestionary(Collider):
                     try:
                         if lastHouse!=self.house:
                             if self.house==-1:
-                                xinfos["speed_lim"]=2.2
-                                xinfos["accel_speed"]=8
-                                yinfos["speed_lim"]=2.2
-                                yinfos["accel_speed"]=8
                                 args = self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, lastHouse)].split("*")
                                 self.x=int(args[2].split(";")[0])
                                 self.y=int(args[2].split(";")[1])
                             else:
-                                xinfos["speed_lim"]=3.5
-                                xinfos["accel_speed"]=5
-                                yinfos["speed_lim"]=3.5
-                                yinfos["accel_speed"]=5
                                 args = self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, self.house)].split("*")
                                 self.x=int(args[1].split(";")[0])
                                 self.y=int(args[1].split(";")[1])
@@ -1045,7 +1076,6 @@ class TickGestionary(Collider):
                     self.MainCan.coords(self.player, self.x, self.y)
                     t2=time.time()
                     #print(t2-t1)
-                    #print(int(self.x), int(self.y))
                 except AttributeError as e:
                     pass
                 except RuntimeError as e:
