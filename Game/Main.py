@@ -884,8 +884,12 @@ class TickGestionary(Collider):
         threading.Thread(target=self.MovingIA).start()
     def MainLoop(self):
         threading.Thread(target=LiveInfos, args=(self,)).start()
-        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
-        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1}
+        if self.house==-1:
+            xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
+            yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
+        else:
+            xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":5}
+            yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":5}
         while self.main_loop_on:
             sleep(.01)
             if self.onFight==False:
@@ -979,7 +983,7 @@ class TickGestionary(Collider):
                     #Acceleration dans tous les cas
                     if xdir!=0:
                         xinfos["accel_nbre"]+=1
-                    if xinfos["multiplier"]<=2.2 and xinfos["accel_nbre"]%8==0:
+                    if xinfos["multiplier"]<=xinfos["speed_lim"] and xinfos["accel_nbre"]%xinfos["accel_speed"]==0:
                         xinfos["multiplier"]+=0.2
                         self.x+=lastxdir*xinfos["multiplier"]
                         if self.x<0:
@@ -1008,7 +1012,7 @@ class TickGestionary(Collider):
 
                     if ydir!=0:
                         yinfos["accel_nbre"]+=1
-                    if yinfos["multiplier"]<=2.2 and yinfos["accel_nbre"]%8==0:
+                    if yinfos["multiplier"]<=yinfos["speed_lim"] and yinfos["accel_nbre"]%yinfos["accel_speed"]==0:
                         yinfos["multiplier"]+=0.2
                         self.y+=lastydir*yinfos["multiplier"]
                         if self.y<0:
@@ -1040,10 +1044,18 @@ class TickGestionary(Collider):
                     try:
                         if lastHouse!=self.house:
                             if self.house==-1:
+                                xinfos["speed_lim"]=2.2
+                                xinfos["accel_speed"]=8
+                                yinfos["speed_lim"]=2.2
+                                yinfos["accel_speed"]=8
                                 args = self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, lastHouse)].split("*")
                                 self.x=int(args[2].split(";")[0])
                                 self.y=int(args[2].split(";")[1])
                             else:
+                                xinfos["speed_lim"]=3.5
+                                xinfos["accel_speed"]=5
+                                yinfos["speed_lim"]=3.5
+                                yinfos["accel_speed"]=5
                                 args = self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, self.house)].split("*")
                                 self.x=int(args[1].split(";")[0])
                                 self.y=int(args[1].split(";")[1])
