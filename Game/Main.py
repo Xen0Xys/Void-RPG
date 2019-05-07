@@ -1339,7 +1339,7 @@ class GraphicEngine(Player):
             self.CreateMap()
             self.CreateAllColliders()
 
-            self.IAList=[EnnemyIA(375, 300, self)]
+            self.IAList=[]
 
             #Initialise le personnage
             try:
