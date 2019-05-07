@@ -394,10 +394,10 @@ class Fight():
         elif self.Spells_for_fight["third_spell"].type=="supports":
             self.spell_nbr="third"
             pass
-       if self.Spells_for_fight["fourth_spell"].type=="heal":
+        if self.Spells_for_fight["fourth_spell"].type=="heal":
             self.spell_nbr="fourth"
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
-        elif self.Spells_for_fight["fouth_spell"].type=="damage":
+        elif self.Spells_for_fight["fourth_spell"].type=="damage":
             self.spell_nbr="fourth"
             pass
         elif self.Spells_for_fight["fourth_spell"].type=="supports":
