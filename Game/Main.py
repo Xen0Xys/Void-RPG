@@ -566,9 +566,6 @@ class Fight():
         if self.PV<0:
             self.PV=0
         self.Reset_Visual()
-
-
-
     def PrintMessage(self, msg):
         threading.Thread(target=self.__PrintMessage, args=(msg,)).start()
     def __PrintMessage(self, msg):
@@ -576,6 +573,52 @@ class Fight():
         rateLabel.place(x=375, y=375)
         sleep(5)
         rateLabel=Label( text="",font=self.font, bg="white")
+
+class EnnemyIA():
+    def __init__(self, x, y, parent):
+        self.x=x
+        self.y=y
+        self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.parent.Start_Fight(Ennemy=arg))
+        self.maxX=(int(self.x/25)-2, int(self.x/25)+2)
+        self.maxY=(int(self.y/25)-2, int(self.y/25)+2)
+        self.MainCan=parent.MainCan
+        self.parent=parent
+        self.IAOn=True
+        self.EnnemyImg=PhotoImage(file="ressources/textures/player/player_0.png")
+        self.Ennemy = self.MainCan.create_image(self.x, self.y, image=self.EnnemyImg, anchor=NW)
+    def Move(self):
+        r=randint(0, 250)
+        if r==5:
+            dirX=randint(-1, 1)
+            dirY=randint(-1, 1)
+            if dirX!=0 and dirY!=0:
+                r=randint(0, 1)
+                if r==0:
+                    self.StartMove(dirX, 0)
+                else:
+                    self.StartMove(0, dirY)
+            elif dirX==0 and dirY==0:
+                self.Move()
+            else:
+                self.StartMove(dirX, dirY)
+    def StartMove(self, dirX, dirY):
+        self.x+=dirX*25
+        self.y+=dirY*25
+        if (not self.maxX[0] < int(self.x/25) < self.maxX[1]) or self.parent.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.parent.ColliderList)[0]:
+            self.x-=dirX*25
+            self.y-=dirY*25
+            self.Move()
+        elif (not self.maxY[0] < int(self.y/25) < self.maxY[1]) or self.parent.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.parent.ColliderList)[0]:
+            self.x-=dirX*25
+            self.y-=dirY*25
+            self.Move()
+        else:
+            try:
+                self.MainCan.coords(self.Ennemy, self.x, self.y)
+                self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.parent.Start_Fight(Ennemy=arg))
+            except TclError:
+                pass
+
 class Item():
     def __init__(self):
         self.name=""
@@ -686,7 +729,7 @@ class OptionMenuMain():
             self.CreateAllCan(90,90,380,350,self.IntTxtrList["green"], "oneImage", self.onClick)
         else:
             self.CreateAllCan(90,90,380,350,self.IntTxtrList["red"], "oneImage", self.onClick)
-            
+
 class MenuMain(OptionMenuMain):
     def __init__(self):
         OptionMenuMain.__init__(self)
@@ -1258,51 +1301,6 @@ class Player():
                 self.dirXp=0
             elif evt.keysym.lower()=="f":
                 threading.Thread(target=self.Start_Fight).start()
-
-class EnnemyIA():
-    def __init__(self, x, y, parent):
-        self.x=x
-        self.y=y
-        self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.parent.Start_Fight(Ennemy=arg))
-        self.maxX=(int(self.x/25)-2, int(self.x/25)+2)
-        self.maxY=(int(self.y/25)-2, int(self.y/25)+2)
-        self.MainCan=parent.MainCan
-        self.parent=parent
-        self.IAOn=True
-        self.EnnemyImg=PhotoImage(file="ressources/textures/player/player_0.png")
-        self.Ennemy = self.MainCan.create_image(self.x, self.y, image=self.EnnemyImg, anchor=NW)
-    def Move(self):
-        r=randint(0, 250)
-        if r==5:
-            dirX=randint(-1, 1)
-            dirY=randint(-1, 1)
-            if dirX!=0 and dirY!=0:
-                r=randint(0, 1)
-                if r==0:
-                    self.StartMove(dirX, 0)
-                else:
-                    self.StartMove(0, dirY)
-            elif dirX==0 and dirY==0:
-                self.Move()
-            else:
-                self.StartMove(dirX, dirY)
-    def StartMove(self, dirX, dirY):
-        self.x+=dirX*25
-        self.y+=dirY*25
-        if (not self.maxX[0] < int(self.x/25) < self.maxX[1]) or self.parent.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.parent.ColliderList)[0]:
-            self.x-=dirX*25
-            self.y-=dirY*25
-            self.Move()
-        elif (not self.maxY[0] < int(self.y/25) < self.maxY[1]) or self.parent.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.parent.ColliderList)[0]:
-            self.x-=dirX*25
-            self.y-=dirY*25
-            self.Move()
-        else:
-            try:
-                self.MainCan.coords(self.Ennemy, self.x, self.y)
-                self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.parent.Start_Fight(Ennemy=arg))
-            except TclError:
-                pass
 
 class GraphicEngine(Player):
     def __init__(self):
