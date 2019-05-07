@@ -3,12 +3,12 @@
     "__class__": "Spells",
     "damage": 0,
     "prot": 0,
-    "magic_damages": 1,
+    "magic_damages": 5,
     "texture_acces": "ressources/textures/items/stick.png",
     "magic_prot": 0,
     "name": "basic_heal",
     "mana_consumation": 5,
-    "type": "heal",
-	"effet":"RAS"
+    "type": "damage",
+	"effet":"fire",
 	"drop_proba": 0
 }
