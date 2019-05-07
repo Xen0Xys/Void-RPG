@@ -1216,7 +1216,7 @@ class GraphicEngine(Player):
             self.CreateMap()
             self.CreateAllColliders()
 
-            self.IAList=[EnnemyIA(375, 500, self)]
+            self.IAList=[EnnemyIA(375, 300, self)]
 
             #Initialise le personnage
             try:
@@ -1232,7 +1232,7 @@ class GraphicEngine(Player):
         """Fonction pour creer les colliders"""
         self.ColliderList=[]
         temp=-1
-        self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa"]
+        self.isColliderList=["ap", "ao", "ar", "as", "aq", "aj", "ak", "ba", "bc", "bd", "be", "bf", "bh", "bi", "bb", "au", "av", "aw", "ax", "ay", "az", "aa", "ce"]
         for i in range(len(self.Matrice)):
             for j in range(len(self.Matrice[i])):
                 if self.Matrice[i][j] in self.isColliderList:
@@ -1241,6 +1241,9 @@ class GraphicEngine(Player):
                             if self.Matrice[i][j] in ["ao", "bm"]:
                                 temp+=1
                                 self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, temp)].split("*")[0], arg2=temp:self.StartGraphicEngine(arg1, houseNbre=arg2)))
+                            elif self.Matrice[i][j] in ["ce"]:
+                                temp+=1
+                                self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25, colliderEvt=lambda arg1="earth_{}_{}".format(self.mapX, self.mapY), arg2=-1:self.StartGraphicEngine(arg1, houseNbre=arg2)))
                             else:
                                 self.ColliderList.append(ColliderObject((int(j*25), int(i*25)), 25))
                         except KeyError as e:
