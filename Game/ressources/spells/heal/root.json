@@ -9,6 +9,6 @@
     "name": "basic_heal",
     "mana_consumation": 5,
     "type": "heal",
-	"effet":"RAS"
+	"effet":"RAS",
 	"drop_proba": 0
 }
