@@ -339,7 +339,10 @@ class Fight():
 
     def Fuite(self):
         if self.Speed>0.5: #0.5= vitesse de l'enemie
-            self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+            if int(self.house)==-1:
+                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+            else:
+                self.StartGraphicEngine("ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, int(self.house))].split("*")[0], houseNbre=int(self.house))
         else:
             pass
     def arme_principale(self):
