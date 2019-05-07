@@ -914,8 +914,8 @@ class TickGestionary(Collider):
             xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
             yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
         else:
-            xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":5}
-            yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":5}
+            xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3, "accel_speed":6}
+            yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3, "accel_speed":6}
         while self.main_loop_on:
             sleep(.01)
             if self.onFight==False:
@@ -1078,10 +1078,10 @@ class TickGestionary(Collider):
                                 self.x=int(args[2].split(";")[0])
                                 self.y=int(args[2].split(";")[1])
                             else:
-                                xinfos["speed_lim"]=3.5
-                                xinfos["accel_speed"]=5
-                                yinfos["speed_lim"]=3.5
-                                yinfos["accel_speed"]=5
+                                xinfos["speed_lim"]=3
+                                xinfos["accel_speed"]=6
+                                yinfos["speed_lim"]=3
+                                yinfos["accel_speed"]=6
                                 args = self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, self.house)].split("*")
                                 self.x=int(args[1].split(";")[0])
                                 self.y=int(args[1].split(";")[1])
