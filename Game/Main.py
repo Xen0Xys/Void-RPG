@@ -1290,7 +1290,7 @@ class GraphicEngine(Player):
         self.List=[]
         if self.oneImage==True:
             if self.canRotate==True:
-                self.CreateRotateTextures(self.Matrice)
+                self.CreateRotateTextures()
                 self.LevelImage=self.CreateOnePicture()
                 try:
                     self.MainCan.create_image(0, 0, image=self.LevelImage, anchor=NW)
@@ -1307,7 +1307,7 @@ class GraphicEngine(Player):
                 self.MainCan.create_image(0, 0, image=self.LevelImage, anchor=NW)
         else:
             if self.canRotate==True:
-                self.CreateRotateTextures(self.Matrice)
+                self.CreateRotateTextures()
                 self.PhotoimageList=[]
                 for i in range(len(self.List)):
                     try:
