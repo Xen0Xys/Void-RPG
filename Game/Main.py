@@ -996,6 +996,21 @@ class TickGestionary(Collider):
                                 self.functionToExecute()
 
 
+
+                    #Repositionnement en cas de changement de decors
+                    try:
+                        if lastHouse!=self.house:
+                            if self.house==-1:
+                                args = self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, lastHouse)].split("*")
+                                self.x=int(args[2].split(";")[0])
+                                self.y=int(args[2].split(";")[1])
+                            else:
+                                args = self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, self.house)].split("*")
+                                self.x=int(args[1].split(";")[0])
+                                self.y=int(args[1].split(";")[1])
+                    except UnboundLocalError:
+                        pass
+
                     #Changement de map
                     if self.x>730:
                         self.x=0
@@ -1013,6 +1028,7 @@ class TickGestionary(Collider):
                         self.y=725
                         self.mapY+=1
                         self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
+
 
                     if self.CheckMultipleColliders(ColliderObject((self.x+2, self.y+2), 21), self.IAColliderList)[0]:
                         self.functionToExecute()
