@@ -221,7 +221,6 @@ class SoundGestionnary():
         self.son.stop()
     def StopAllSounds(self):
         pygame.mixer.music.stop()
-
 class Fight():
     def __init___(self):
         pass
@@ -367,14 +366,30 @@ class Fight():
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
     def Magie(self):
         if self.Spells_for_fight["first_spell"].type=="heal":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["heal"], "heal", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["heal"], "heal", self.onMagicClick)
+        elif self.Spells_for_fight["first_spell"].type=="damage":
+            pass
+        elif self.Spells_for_fight["first_spell"].type=="supports":
+            pass
         if self.Spells_for_fight["second_spell"].type=="heal":
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
+        elif self.Spells_for_fight["second_spell"].type=="damage":
+            pass
+        elif self.Spells_for_fight["second_spell"].type=="supports":
+            pass
         if self.Spells_for_fight["third_spell"].type=="heal":
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-        if self.Spells_for_fight["fourth_spell"].type=="heal":
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-        self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
+        elif self.Spells_for_fight["third_spell"].type=="damage":
+            pass
+        elif self.Spells_for_fight["third_spell"].type=="supports":
+            pass
+       if self.Spells_for_fight["fourth_spell"].type=="heal":
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
+        elif self.Spells_for_fight["fouth_spell"].type=="damage":
+            pass
+        elif self.Spells_for_fight["fourth_spell"].type=="supports":
+            pass
+        self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onMagicClick)
 
 
     def sac(self):
@@ -459,11 +474,17 @@ class Fight():
         self.protection_attaque_leger=2
         self.tour_enemie()
 
+    def spell_dammage(self):
+        self.chance_de_toucher=80
+        r=randint(0,100)
+
+        if self.chance_de_toucher-self.esquiveE>r:
+
 
     def Heal(self):
         if self.Mana>0 and self.PV<100:
-            self.PV=self.PV+(self.spells_for-fight["first_spell"].magic_damages*self.Magic_Affinity)# 10= la puissance du sort
-            self.Mana=self.Mana-(self.spells_for_fight["first_spell"].mana_consumation)#10= cout en mana du sort
+            self.PV=self.PV+(self.Spells_for_fight["first_spell"].magic_damages*self.Magic_Affinity)# 10= la puissance du sort
+            self.Mana=self.Mana-(self.Spells_for_fight["first_spell"].mana_consumation)#10= cout en mana du sort
         else:
             pass
         if self.PV>100:
@@ -562,6 +583,7 @@ class Spells():
         self.magic_prot=0
         self.drop_proba=0
         self.type=""
+        self.effet=""
         self.texture_acces=""
         self.texture=None
 
@@ -622,6 +644,7 @@ class Init(SoundGestionnary, Fight):
                 obj.magic_prot=obj_dict["magic_prot"]
                 obj.drop_proba=obj_dict["drop_proba"]
                 obj.type=obj_dict["type"]
+                obj.effet=obj_dict["effet"]
                 obj.texture_acces=obj_dict["texture_acces"]
                 return obj
         return obj_dict
