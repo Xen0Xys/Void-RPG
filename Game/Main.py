@@ -1108,9 +1108,16 @@ class Player():
             self.y=float(self.ConfigList[1]["y"])
             #Equipement
             self.Equipment={
-            "principal_hand":self.itemObjectList[2],
+            "principal_hand":self.itemObjectList[1],
             "secondary_hand":self.itemObjectList[0]
             }
+            self.Spells_for_fight={
+            "first_spell":self.spellsObjectList[0],
+            "second_spell":self.spellsObjectList[0],
+            "third_spell":self.spellsObjectList[0],
+            "fourth_spell":self.spellsObjectList[0]
+            }
+            print(self.Spells_for_fight)
             #stat
             self.PV=float(self.ConfigList[1]["PV"])
             self.Speed=float(self.ConfigList[1]["speed"])
@@ -1124,10 +1131,18 @@ class Player():
             self.armure=self.defense+self.Equipment["principal_hand"].prot+self.Equipment["secondary_hand"].prot
             self.protection_attaque_leger=1
             self.protection_attaque_lourde=1
+            if self.Equipment["principal_hand"].type=="two_hand":
+                self.Equipment["secondary_hand"]=self.itemObjectList[3]
         except IndexError:
             self.Equipment={
-            "principal_hand":self.itemObjectList[2],
+            "principal_hand":self.itemObjectList[1],
             "secondary_hand":self.itemObjectList[0]
+            }
+            self.Spells_for_fight={
+            "first_spell":self.spellsObjectList[0],
+            "second_spell":self.spellsObjectList[0],
+            "third_spell":self.spellsObjectList[0],
+            "fourth_spell":self.spellsObjectList[0]
             }
             self.x=600.0
             self.y=500.0
