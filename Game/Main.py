@@ -334,15 +334,14 @@ class Fight():
     def onMagicClick(self, evt, arg):
         if arg=="retour":
             self.Start_Fight()
+        if arg=="damage":
+            self.spell_dammage
         if arg=="heal":
             self.Heal()
 
     def Fuite(self):
         if self.Speed>0.5: #0.5= vitesse de l'enemie
-            if int(self.house)==-1:
-                self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
-            else:
-                self.StartGraphicEngine("ressources/environment/houses/houses_map/"+self.MapConfig["earth_{}_{}-{}".format(self.mapX, self.mapY, int(self.house))].split("*")[0], houseNbre=int(self.house))
+            self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
         else:
             pass
     def arme_principale(self):
@@ -369,28 +368,40 @@ class Fight():
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
     def Magie(self):
         if self.Spells_for_fight["first_spell"].type=="heal":
+            self.spell_nbr="first"
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["first_spell"].type=="damage":
-            pass
+            self.spell_nbr="first"
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "damage", self.onMagicClick)
         elif self.Spells_for_fight["first_spell"].type=="supports":
+            self.spell_nbr="first"
             pass
         if self.Spells_for_fight["second_spell"].type=="heal":
+            self.spell_nbr="second"
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["second_spell"].type=="damage":
+            self.spell_nbr="second"
             pass
         elif self.Spells_for_fight["second_spell"].type=="supports":
+            self.spell_nbr="second"
             pass
         if self.Spells_for_fight["third_spell"].type=="heal":
+            self.spell_nbr="third"
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["third_spell"].type=="damage":
+            self.spell_nbr="third"
             pass
         elif self.Spells_for_fight["third_spell"].type=="supports":
+            self.spell_nbr="third"
             pass
        if self.Spells_for_fight["fourth_spell"].type=="heal":
+            self.spell_nbr="fourth"
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["fouth_spell"].type=="damage":
+            self.spell_nbr="fourth"
             pass
         elif self.Spells_for_fight["fourth_spell"].type=="supports":
+            self.spell_nbr="fourth"
             pass
         self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onMagicClick)
 
@@ -478,10 +489,14 @@ class Fight():
         self.tour_enemie()
 
     def spell_dammage(self):
-        self.chance_de_toucher=80
-        r=randint(0,100)
-
-        if self.chance_de_toucher-self.esquiveE>r:
+        if self.spell_nbr=="first":
+            pass
+        if self.spell_nbr=="second":
+            pass
+        if self.spell_nbr=="third":
+            pass
+        if self.spell_nbr=="fourth":
+            pass
 
 
     def Heal(self):
