@@ -260,50 +260,55 @@ class Fight():
         self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
         self.armureLabel.place(x=600, y=590)
         self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
-        self.armureELabel.place(x=10, y=10)
+        self.armureELabel.place(x=10, y=50)
         self.StatutLabel=Label(self.MainCan, text="statut:"+self.statut,font=self.font, bg="white")
         self.StatutLabel.place(x=600, y=550)
+        self.StatutELabel=Label(self.MainCan, text="statut:"+self.statutE,font=self.font, bg="white")
+        self.StatutELabel.place(x=10, y=10)
         self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
         self.PVLabel.place(x=600, y=630)
         self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
         self.ManaLabel.place(x=600, y=670)
         self.PVELabel=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
-        self.PVELabel.place(x=10, y=50)
+        self.PVELabel.place(x=10, y=90)
         self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
-        self.ManaELabel.place(x=10, y=90)
+        self.ManaELabel.place(x=10, y=130)
     def tour_enemie(self):
         self.Reset()
         if self.statutE=="stun":
             self.Reset_Visual()
         else:
             print("c'est a l'enemie de jouer")
-            self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
-            self.MainCan.pack()
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["arme_secondaire"], "arme_secondaire", self.onFightClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["magie"], "magie", self.onFightClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["sac"], "sac", self.onFightClick)
-            self.CreateAllCan(100,40,210,640,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
-            self.font=Font(family="Helvetica",size=14)
-            self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
-            self.armureLabel.place(x=600, y=590)
-            self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
-            self.armureELabel.place(x=10, y=10)
-            self.StatutLabel=Label(self.MainCan, text="statut:"+self.statut,font=self.font, bg="white")
-            self.StatutLabel.place(x=600, y=550)
-            self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
-            self.PVLabel.place(x=600, y=630)
-            self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
-            self.ManaLabel.place(x=600, y=670)
-            self.PVELabel=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
-            self.PVELabel.place(x=10, y=50)
-            self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
-            self.ManaELabel.place(x=10, y=90)
-            r=randint(0,100)
-            if r<50:
-                threading.Thread(target=self.Heavy_attackE).start()
-            else:
-                threading.Thread(target=self.Basic_AttackE).start()
+        self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
+        self.MainCan.pack()
+        self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
+        self.CreateAllCan(100,40,10,680,self.FightTxtrList["arme_secondaire"], "arme_secondaire", self.onFightClick)
+        self.CreateAllCan(100,40,110,640,self.FightTxtrList["magie"], "magie", self.onFightClick)
+        self.CreateAllCan(100,40,110,680,self.FightTxtrList["defense"], "defense", self.onFightClick)
+        self.CreateAllCan(100,40,210,640,self.FightTxtrList["sac"], "sac", self.onFightClick)
+        self.CreateAllCan(100,40,210,680,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
+        self.font=Font(family="Helvetica",size=14)
+        self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
+        self.armureLabel.place(x=600, y=590)
+        self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
+        self.armureELabel.place(x=10, y=50)
+        self.StatutLabel=Label(self.MainCan, text="statut:"+self.statut,font=self.font, bg="white")
+        self.StatutLabel.place(x=600, y=550)
+        self.StatutELabel=Label(self.MainCan, text="statut:"+self.statutE,font=self.font, bg="white")
+        self.StatutELabel.place(x=10, y=10)
+        self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
+        self.PVLabel.place(x=600, y=630)
+        self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
+        self.ManaLabel.place(x=600, y=670)
+        self.PVELabel=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
+        self.PVELabel.place(x=10, y=90)
+        self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
+        self.ManaELabel.place(x=10, y=130)
+        r=randint(0,100)
+        if r<50:
+            threading.Thread(target=self.Heavy_attackE).start()
+        else:
+            threading.Thread(target=self.Basic_AttackE).start()
 
 
 
@@ -490,14 +495,88 @@ class Fight():
 
     def spell_dammage(self):
         if self.spell_nbr=="first":
-            pass
-        if self.spell_nbr=="second":
-            pass
-        if self.spell_nbr=="third":
-            pass
-        if self.spell_nbr=="fourth":
-            pass
+            degatsM=(self.Spells_for_fight["first_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degats=self.Spells_for_fight["first_spell"].damage
+            self.PVE=self.PVE-degatsM
+            if self.defenseE>degats:
+                self.defenceE=self.defenceE-degats
+            elif 0<self.defenceE<degats:
+                degatsvie=degats-self.defenceE
+                self.defenceE=0
+                self.PVE=self.PVE-degatsvie
+            else:
+                self.PVE=self.PVE-degats
+            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
+            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+                r=randint(0,100)
+                if r>75 and self.statutE=="RAS":
+                    self.statutE="fire"
+                    self.tour_enemie()
+                else:
+                    self.tour_enemie()
 
+
+        if self.spell_nbr=="second":
+            degatsM=(self.Spells_for_fight["second_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degats=self.Spells_for_fight["second_spell"].damage
+            self.PVE=self.PVE-degatsM
+            if self.defenseE>degats:
+                self.defenceE=self.defenceE-degats
+            elif 0<self.defenceE<degats:
+                degatsvie=degats-self.defenceE
+                self.defenceE=0
+                self.PVE=self.PVE-degatsvie
+            else:
+                self.PVE=self.PVE-degats
+            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
+            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+                r=randint(0,100)
+                if r>75 and self.statutE=="RAS":
+                    self.statutE="fire"
+                    self.tour_enemie()
+                else:
+                    self.tour_enemie()
+
+        if self.spell_nbr=="third":
+            degatsM=(self.Spells_for_fight["third_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degats=self.Spells_for_fight["third_spell"].damage
+            self.PVE=self.PVE-degatsM
+            if self.defenseE>degats:
+                self.defenceE=self.defenceE-degats
+            elif 0<self.defenceE<degats:
+                degatsvie=degats-self.defenceE
+                self.defenceE=0
+                self.PVE=self.PVE-degatsvie
+            else:
+                self.PVE=self.PVE-degats
+            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
+            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+                r=randint(0,100)
+                if r>75 and self.statutE=="RAS":
+                    self.statutE="fire"
+                    self.tour_enemie()
+                else:
+                    self.tour_enemie()
+        if self.spell_nbr=="fourth":
+            degatsM=(self.Spells_for_fight["fouth_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degats=self.Spells_for_fight["fouth_spell"].damage
+            self.PVE=self.PVE-degatsM
+            if self.defenseE>degats:
+                self.defenceE=self.defenceE-degats
+            elif 0<self.defenceE<degats:
+                degatsvie=degats-self.defenceE
+                self.defenceE=0
+                self.PVE=self.PVE-degatsvie
+            else:
+                self.PVE=self.PVE-degats
+            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
+            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+                r=randint(0,100)
+                if r>75 and self.statutE=="RAS":
+                    self.statutE="fire"
+                    self.tour_enemie()
+                else:
+                    self.tour_enemie()
 
     def Heal(self):
         if self.Mana>0 and self.PV<100:
