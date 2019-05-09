@@ -1308,6 +1308,7 @@ class Player():
             self.protection_attaque_lourde=1
             if self.Equipment["principal_hand"].type=="two_hand":
                 self.Equipment["secondary_hand"]=self.itemObjectList[3]
+            self.magic_def=self.Equipment["principal_hand"].magic_prot+self.Equipment["secondary_hand"].magic_prot
         except IndexError:
             self.Equipment={
             "principal_hand":self.itemObjectList[1],
@@ -1333,6 +1334,8 @@ class Player():
             self.armure=self.defense+self.Equipment["principal_hand"].prot+self.Equipment["secondary_hand"].prot
             self.protection_attaque_leger=1
             self.protection_attaque_lourde=1
+            self.magic_def=self.Equipment["principal_hand"].magic_prot+self.Equipment["secondary_hand"].magic_prot
+
 
 
         self.moveInstances={}
