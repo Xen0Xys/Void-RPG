@@ -1333,10 +1333,10 @@ class Player():
             "secondary_hand":self.itemObjectList[0]
             }
             self.Spells_for_fight={
-            "first_spell":self.spellsObjectList[0],
-            "second_spell":self.spellsObjectList[0],
-            "third_spell":self.spellsObjectList[0],
-            "fourth_spell":self.spellsObjectList[0]
+            "first_spell":self.spellsObjectList[2],
+            "second_spell":NONE,
+            "third_spell":NONE,
+            "fourth_spell":NONE
             }
             print(self.Spells_for_fight)
             #stat
@@ -1361,10 +1361,10 @@ class Player():
             "secondary_hand":self.itemObjectList[0]
             }
             self.Spells_for_fight={
-            "first_spell":self.spellsObjectList[0],
-            "second_spell":self.spellsObjectList[0],
-            "third_spell":self.spellsObjectList[0],
-            "fourth_spell":self.spellsObjectList[0]
+            "first_spell":self.spellsObjectList[2],
+            "second_spell":NONE,
+            "third_spell":NONE,
+            "fourth_spell":NONE
             }
             self.x=600.0
             self.y=500.0
@@ -1381,6 +1381,7 @@ class Player():
             self.protection_attaque_leger=1
             self.protection_attaque_lourde=1
             self.magic_def=self.Equipment["principal_hand"].magic_prot+self.Equipment["secondary_hand"].magic_prot
+
 
 
 
