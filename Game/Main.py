@@ -227,6 +227,9 @@ class Fight():
     def Start_Fight(self, Ennemy=None):
         self.onFight=True
         self.Reset()
+        self.nbrtourmagicshield=0
+        self.def_spell_support_used=0
+        self.nbrtourfireE=0
         self.PVE=1500000
         self.PVE_max=1500000
         self.defenceE=50
@@ -247,9 +250,21 @@ class Fight():
         if self.statut=="Poison":
             self.PV=self.PV-(1/10*self.PV)
         print("a ton tour")
-        self.statutE="RAS"
+        if self.statutE=="stun":
+            self.statutE="RAS"
+        r=randint(0,100)
+        if r+(self.nbrtourfireE*5)>85:
+            self.nbrtourfireE=0
+            self.statutE="RAS"
+        if self.def_spell_support_used>0:
+            self.nbrtourmagicshield=self.nbrtourmagicshield+1
+            if self.nbrtourmagicshield==self.Spells_for_fight["first_spell"].nbrtour:
+                self.nbrtourmagicshield=0
+                self.def_spell_support_used=0
+
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
         self.MainCan.pack()
+        print(self.def_spell_support_used)
         self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
         self.CreateAllCan(100,40,10,680,self.FightTxtrList["arme_secondaire"], "arme_secondaire", self.onFightClick)
         self.CreateAllCan(100,40,110,640,self.FightTxtrList["magie"], "magie", self.onFightClick)
@@ -277,6 +292,9 @@ class Fight():
         self.Reset()
         if self.statutE=="stun":
             self.Reset_Visual()
+        elif self.statutE=="fire":
+            self.PVE=self.PVE-(1/100*self.PVE_max)
+            self.nbrtourfireE=self.nbrtourfireE+1
         else:
             print("c'est a l'enemie de jouer")
         self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
@@ -340,7 +358,9 @@ class Fight():
         if arg=="retour":
             self.Start_Fight()
         if arg=="damage":
-            self.spell_dammage
+            self.spell_dammage()
+        if arg=="support":
+            self.spell_support()
         if arg=="heal":
             self.Heal()
 
@@ -371,8 +391,12 @@ class Fight():
             self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
             self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+
+
     def Magie(self):
-        if self.Spells_for_fight["first_spell"].type=="heal":
+        if self.Spells_for_fight["first_spell"]==NONE:
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        elif self.Spells_for_fight["first_spell"].type=="heal":
             self.spell_nbr="first"
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["first_spell"].type=="damage":
@@ -380,8 +404,11 @@ class Fight():
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "damage", self.onMagicClick)
         elif self.Spells_for_fight["first_spell"].type=="supports":
             self.spell_nbr="first"
-            pass
-        if self.Spells_for_fight["second_spell"].type=="heal":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "support", self.onMagicClick)
+
+        if self.Spells_for_fight["second_spell"]==NONE:
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        elif self.Spells_for_fight["second_spell"].type=="heal":
             self.spell_nbr="second"
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["second_spell"].type=="damage":
@@ -390,18 +417,24 @@ class Fight():
         elif self.Spells_for_fight["second_spell"].type=="supports":
             self.spell_nbr="second"
             pass
-        if self.Spells_for_fight["third_spell"].type=="heal":
+
+        if self.Spells_for_fight["third_spell"]==NONE:
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        elif self.Spells_for_fight["third_spell"].type=="heal":
             self.spell_nbr="third"
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["third_spell"].type=="damage":
             self.spell_nbr="third"
             pass
         elif self.Spells_for_fight["third_spell"].type=="supports":
             self.spell_nbr="third"
             pass
-        if self.Spells_for_fight["fourth_spell"].type=="heal":
+
+        if self.Spells_for_fight["fourth_spell"]==NONE:
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
+        elif self.Spells_for_fight["fourth_spell"].type=="heal":
             self.spell_nbr="fourth"
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
         elif self.Spells_for_fight["fourth_spell"].type=="damage":
             self.spell_nbr="fourth"
             pass
@@ -493,12 +526,24 @@ class Fight():
         self.protection_attaque_leger=2
         self.tour_enemie()
 
+    def spell_support(self):
+        if self.spell_nbr=="first":
+            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
+        if self.spell_nbr=="second":
+            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
+        if self.spell_nbr=="third":
+            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
+        if self.spell_nbr=="fourth":
+            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
+        self.tour_enemie()
+
+
     def spell_dammage(self):
         if self.spell_nbr=="first":
-            degatsM=(self.Spells_for_fight["first_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degatsM=(self.Spells_for_fight["first_spell"].magic_damages*self.Magic_Affinity)
             degats=self.Spells_for_fight["first_spell"].damage
             self.PVE=self.PVE-degatsM
-            if self.defenseE>degats:
+            if self.defenceE>degats:
                 self.defenceE=self.defenceE-degats
             elif 0<self.defenceE<degats:
                 degatsvie=degats-self.defenceE
@@ -507,7 +552,7 @@ class Fight():
             else:
                 self.PVE=self.PVE-degats
             self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+            if self.Spells_for_fight["first_spell"].effet=="fire":
                 r=randint(0,100)
                 if r>75 and self.statutE=="RAS":
                     self.statutE="fire"
@@ -517,7 +562,7 @@ class Fight():
 
 
         if self.spell_nbr=="second":
-            degatsM=(self.Spells_for_fight["second_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degatsM=(self.Spells_for_fight["second_spell"].magic_damages*self.Magic_Affinity)
             degats=self.Spells_for_fight["second_spell"].damage
             self.PVE=self.PVE-degatsM
             if self.defenseE>degats:
@@ -529,7 +574,7 @@ class Fight():
             else:
                 self.PVE=self.PVE-degats
             self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+            if self.Spells_for_fight["first_spell"].effet=="fire":
                 r=randint(0,100)
                 if r>75 and self.statutE=="RAS":
                     self.statutE="fire"
@@ -538,7 +583,7 @@ class Fight():
                     self.tour_enemie()
 
         if self.spell_nbr=="third":
-            degatsM=(self.Spells_for_fight["third_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degatsM=(self.Spells_for_fight["third_spell"].magic_damages*self.Magic_Affinity)
             degats=self.Spells_for_fight["third_spell"].damage
             self.PVE=self.PVE-degatsM
             if self.defenseE>degats:
@@ -550,7 +595,7 @@ class Fight():
             else:
                 self.PVE=self.PVE-degats
             self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+            if self.Spells_for_fight["first_spell"].effet=="fire":
                 r=randint(0,100)
                 if r>75 and self.statutE=="RAS":
                     self.statutE="fire"
@@ -558,7 +603,7 @@ class Fight():
                 else:
                     self.tour_enemie()
         if self.spell_nbr=="fourth":
-            degatsM=(self.Spells_for_fight["fouth_spell"].Magic_damage*self.Magic_Affinity)-self.magic_def
+            degatsM=(self.Spells_for_fight["fouth_spell"].magic_damages*self.Magic_Affinity)
             degats=self.Spells_for_fight["fouth_spell"].damage
             self.PVE=self.PVE-degatsM
             if self.defenseE>degats:
@@ -570,7 +615,7 @@ class Fight():
             else:
                 self.PVE=self.PVE-degats
             self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.self.Spells_for_fight["first_spell"].effect=="fire":
+            if self.Spells_for_fight["first_spell"].effet=="fire":
                 r=randint(0,100)
                 if r>75 and self.statutE=="RAS":
                     self.statutE="fire"
@@ -697,6 +742,7 @@ class EnnemyIA():
                 self.EnnemyCollider = ColliderObject((self.x+2, self.y+2), 21, colliderEvt=lambda arg=self:self.parent.Start_Fight(Ennemy=arg))
             except TclError:
                 pass
+
 
 class Item():
     def __init__(self):
