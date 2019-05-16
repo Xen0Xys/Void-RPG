@@ -1,13 +1,13 @@
 {
     "durability": 0,
     "__class__": "Item",
-    "damage": 1,
-    "prot": 50,
+    "damage": 10,
+    "prot": 0,
     "magic_damages": 0,
     "texture_acces": "ressources/textures/items/stick.png",
     "magic_prot": 0,
-    "name": "Stick",
+    "name": "Basic Heavy Sword",
     "mana_consumation": 0,
-    "type": "one_hand",
+    "type": "two_hand",
 	"drop_proba": 0
 }
