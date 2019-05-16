@@ -2,7 +2,7 @@
     "durability": 0,
     "__class__": "Item",
     "damage": 1,
-    "prot": 0,
+    "prot": 50,
     "magic_damages": 0,
     "texture_acces": "ressources/textures/items/stick.png",
     "magic_prot": 0,
