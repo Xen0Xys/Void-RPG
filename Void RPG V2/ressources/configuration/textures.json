@@ -93,6 +93,7 @@
         "green": "green.png",
         "option_title": "option_title.png",
         "quitter": "cross.png",
-        "fight": "cross.png"
+        "fight": "cross.png",
+		"wallpaper": "wallpaper.png"
     }
 }

@@ -71,6 +71,17 @@ class MenuMain():
         if arg=="playOne":
             self.parent.loadMap()
 
+class LoadingView():
+    def __init__(self, _parent):
+        self.parent = _parent
+        self.resetUI()
+    def resetUI(self):
+        for i in self.parent.winfo_children():
+            i.destroy()
+    def setupUI(self):
+        pass
+
+
 class GraphicEngine(Tk):
     def __init__(self, _graphic_engine_options=None):#Initialize game engine
         super().__init__()
@@ -127,18 +138,22 @@ class GraphicEngine(Tk):
                         print(e)
         return textures, pil_textures
     def loadMap(self):
+        LoadingView(self)
         map_name = "earth"
-        self.map = PIL.Image.new("RGB", (15000, 15000))
+        self.pil_map = PIL.Image.new("RGB", (15000, 15000))
         if self.options["progressive_map_generation"] == False:
             with open("ressources/maps/{}.json".format(map_name), "r") as file:
                 map_matrice = json.loads(file.read())
             for y in range(len(map_matrice)):
                 for x in range(len(map_matrice[y])):
                     if map_matrice[y][x] != "00":
-                        self.map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
+                        self.pil_map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
+        self.map = PIL.ImageTk.PhotoImage(self.pil_map)
         self.displayMap()
-    def displayMap(self):
+    def loadAroundPlayer(self):
         pass
+    def displayMap(self):
+        print("display_map")
 
 
 class GameEngine():
