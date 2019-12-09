@@ -19,7 +19,8 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-from PIL import Image, ImageTk
+import PIL.Image
+import PIL.ImageTk
 from tkinter.font import Font
 from tkinter import *
 import threading
@@ -37,11 +38,11 @@ class MenuMain():
         self.size_x = _size_x
         self.size_y = _size_y
         self.initUI()
-    def resetGUI(self):
+    def resetUI(self):
         for i in self.parent.winfo_children():
             i.destroy()
     def initUI(self):
-        self.resetGUI()
+        self.resetUI()
         self.parent.title("Void - RPG")
         self.setUI()
         self.setButtons()
@@ -77,7 +78,7 @@ class GraphicEngine(Tk):
             self.options = self.loadGraphicEngineOptions()
         else:
             self.options = _graphic_engine_options
-        self.textures = self.loadTextures()
+        self.textures, self.pil_textures = self.loadTextures()
         self.protocol("WM_DELETE_WINDOW", self.onWindowClosing)
         MenuMain(self, self.textures["ui"], self.options["x_window_size"], self.options["y_window_size"])
     def onWindowClosing(self):
@@ -113,20 +114,30 @@ class GraphicEngine(Tk):
         with open("ressources/configuration/textures.json", "r") as file:
             json_content = json.loads(file.read())
         textures = {}
+        pil_textures = {}
         for category in json_content.keys():
             textures[category] = {}
+            pil_textures[category] = {}
             for content in json_content[category].keys():
                 if json_content[category][content] != "NONE":
                     try:
                         textures[category][content] = PhotoImage(file="ressources/textures/{}/{}".format(category, json_content[category][content]))
+                        pil_textures[category][content] = PIL.Image.open("ressources/textures/{}/{}".format(category, json_content[category][content]))
                     except TclError as e:
                         print(e)
-        return textures
+        return textures, pil_textures
     def loadMap(self):
-        if self.options["progressive_map_generation"] == True:
-            pass
-        else:
-            pass
+        map_name = "earth"
+        self.map = PIL.Image.new("RGB", (15000, 15000))
+        if self.options["progressive_map_generation"] == False:
+            with open("ressources/maps/{}.json".format(map_name), "r") as file:
+                map_matrice = json.loads(file.read())
+            for y in range(len(map_matrice)):
+                for x in range(len(map_matrice[y])):
+                    if map_matrice[y][x] != "00":
+                        self.map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
+        self.map.save("map.png")
+
 
 class GameEngine():
     def __init__(self):
