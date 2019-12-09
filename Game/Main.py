@@ -221,6 +221,9 @@ class SoundGestionnary():
         self.son.stop()
     def StopAllSounds(self):
         pygame.mixer.music.stop()
+
+
+
 class Fight():
     def __init___(self):
         pass
@@ -230,6 +233,7 @@ class Fight():
         self.nbrtourmagicshield=0
         self.def_spell_support_used=0
         self.nbrtourfireE=0
+
         self.PVE=1500000
         self.PVE_max=1500000
         self.defenceE=50
@@ -240,11 +244,15 @@ class Fight():
         self.Magic_AffinityE=10
         self.esquiveE=5
         self.statutE="RAS"
+
+
         self.esquive=5
         if self.Speed>=self.SpeedE:
             self.Reset_Visual()
         else:
             self.tour_enemie()
+
+
     def Reset_Visual(self):
         self.Reset()
         if self.statut=="Poison":
@@ -288,6 +296,7 @@ class Fight():
         self.PVELabel.place(x=10, y=90)
         self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
         self.ManaELabel.place(x=10, y=130)
+        
     def tour_enemie(self):
         self.Reset()
         if self.statutE=="stun":
@@ -341,355 +350,98 @@ class Fight():
             self.sac()
         if arg=="fuite":
             self.Fuite()
+
+
     def onAttaqueClick(self, evt, arg):
         if arg=="basic attack":
-            self.Basic_Attack()
+            pass
         if arg=="heavy attack":
-            self.Heavy_attack()
+            pass
         if arg=="coup_de_bouclier":
-            self.Coup_de_bouclier()
+            pass
         if arg=="protection_attaque_lourd":
-            self.Protection_attaque_lourd()
+            pass
         if arg=="protection_attaque_legere":
-            self.Protection_attaque_legere()
+            pass
         if arg=="retour":
             self.Reset_Visual()
+
     def onMagicClick(self, evt, arg):
         if arg=="retour":
             self.Start_Fight()
         if arg=="damage":
-            self.spell_dammage()
+            pass
         if arg=="support":
-            self.spell_support()
+            pass
         if arg=="heal":
-            self.Heal()
+            pass
 
     def Fuite(self):
         if self.Speed>0.5: #0.5= vitesse de l'enemie
             self.StartGraphicEngine("earth_{}_{}".format(self.mapX, self.mapY))
         else:
             pass
+
+
     def arme_principale(self):
         self.hand="principal"
-        if self.Equipment["principal_hand"].type=="one_hand":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+        if self.Equipment["principal_hand"].type_of_items=="batte":
+            self.first_attack_interface("batte")
+        elif self.Equipment["principal_hand"].type_of_items=="sword":
+            self.first_attack_interface("sword")
+        elif self.Equipment["principal_hand"].type_of_items=="axes":
+            self.first_attack_interface("axes")
+        elif self.Equipment["principal_hand"].type_of_items=="dagger":
+            self.first_attack_interface("dagger")
+        elif self.Equipment["principal_hand"].type_of_items=="hammer":
+            self.first_attack_interface("hammer")
+        elif self.Equipment["principal_hand"].type_of_items=="whip":
+            self.first_attack_interface("whip")
+
     def arme_secondaire(self):
         self.hand="secondary"
-        if self.Equipment["secondary_hand"].type=="shield":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "coup_de_bouclier", self.onAttaqueClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "protection_attaque_lourd", self.onAttaqueClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_1"], "protection_attaque_legere", self.onAttaqueClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
-        elif self.Equipment["secondary_hand"].type=="one_hand":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "basic attack", self.onAttaqueClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "heavy attack", self.onAttaqueClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onAttaqueClick)
-            self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onAttaqueClick)
+        if self.Equipment["principal_hand"].type_of_items=="batte":
+            self.second_attack_interface("batte")
+        elif self.Equipment["principal_hand"].type_of_items=="sword":
+            self.second_attack_interface("sword")
+        elif self.Equipment["principal_hand"].type_of_items=="axes":
+            self.second_attack_interface("axes")
+        elif self.Equipment["principal_hand"].type_of_items=="dagger":
+            self.second_attack_interface("dagger")
+        elif self.Equipment["principal_hand"].type_of_items=="hammer":
+            self.second_attack_interface("hammer")
+        elif self.Equipment["principal_hand"].type_of_items=="whip":
+            self.second_attack_interface("whip")
+
+    def first_attack_interface(self, type_of_items):
+        if type_of_items == "batte":
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList[""], "", self.onFightClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList[""], "", self.onFightClick)
+            self.CreateAllCan(100,40,210,640,self.FightTxtrList[""], "", self.onFightClick)
+            self.CreateAllCan(100,40,210,680,self.FightTxtrList[""], "", self.onFightClick)
+
+    def second_attack_interface(self, type_of_items):
+        if type_of_items == "batte":
+            print("eeeeeeeeeeeeeeeeeeeeeeeeeee")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     def Magie(self):
-        if self.Spells_for_fight["first_spell"]==NONE:
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        elif self.Spells_for_fight["first_spell"].type=="heal":
-            self.spell_nbr="first"
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["heal"], "heal", self.onMagicClick)
-        elif self.Spells_for_fight["first_spell"].type=="damage":
-            self.spell_nbr="first"
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "damage", self.onMagicClick)
-        elif self.Spells_for_fight["first_spell"].type=="supports":
-            self.spell_nbr="first"
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "support", self.onMagicClick)
+        pass
 
-        if self.Spells_for_fight["second_spell"]==NONE:
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        elif self.Spells_for_fight["second_spell"].type=="heal":
-            self.spell_nbr="second"
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
-        elif self.Spells_for_fight["second_spell"].type=="damage":
-            self.spell_nbr="second"
-            pass
-        elif self.Spells_for_fight["second_spell"].type=="supports":
-            self.spell_nbr="second"
-            pass
-
-        if self.Spells_for_fight["third_spell"]==NONE:
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        elif self.Spells_for_fight["third_spell"].type=="heal":
-            self.spell_nbr="third"
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["heal"], "heal", self.onMagicClick)
-        elif self.Spells_for_fight["third_spell"].type=="damage":
-            self.spell_nbr="third"
-            pass
-        elif self.Spells_for_fight["third_spell"].type=="supports":
-            self.spell_nbr="third"
-            pass
-
-        if self.Spells_for_fight["fourth_spell"]==NONE:
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["blanc"], "", self.onMagicClick)
-        elif self.Spells_for_fight["fourth_spell"].type=="heal":
-            self.spell_nbr="fourth"
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["heal"], "heal", self.onMagicClick)
-        elif self.Spells_for_fight["fourth_spell"].type=="damage":
-            self.spell_nbr="fourth"
-            pass
-        elif self.Spells_for_fight["fourth_spell"].type=="supports":
-            self.spell_nbr="fourth"
-            pass
-        self.CreateAllCan(100,40,210,640,self.FightTxtrList["retour"], "retour", self.onMagicClick)
-
-
-    def sac(self):
-        self.tour_enemie
-
-
-    def Heavy_attack(self):
-        self.chance_de_toucher=80
-        r=randint(0,100)
-        if self.hand=="principal":
-            degats=(self.Equipment["principal_hand"].damage*self.Strength)+10
-        else:
-            degats=(self.Equipment["secondary_hand"].damage*self.Strength)+10
-        if self.chance_de_toucher-self.esquiveE>r:
-            if self.defenceE>degats:
-                self.defenceE=self.defenceE-((90/100)*degats)
-                self.PVE=self.PVE-((10/100)*degats)
-            elif self.defenceE==0:
-                self.defenceE=0
-                self.PVE=self.PVE-degats
-            elif 0<self.defenceE<degats:
-                degatsvie=degats-self.defenceE
-                self.defenceE=0
-                self.PVE=self.PVE-degatsvie
-            self.esquive=0
-        else:
-            self.PrintMessage("l'enemie a esquive")
-        self.tour_enemie()
-
-    def Basic_Attack (self):
-        self.chance_de_toucher=100
-        r=randint(0,100)
-        if self.hand=="principal":
-            degats=self.Equipment["principal_hand"].damage*self.Strength
-        else:
-            degats=self.Equipment["secondary_hand"].damage*self.Strength
-        if self.chance_de_toucher-self.esquiveE>r:
-            if self.defenceE>=degats:
-                self.defenceE=self.defenceE-degats
-            elif self.defenceE==0:
-                self.PVE=self.PVE-degats
-            elif 0<self.defenceE<degats:
-                degatsvie=degats-self.defenceE
-                self.defenceE=0
-                self.PVE=self.PVE-degatsvie
-        else:
-            self.PrintMessage("l'enemie a esquive")
-        self.tour_enemie()
-
-    def Coup_de_bouclier(self):
-        self.chance_de_toucher=100
-        r=randint(0,100)
-        if self.hand=="principal":
-            degats=self.Equipment["principal_hand"].damage*self.Strength
-        else:
-            degats=self.Equipment["secondary_hand"].damage*self.Strength
-        if self.chance_de_toucher-self.esquiveE>r:
-            if self.defenceE>=degats:
-                self.defenceE=self.defenceE-degats
-            elif self.defenceE==0:
-                self.PVE=self.PVE-degats
-            elif 0<self.defenceE<degats:
-                degatsvie=degats-self.defenceE
-                self.defenceE=0
-                self.PVE=self.PVE-degatsvie
-        else:
-            self.PrintMessage("l'enemie a esquive")
-        r2=randint(0,100)
-        if r2<=60:
-            self.tour_enemie()
-        else:
-            self.PrintMessage("l'enemie est stun")
-            self.statutE="stun"
-            self.tour_enemie()
-
-    def Protection_attaque_lourd(self):
-        self.protection_attaque_lourde=2
-        self.protection_attaque_leger=0.5
-        self.tour_enemie()
-    def Protection_attaque_legere(self):
-        self.protection_attaque_lourde=0.5
-        self.protection_attaque_leger=2
-        self.tour_enemie()
-
-    def spell_support(self):
-        if self.spell_nbr=="first":
-            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
-        if self.spell_nbr=="second":
-            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
-        if self.spell_nbr=="third":
-            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
-        if self.spell_nbr=="fourth":
-            self.def_spell_support_used=self.Spells_for_fight["first_spell"].magic_prot
-        self.tour_enemie()
-
-
-    def spell_dammage(self):
-        if self.spell_nbr=="first":
-            degatsM=(self.Spells_for_fight["first_spell"].magic_damages*self.Magic_Affinity)
-            degats=self.Spells_for_fight["first_spell"].damage
-            self.PVE=self.PVE-degatsM
-            if self.defenceE>degats:
-                self.defenceE=self.defenceE-degats
-            elif 0<self.defenceE<degats:
-                degatsvie=degats-self.defenceE
-                self.defenceE=0
-                self.PVE=self.PVE-degatsvie
-            else:
-                self.PVE=self.PVE-degats
-            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.Spells_for_fight["first_spell"].effet=="fire":
-                r=randint(0,100)
-                if r>75 and self.statutE=="RAS":
-                    self.statutE="fire"
-                    self.tour_enemie()
-                else:
-                    self.tour_enemie()
-
-
-        if self.spell_nbr=="second":
-            degatsM=(self.Spells_for_fight["second_spell"].magic_damages*self.Magic_Affinity)
-            degats=self.Spells_for_fight["second_spell"].damage
-            self.PVE=self.PVE-degatsM
-            if self.defenseE>degats:
-                self.defenceE=self.defenceE-degats
-            elif 0<self.defenceE<degats:
-                degatsvie=degats-self.defenceE
-                self.defenceE=0
-                self.PVE=self.PVE-degatsvie
-            else:
-                self.PVE=self.PVE-degats
-            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.Spells_for_fight["first_spell"].effet=="fire":
-                r=randint(0,100)
-                if r>75 and self.statutE=="RAS":
-                    self.statutE="fire"
-                    self.tour_enemie()
-                else:
-                    self.tour_enemie()
-
-        if self.spell_nbr=="third":
-            degatsM=(self.Spells_for_fight["third_spell"].magic_damages*self.Magic_Affinity)
-            degats=self.Spells_for_fight["third_spell"].damage
-            self.PVE=self.PVE-degatsM
-            if self.defenseE>degats:
-                self.defenceE=self.defenceE-degats
-            elif 0<self.defenceE<degats:
-                degatsvie=degats-self.defenceE
-                self.defenceE=0
-                self.PVE=self.PVE-degatsvie
-            else:
-                self.PVE=self.PVE-degats
-            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.Spells_for_fight["first_spell"].effet=="fire":
-                r=randint(0,100)
-                if r>75 and self.statutE=="RAS":
-                    self.statutE="fire"
-                    self.tour_enemie()
-                else:
-                    self.tour_enemie()
-        if self.spell_nbr=="fourth":
-            degatsM=(self.Spells_for_fight["fouth_spell"].magic_damages*self.Magic_Affinity)
-            degats=self.Spells_for_fight["fouth_spell"].damage
-            self.PVE=self.PVE-degatsM
-            if self.defenseE>degats:
-                self.defenceE=self.defenceE-degats
-            elif 0<self.defenceE<degats:
-                degatsvie=degats-self.defenceE
-                self.defenceE=0
-                self.PVE=self.PVE-degatsvie
-            else:
-                self.PVE=self.PVE-degats
-            self.Mana=self.Mana-self.Spells_for_fight["first_spell"].mana_consumation
-            if self.Spells_for_fight["first_spell"].effet=="fire":
-                r=randint(0,100)
-                if r>75 and self.statutE=="RAS":
-                    self.statutE="fire"
-                    self.tour_enemie()
-                else:
-                    self.tour_enemie()
-
-    def Heal(self):
-        if self.Mana>0 and self.PV<100:
-            self.PV=self.PV+(self.Spells_for_fight["first_spell"].magic_damages*self.Magic_Affinity)# 10= la puissance du sort
-            self.Mana=self.Mana-(self.Spells_for_fight["first_spell"].mana_consumation)#10= cout en mana du sort
-        else:
-            pass
-        if self.PV>100:
-            self.PV=100
-        self.tour_enemie()
-
-
-    def Heavy_attackE(self):
-         self.PrintMessage("attendez")
-         sleep(5)
-         self.chance_de_toucher=80
-         r=randint(0,100)
-         if self.chance_de_toucher-self.esquive>r:
-            degats=(((10*self.StrengthE)+10)/self.protection_attaque_lourde)*self.protection_attaque_leger
-            if self.armure>degats:
-                self.armure=self.armure-((90/100)*degats)
-                self.PV=self.PV-((10/100)*degats)
-            elif self.armure==0:
-                self.armure=0
-                self.PV=self.PV-degats
-            elif 0<self.armure<degats:
-                degatsvie=degats-self.armure
-                self.armure=0
-                self.PV=self.PV-degatsvie
-            self.esquiveE=0
-         else:
-            self.PrintMessage("vous avez esquive")
-         self.protection_attaque_lourde=1
-         self.protection_attaque_legere=1
-         if self.PV<0:
-            self.PV=0
-         self.Reset_Visual()
-
-
-    def Basic_AttackE(self):
-        self.PrintMessage("attendez")
-        sleep(5)
-        self.chance_de_toucher=100
-        r=randint(0,100)
-        degats=((10*self.StrengthE)/self.protection_attaque_leger)*self.protection_attaque_lourde
-        if self.chance_de_toucher-self.esquive>r:
-            if self.armure>=degats:
-                self.armure=self.armure-degats
-            elif self.armure==0:
-                self.statut="Poison"
-                self.PrintMessage("vous etes empoisonne")
-                sleep(2)
-                self.PV=self.PV-degats
-            elif 0<self.armure<degats:
-                degatsvie=degats-self.armure
-                self.armure=0
-                self.PV=self.PV-degatsvie
-                self.statut="Poison"
-                self.PrintMessage("vous etes empoisonne")
-                sleep(2)
-        else:
-            self.PrintMessage("vous avez esquive")
-            sleep(1.5)
-        self.protection_attaque_lourde=1
-        self.protection_attaque_legere=1
-        if self.PV<0:
-            self.PV=0
-        self.Reset_Visual()
     def PrintMessage(self, msg):
         threading.Thread(target=self.__PrintMessage, args=(msg,)).start()
     def __PrintMessage(self, msg):
@@ -808,6 +560,7 @@ class Init(SoundGestionnary, Fight):
                 obj.magic_prot=obj_dict["magic_prot"]
                 obj.drop_proba=obj_dict["drop_proba"]
                 obj.type=obj_dict["type"]
+                obj.type_of_items=obj_dict ["type_of_items"]
                 obj.texture_acces=obj_dict["texture_acces"]
                 return obj
         return obj_dict
