@@ -19,6 +19,8 @@ class GraphicEngine(Tk):
             #Init all options here
             options["x_window_size"] = 300
             options["y_window_size"] = 300
+            with open("ressources/configuration/graphic_engine.json", "w") as file:
+                file.write(json.dumps(options, indent=4))
             return options
         def loadOptions():
             with open("ressources/configuration/graphic_engine.json", "r") as file:
