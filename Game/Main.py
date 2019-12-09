@@ -415,15 +415,15 @@ class Fight():
 
     def firstAttackInterface(self, type_of_items):
         if type_of_items == "batte":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitBatClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitBatClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitBatClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitBatClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "battingStrike", self.onAttackWhitBatClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "homeRunStrike", self.onAttackWhitBatClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "skullBreach", self.onAttackWhitBatClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "legBreakage", self.onAttackWhitBatClick)
         elif type_of_items == "sword":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitSwordClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitSwordClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitSwordClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitSwordClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "flankStroke", self.onAttackWhitSwordClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "riposte", self.onAttackWhitSwordClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "weakPointHit", self.onAttackWhitSwordClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "sequenceOfBlows", self.onAttackWhitSwordClick)
         elif type_of_items == "axes":
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitAxesClick)
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitAxesClick)
@@ -434,27 +434,55 @@ class Fight():
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitDaggerClick)
             self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitDaggerClick)
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitDaggerClick)
-
+        elif type_of_items == "hammer":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitHammerClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitHammerClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitHammerClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitHammerClick)
+        elif type_of_items == "whip":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitWhipClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitWhipClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitWhipClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitWhipClick)
 
     def onAttackWhitBatClick(self, evt, arg):
-        if arg == "1":
+        if arg == "battingStrike":
             pass
-        elif arg == "2":
+        elif arg == "homeRunStrike":
             pass
-        elif arg == "3":
+        elif arg == "skullBreach":
             pass
-        elif arg == "4":
+        elif arg == "legBreakage":
             pass
 
+    def battingStrike(self):
+        pass
+    def homeRunStrike(self):
+        pass
+    def skullBreach(self):
+        pass
+    def legBreakage(self):
+        pass
+
+
     def onAttackWhitSwordClick(self, evt, arg):
-        if arg == "1":
+        if arg == "flankStroke":
             pass
-        elif arg == "2":
+        elif arg == "riposte":
             pass
-        elif arg == "3":
+        elif arg == "weakPointHit":
             pass
-        elif arg == "4":
+        elif arg == "sequenceOfBlows":
             pass
+
+    def flankStroke(self):
+        pass
+    def riposte(self):
+        pass
+    def weakPointHit(self):
+        pass
+    def sequenceOfBlows(self):
+        pass
 
     def onAttackWhitAxesClick(self, evt, arg):
         if arg == "1":
@@ -465,6 +493,8 @@ class Fight():
             pass
         elif arg == "4":
             pass
+    
+
 
     def onAttackWhitDaggerClick(self, evt, arg):
         if arg == "1":
@@ -476,12 +506,27 @@ class Fight():
         elif arg == "4":
             pass
 
+    def onAttackWhitHammerClick(self, evt, arg):
+        if arg == "1":
+            pass
+        elif arg == "2":
+            pass
+        elif arg == "3":
+            pass
+        elif arg == "4":
+            pass
 
-    def battingStrike(self):
-        pass
-    def homeRunStrike(self):
-        pass
-    def 
+    def onAttackWhitWhipClick(self, evt, arg):
+        if arg == "1":
+            pass
+        elif arg == "2":
+            pass
+        elif arg == "3":
+            pass
+        elif arg == "4":
+            pass
+
+
 
 
 
