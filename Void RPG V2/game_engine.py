@@ -61,22 +61,26 @@ class GraphicEngine(Tk):
     def showWindow(self):
         self.mainloop()
     def loadGraphicEngineOptions(self):
+        #Load all graphic engine options
         def createOptions():
+            #Generate default options
             options = {}
             #Init all options here
-            options["x_window_size"] = 300
-            options["y_window_size"] = 300
+            options["x_window_size"] = 700
+            options["y_window_size"] = 700
             with open("ressources/configuration/graphic_engine.json", "w") as file:
                 file.write(json.dumps(options, indent=4))
             return options
         def loadOptions():
+            #Load options from file
             with open("ressources/configuration/graphic_engine.json", "r") as file:
                 json_content = json.loads(file.read())
             return json_content
+        #Execute good function in good case
         if not os.path.exists("ressources/configuration/graphic_engine.json"):
-            return createOptions()
+            return createOptions() 
         else:
-            return loadOptions()
+            return createOptions() #DO CHANGE HERE
     def loadTextures(self):
         with open("ressources/configuration/textures.json", "r") as file:
             json_content = json.loads(file.read())
