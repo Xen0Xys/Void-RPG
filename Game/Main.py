@@ -425,15 +425,15 @@ class Fight():
             self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "weakPointHit", self.onAttackWhitSwordClick)
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "sequenceOfBlows", self.onAttackWhitSwordClick)
         elif type_of_items == "axes":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitAxesClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitAxesClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitAxesClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitAxesClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "basicAttack", self.onAttackWhitAxesClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "shieldBreaking", self.onAttackWhitAxesClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "decapitation", self.onAttackWhitAxesClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "berserkAttack", self.onAttackWhitAxesClick)
         elif type_of_items == "dagger":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitDaggerClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitDaggerClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitDaggerClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitDaggerClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "knifeStabbing", self.onAttackWhitDaggerClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "sneakAttack", self.onAttackWhitDaggerClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "bloodyAttack", self.onAttackWhitDaggerClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "deadlyBlow", self.onAttackWhitDaggerClick)
         elif type_of_items == "hammer":
             self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitHammerClick)
             self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitHammerClick)
@@ -485,26 +485,41 @@ class Fight():
         pass
 
     def onAttackWhitAxesClick(self, evt, arg):
-        if arg == "1":
+        if arg == "basicAttack":
             pass
-        elif arg == "2":
+        elif arg == "shieldBreaking":
             pass
-        elif arg == "3":
+        elif arg == "decapitation":
             pass
-        elif arg == "4":
+        elif arg == "berserkAttack":
             pass
-    
-
+    def basicAttack(self):
+        pass
+    def shieldBreaking(self):
+        pass
+    def decapitation(self):
+        pass
+    def berserkAttack(self):
+        pass
 
     def onAttackWhitDaggerClick(self, evt, arg):
-        if arg == "1":
+        if arg == "knifeStabbing":
             pass
-        elif arg == "2":
+        elif arg == "sneakAttack":
             pass
-        elif arg == "3":
+        elif arg == "bloodyAttack":
             pass
-        elif arg == "4":
+        elif arg == "deadlyBlow":
             pass
+    def knifeStabbing(self):
+        pass
+    def sneakAttack(self):
+        pass
+    def bloodyAttack(self):
+        pass
+    def deadlyBlow(self):
+        pass
+
 
     def onAttackWhitHammerClick(self, evt, arg):
         if arg == "1":
