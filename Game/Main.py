@@ -386,17 +386,17 @@ class Fight():
     def arme_principale(self):
         self.hand="principal"
         if self.Equipment["principal_hand"].type_of_items=="batte":
-            self.first_attack_interface("batte")
+            self.firstAttackInterface("batte")
         elif self.Equipment["principal_hand"].type_of_items=="sword":
-            self.first_attack_interface("sword")
+            self.firstAttackInterface("sword")
         elif self.Equipment["principal_hand"].type_of_items=="axes":
-            self.first_attack_interface("axes")
+            self.firstAttackInterface("axes")
         elif self.Equipment["principal_hand"].type_of_items=="dagger":
-            self.first_attack_interface("dagger")
+            self.firstAttackInterface("dagger")
         elif self.Equipment["principal_hand"].type_of_items=="hammer":
-            self.first_attack_interface("hammer")
+            self.firstAttackInterface("hammer")
         elif self.Equipment["principal_hand"].type_of_items=="whip":
-            self.first_attack_interface("whip")
+            self.firstAttackInterface("whip")
 
     def arme_secondaire(self):
         self.hand="secondary"
@@ -413,27 +413,82 @@ class Fight():
         elif self.Equipment["principal_hand"].type_of_items=="whip":
             self.second_attack_interface("whip")
 
-    def first_attack_interface(self, type_of_items):
+    def firstAttackInterface(self, type_of_items):
         if type_of_items == "batte":
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList[""], "", self.onFightClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList[""], "", self.onFightClick)
-            self.CreateAllCan(100,40,210,640,self.FightTxtrList[""], "", self.onFightClick)
-            self.CreateAllCan(100,40,210,680,self.FightTxtrList[""], "", self.onFightClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitBatClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitBatClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitBatClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitBatClick)
+        elif type_of_items == "sword":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitSwordClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitSwordClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitSwordClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitSwordClick)
+        elif type_of_items == "axes":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitAxesClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitAxesClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitAxesClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitAxesClick)
+        elif type_of_items == "dagger":
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitDaggerClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitDaggerClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitDaggerClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitDaggerClick)
 
-    def second_attack_interface(self, type_of_items):
+
+    def onAttackWhitBatClick(self, evt, arg):
+        if arg == "1":
+            pass
+        elif arg == "2":
+            pass
+        elif arg == "3":
+            pass
+        elif arg == "4":
+            pass
+
+    def onAttackWhitSwordClick(self, evt, arg):
+        if arg == "1":
+            pass
+        elif arg == "2":
+            pass
+        elif arg == "3":
+            pass
+        elif arg == "4":
+            pass
+
+    def onAttackWhitAxesClick(self, evt, arg):
+        if arg == "1":
+            pass
+        elif arg == "2":
+            pass
+        elif arg == "3":
+            pass
+        elif arg == "4":
+            pass
+
+    def onAttackWhitDaggerClick(self, evt, arg):
+        if arg == "1":
+            pass
+        elif arg == "2":
+            pass
+        elif arg == "3":
+            pass
+        elif arg == "4":
+            pass
+
+
+    def battingStrike(self):
+        pass
+    def homeRunStrike(self):
+        pass
+    def 
+
+
+
+
+    def secondAttackInterface(self, type_of_items):
         if type_of_items == "batte":
             print("eeeeeeeeeeeeeeeeeeeeeeeeeee")
-
-
-
-
-
-
-
-
-
-
-
 
 
 
