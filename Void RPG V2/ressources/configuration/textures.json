@@ -82,7 +82,7 @@
         "da": "herbe_marais.png",
         "db": "eau_marais.png"
     },
-    "interface": {
+    "ui": {
         "option_wheel": "option_wheel.png",
         "quit_button": "quit_button.png",
         "baniere": "baniere.png",
