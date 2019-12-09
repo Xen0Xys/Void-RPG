@@ -2,6 +2,7 @@ from tkinter import *
 import os
 import json
 import threading
+import time
 
 class GraphicEngine(Tk):
     def __init__(self, _graphic_engine_options=None):
@@ -10,6 +11,8 @@ class GraphicEngine(Tk):
             self.loadGraphicEngineOptions()
         else:
             self.options = _graphic_engine_options
+    def showWindow(self):
+        self.mainloop()
     def loadGraphicEngineOptions(self):
         def createOptions():
             options = {}
@@ -33,7 +36,7 @@ class GameEngine():
         self.startGameEngines()
     def startGameEngines(self):
         self.graphic_engine = GraphicEngine()
-        self.graphic_engine.mainloop()
+        self.graphic_engine.showWindow()
 
 
 if __name__ == "__main__":
