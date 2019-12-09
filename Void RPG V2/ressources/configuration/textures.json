@@ -81,5 +81,18 @@
         "cm": "chaise_b.png",
         "da": "herbe_marais.png",
         "db": "eau_marais.png"
+    },
+    "interface": {
+        "option_wheel": "option_wheel.png",
+        "quit_button": "quit_button.png",
+        "baniere": "baniere.png",
+        "create": "create_party_button.png",
+        "rotation": "rotation_button.png",
+        "one_image": "one_image_button.png",
+        "red": "red.png",
+        "green": "green.png",
+        "option_title": "option_title.png",
+        "quitter": "cross.png",
+        "fight": "fight.png"
     }
 }
