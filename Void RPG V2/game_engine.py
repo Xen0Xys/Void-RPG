@@ -169,15 +169,17 @@ class GraphicEngine(Tk):
         #Load map PIL picture
         LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
         map_name = "earth"
-        self.pil_map = PIL.Image.new("RGB", (15000, 15000))
+        pil_map = PIL.Image.new("RGB", (15000, 15000))
         if self.options["progressive_map_generation"] == False:
             with open("ressources/maps/{}.json".format(map_name), "r") as file:
                 map_matrice = json.loads(file.read())
             for y in range(len(map_matrice)):
                 for x in range(len(map_matrice[y])):
                     if map_matrice[y][x] != "00":
-                        self.pil_map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
-        self.map = PIL.ImageTk.PhotoImage(self.pil_map)
+                        pil_map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
+        #self.map = PIL.ImageTk.PhotoImage(pil_map)
+        pil_map.save("temp.png")
+        self.map = PhotoImage(file="temp.png")
         self.displayMap()
     def loadAroundPlayer(self):
         #Load map all around player
