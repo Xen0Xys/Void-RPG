@@ -40,6 +40,29 @@ class GameEngine():
         self.graphic_engine = GraphicEngine()
         self.graphic_engine.showWindow()
 
+"""
+def algo():
+    with open("ressources/configuration/textures.cfg", "r") as file:
+        content = file.read()
+    ct_spt = content.split("\n")
+    next_ = []
+    for line in ct_spt:
+        try:
+            if line[0] != "#":
+                next_.append(line)
+        except IndexError:
+            pass
+    term = []
+    for line in next_:
+        term.append(line[:len(line) - 1])
+    dico = {}
+    dico["map"] = {}
+    for line in term:
+        s = line.split("=")
+        dico["map"][s[0]] = s[1]
+    with open("ressources/configuration/textures.json", "w") as file:
+        file.write(json.dumps(dico, indent=4))
+"""
 
 if __name__ == "__main__":
     engine = GameEngine()
