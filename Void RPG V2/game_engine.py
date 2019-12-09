@@ -136,7 +136,9 @@ class GraphicEngine(Tk):
                 for x in range(len(map_matrice[y])):
                     if map_matrice[y][x] != "00":
                         self.map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
-        self.map.save("map.png")
+        self.displayMap()
+    def displayMap(self):
+        pass
 
 
 class GameEngine():
