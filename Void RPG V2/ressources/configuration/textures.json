@@ -93,6 +93,6 @@
         "green": "green.png",
         "option_title": "option_title.png",
         "quitter": "cross.png",
-        "fight": "fight.png"
+        "fight": "cross.png"
     }
 }
