@@ -45,9 +45,12 @@ class GraphicEngine(Tk):
             return json_content
         #Execute good function in good case
         if not os.path.exists("ressources/configuration/graphic_engine.json"):
-            return createOptions() 
+            return createOptions()
         else:
-            return createOptions() #DO CHANGE HERE
+            return loadOptions() #DO CHANGE HERE
+    def saveGraphicEngineConfiguration(self):
+        with open("ressources/configuration/graphic_engine.json", "w") as file:
+            file.write(json.dumps(self.options, indent=4))
     def loadTextures(self):
         #Load textures from json file and png pictures
         with open("ressources/configuration/textures.json", "r") as file:

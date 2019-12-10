@@ -31,6 +31,7 @@ class GameEngine():
     def startGameEngines(self):
         self.graphic_engine = GraphicEngine()
         self.graphic_engine.showWindow()
+        self.graphic_engine.saveGraphicEngineConfiguration()
 
 if __name__ == "__main__":
     engine = GameEngine()
