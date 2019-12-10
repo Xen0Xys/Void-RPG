@@ -65,7 +65,7 @@ class GraphicEngine(Tk):
                     except TclError as e:
                         print(e)
         return textures, pil_textures
-    def loadMap(self):
+    def loadAllMap(self):
         #Load map PIL picture
         LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
         map_name = "earth"
@@ -78,8 +78,8 @@ class GraphicEngine(Tk):
                     if map_matrice[y][x] != "00":
                         pil_map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
         #self.map = PIL.ImageTk.PhotoImage(pil_map)
-        pil_map.save("temp.png")
-        self.map = PhotoImage(file="temp.png")
+        pil_map.save("cache/temp.png")
+        self.map = PhotoImage(file="cache/temp.png")
         self.displayMap()
     def loadAroundPlayer(self):
         #Load map all around player

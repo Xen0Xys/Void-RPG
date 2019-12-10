@@ -40,4 +40,4 @@ class MainMenuView():
             self.parent.onWindowClosing()
             pass
         if arg=="playOne":
-            threading.Thread(target=self.parent.loadMap).start()
+            threading.Thread(target=self.parent.loadAllMap).start()
