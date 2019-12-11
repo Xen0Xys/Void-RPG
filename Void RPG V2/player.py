@@ -88,9 +88,9 @@ class Player():
                     if xinfos["decel_multiplier"]>1:
                         if xinfos["decel_nbre"]%randint(1, 2)==0:
                             xinfos["decel_multiplier"]-=0.10
-                            self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                            self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                         else:
-                            self.x+=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                            self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
                     else:
                         xinfos["deceleration"]=False
                 if yinfos["deceleration"]==True:
@@ -98,9 +98,9 @@ class Player():
                     if yinfos["decel_multiplier"]>1:
                         if yinfos["decel_nbre"]%randint(1, 2)==0:
                             yinfos["decel_multiplier"]-=0.10
-                            self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                         else:
-                            self.y+=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
                     else:
                         yinfos["deceleration"]=False
 
@@ -109,16 +109,16 @@ class Player():
                     xinfos["accel_nbre"]+=1
                 if xinfos["multiplier"]<=xinfos["speed_lim"] and xinfos["accel_nbre"]%xinfos["accel_speed"]==0:
                     xinfos["multiplier"]+=0.2
-                    self.x+=lastxdir*xinfos["multiplier"]
+                    self.x-=lastxdir*xinfos["multiplier"]
                 else:
-                    self.x+=lastxdir*xinfos["multiplier"]
+                    self.x-=lastxdir*xinfos["multiplier"]
                 if ydir!=0:
                     yinfos["accel_nbre"]+=1
                 if yinfos["multiplier"]<=yinfos["speed_lim"] and yinfos["accel_nbre"]%yinfos["accel_speed"]==0:
                     yinfos["multiplier"]+=0.2
-                    self.y+=lastydir*yinfos["multiplier"]
+                    self.y-=lastydir*yinfos["multiplier"]
                 else:
-                    self.y+=lastydir*yinfos["multiplier"]
+                    self.y-=lastydir*yinfos["multiplier"]
 
                 #Actualisation visuelle
                 print(self.x, self.y)
