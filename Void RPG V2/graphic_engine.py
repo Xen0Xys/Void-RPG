@@ -84,9 +84,29 @@ class GraphicEngine(Tk):
         pil_map.save("cache/temp.png")
         self.map = PhotoImage(file="cache/temp.png")
         self.displayMap()
-    def loadAroundPlayer(self):
+    def createPILPicture(self, _matrice):
+        pil_map = PIL.Image.new("RGB", ((len(_matrice[0]) * 25), (len(_matrice) * 25)))
+        for y in range(len(_matrice)):
+            for x in range(len(_matrice[y])):
+                if _matrice[y][x] != "00":
+                    pil_map.paste(im=self.pil_textures["map"][_matrice[y][x]], box=(x * 25, y * 25))
+        return pil_map
+    def loadAroundPlayer(self, _player_x, _player_y):
         #Load map all around player
-        pass
+        map_name = "earth"
+        with open("ressources/maps/{}.json".format(map_name), "r") as file:
+            map_matrice = json.loads(file.read())
+        matrice = []
+        coords_00_x = int(_player_x - self.options["x_window_size"] / 2)
+        coords_00_y = int(_player_y - self.options["y_window_size"] / 2)
+        for y in range(int(len(map_matrice) / 25)):
+            temp = []
+            for x in range(int(len(map_matrice[y]) / 25)):
+                print(y + coords_00_y, x + coords_00_x)
+                temp.append(map_matrice[y + coords_00_y][x + coords_00_x])
+            matrice.append(temp)
+        self.map = PIL.ImageTk.PhotoImage(self.createPILPicture(matrice))
+        self.displayMap()
     def displayMap(self):
         #Display map on screen
         GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
