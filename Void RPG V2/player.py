@@ -3,7 +3,7 @@ from random import randint
 import threading
 
 class Player():
-    def __init__(self, _x, _y, _map):
+    def __init__(self, _x, _y, _map, _window, _parent):
         self.dirYm = 0
         self.dirYp = 0
         self.dirXm = 0
@@ -11,8 +11,11 @@ class Player():
         self.x = _x
         self.y = _y
         self.map = _map
-        #self.bind("<KeyPress>", lambda arg1=None, arg2="KeyPress":self.move(arg1, arg2))
-        #self.bind("<KeyRelease>", lambda arg1=None, arg2="KeyRelease":self.move(arg1, arg2))
+        self.window = _window
+        self.parent = _parent
+        #Temp
+        #self.window.bind("<KeyPress>", lambda arg1=None, arg2="KeyPress":self.move(arg1, arg2))
+        #self.window.bind("<KeyRelease>", lambda arg1=None, arg2="KeyRelease":self.move(arg1, arg2))
         self.main_loop_on = True
         threading.Thread(target=self.mainloop).start()
     def move(self, evt, arg):
@@ -118,7 +121,8 @@ class Player():
                     self.y+=lastydir*yinfos["multiplier"]
 
                 #Actualisation visuelle
-                self.MainCan.coords(self.map, self.x, self.y)
+                print(self.x, self.y)
+                self.parent.wallpaper_canvas.coords(self.map, self.x, self.y)
             except AttributeError as e:
                 pass
             except RuntimeError as e:

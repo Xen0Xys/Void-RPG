@@ -99,9 +99,9 @@ class GraphicEngine(Tk):
         matrice = []
         coords_00_x = int(_player_x - self.options["x_window_size"] / 2)
         coords_00_y = int(_player_y - self.options["y_window_size"] / 2)
-        for y in range(int(len(map_matrice) / 25)):
+        for y in range(int(len(map_matrice) / 25 + 1)):
             temp = []
-            for x in range(int(len(map_matrice[y]) / 25)):
+            for x in range(int(len(map_matrice[y]) / 25 + 1)):
                 print(y + coords_00_y, x + coords_00_x)
                 temp.append(map_matrice[y + coords_00_y][x + coords_00_x])
             matrice.append(temp)
