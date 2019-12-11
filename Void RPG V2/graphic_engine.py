@@ -93,6 +93,7 @@ class GraphicEngine(Tk):
         return pil_map
     def loadAroundPlayer(self, _player_x, _player_y):
         #Load map all around player
+        LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
         map_name = "earth"
         with open("ressources/maps/{}.json".format(map_name), "r") as file:
             map_matrice = json.loads(file.read())
@@ -102,7 +103,6 @@ class GraphicEngine(Tk):
         for y in range(int(len(map_matrice) / 25 + 1)):
             temp = []
             for x in range(int(len(map_matrice[y]) / 25 + 1)):
-                print(y + coords_00_y, x + coords_00_x)
                 temp.append(map_matrice[y + coords_00_y][x + coords_00_x])
             matrice.append(temp)
         self.map = PIL.ImageTk.PhotoImage(self.createPILPicture(matrice))

@@ -121,7 +121,7 @@ class Player():
                     self.y-=lastydir*yinfos["multiplier"]
 
                 #Actualisation visuelle
-                print(self.x, self.y)
+                #print(self.x, self.y)
                 self.parent.wallpaper_canvas.coords(self.map, self.x, self.y)
             except AttributeError as e:
                 pass
