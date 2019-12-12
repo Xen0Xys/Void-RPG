@@ -8,6 +8,21 @@ import PIL.Image
 import json
 import os
 
+class Chunck():
+    def __init__(self, _size, _canvas_coords, _matrix, _map_name):
+        self.map = None
+        self.matrix = _matrix
+        self.size = _size
+        self.real_coords = _canvas_coords
+        self.map_name = _map_name
+    def generateChunck(self, _pil_textures_list):
+        pil_map = PIL.Image.new("RGB", ((len(self.matrix[0]) * 25), (len(self.matrix) * 25)))
+        for y in range(self.size[1]):
+            for x in range(self.size[0]):
+                if self.matrix[y][x] != "00":
+                    pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
+        self.map = PIL.ImageTk.PhotoImage(pil_map)
+
 class GraphicEngine(Tk):
     def __init__(self, _graphic_engine_options=None):
         #Initialize game engine
@@ -107,6 +122,14 @@ class GraphicEngine(Tk):
             matrice.append(temp)
         self.map = PIL.ImageTk.PhotoImage(self.createPILPicture(matrice))
         self.displayMap()
+    def loadMapAroundPlayer(self, _center_x, _center_y):
+        map_00_x = int(_center_x - self.options["x_window_size"] / 2)
+        map_00_y = int(_center_y - self.options["y_window_size"] / 2)
+        for y_map in range(3):
+            for x_map in range(3):
+                pass
+    def loadChunck(self):
+        pass
     def displayMap(self):
         #Display map on screen
         GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
