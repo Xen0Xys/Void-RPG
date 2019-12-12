@@ -8,13 +8,54 @@ import PIL.Image
 import json
 import os
 
+"""
+    def loadAllMap(self):
+        #Load map PIL picture
+        LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
+        map_name = "earth"
+        pil_map = PIL.Image.new("RGB", (15000, 15000))
+        if self.options["progressive_map_generation"] == False:
+            with open("ressources/maps/{}.json".format(map_name), "r") as file:
+                map_matrice = json.loads(file.read())
+            for y in range(len(map_matrice)):
+                for x in range(len(map_matrice[y])):
+                    if map_matrice[y][x] != "00":
+                        pil_map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
+        #self.map = PIL.ImageTk.PhotoImage(pil_map)
+        pil_map.save("cache/temp.png") #To much RAM (1.7Go)
+        self.map = PhotoImage(file="cache/temp.png")#To much RAM (1.7Go)
+        self.displayMap()
+    def createPILPicture(self, _matrice):
+        pil_map = PIL.Image.new("RGB", ((len(_matrice[0]) * 25), (len(_matrice) * 25)))
+        for y in range(len(_matrice)):
+            for x in range(len(_matrice[y])):
+                if _matrice[y][x] != "00":
+                    pil_map.paste(im=self.pil_textures["map"][_matrice[y][x]], box=(x * 25, y * 25))
+        return pil_map
+    def loadAroundPlayer(self, _player_x, _player_y):
+        #Load map all around player
+        LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
+        map_name = "earth"
+        with open("ressources/maps/{}.json".format(map_name), "r") as file:
+            map_matrice = json.loads(file.read())
+        matrice = []
+        coords_00_x = int(_player_x - self.options["x_window_size"] / 2)
+        coords_00_y = int(_player_y - self.options["y_window_size"] / 2)
+        for y in range(int(len(map_matrice) / 25 + 1)):
+            temp = []
+            for x in range(int(len(map_matrice[y]) / 25 + 1)):
+                temp.append(map_matrice[y + coords_00_y][x + coords_00_x])
+            matrice.append(temp)
+        self.map = PIL.ImageTk.PhotoImage(self.createPILPicture(matrice))
+        self.displayMap()
+"""
+
 class Chunck():
-    def __init__(self, _size, _canvas_coords, _matrix, _map_name):
+    def __init__(self, _size, _canvas_coords, _matrix):
         self.map = None
         self.matrix = _matrix
         self.size = _size
         self.real_coords = _canvas_coords
-        self.map_name = _map_name
     def generateChunck(self, _pil_textures_list):
         pil_map = PIL.Image.new("RGB", ((len(self.matrix[0]) * 25), (len(self.matrix) * 25)))
         for y in range(self.size[1]):
@@ -83,51 +124,17 @@ class GraphicEngine(Tk):
                     except TclError as e:
                         print(e)
         return textures, pil_textures
-    def loadAllMap(self):
-        #Load map PIL picture
-        LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
-        map_name = "earth"
-        pil_map = PIL.Image.new("RGB", (15000, 15000))
-        if self.options["progressive_map_generation"] == False:
-            with open("ressources/maps/{}.json".format(map_name), "r") as file:
-                map_matrice = json.loads(file.read())
-            for y in range(len(map_matrice)):
-                for x in range(len(map_matrice[y])):
-                    if map_matrice[y][x] != "00":
-                        pil_map.paste(im=self.pil_textures["map"][map_matrice[y][x]], box=(x * 25, y * 25))
-        #self.map = PIL.ImageTk.PhotoImage(pil_map)
-        pil_map.save("cache/temp.png")
-        self.map = PhotoImage(file="cache/temp.png")
-        self.displayMap()
-    def createPILPicture(self, _matrice):
-        pil_map = PIL.Image.new("RGB", ((len(_matrice[0]) * 25), (len(_matrice) * 25)))
-        for y in range(len(_matrice)):
-            for x in range(len(_matrice[y])):
-                if _matrice[y][x] != "00":
-                    pil_map.paste(im=self.pil_textures["map"][_matrice[y][x]], box=(x * 25, y * 25))
-        return pil_map
-    def loadAroundPlayer(self, _player_x, _player_y):
-        #Load map all around player
-        LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
-        map_name = "earth"
-        with open("ressources/maps/{}.json".format(map_name), "r") as file:
-            map_matrice = json.loads(file.read())
-        matrice = []
-        coords_00_x = int(_player_x - self.options["x_window_size"] / 2)
-        coords_00_y = int(_player_y - self.options["y_window_size"] / 2)
-        for y in range(int(len(map_matrice) / 25 + 1)):
-            temp = []
-            for x in range(int(len(map_matrice[y]) / 25 + 1)):
-                temp.append(map_matrice[y + coords_00_y][x + coords_00_x])
-            matrice.append(temp)
-        self.map = PIL.ImageTk.PhotoImage(self.createPILPicture(matrice))
-        self.displayMap()
+    def getMatrixFromGlobalMatrix(self, _x, _y, _size):
+        pass
     def loadMapAroundPlayer(self, _center_x, _center_y):
+        size = (self.options["x_window_size"], self.options["y_window_size"])
         map_00_x = int(_center_x - self.options["x_window_size"] / 2)
         map_00_y = int(_center_y - self.options["y_window_size"] / 2)
+        chunck_matrix = []
         for y_map in range(3):
+            temp = []
             for x_map in range(3):
-                pass
+                temp.append(Chunck(size, (0, 0), [[]]))
     def loadChunck(self):
         pass
     def displayMap(self):
