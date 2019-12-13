@@ -1,5 +1,5 @@
 from tkinter.font import Font
-from player import Player
+from character.player import Player
 from tkinter import *
 import threading
 import time

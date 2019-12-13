@@ -51,11 +51,12 @@ import os
 """
 
 class Chunck():
-    def __init__(self, _size, _canvas_coords, _matrix):
+    def __init__(self, _size, _canvas_coords, _matrix, _chunck_coords):
         self.map = None
         self.matrix = _matrix
         self.size = _size
         self.real_coords = _canvas_coords
+        self.chunck_coords = _chunck_coords
     def generateChunck(self, _pil_textures_list):
         pil_map = PIL.Image.new("RGB", ((len(self.matrix[0]) * 25), (len(self.matrix) * 25)))
         for y in range(self.size[1]):
@@ -63,6 +64,8 @@ class Chunck():
                 if self.matrix[y][x] != "00":
                     pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
         self.map = PIL.ImageTk.PhotoImage(pil_map)
+        return self.map
+    
 
 class GraphicEngine(Tk):
     def __init__(self, _graphic_engine_options=None):
@@ -124,17 +127,24 @@ class GraphicEngine(Tk):
                     except TclError as e:
                         print(e)
         return textures, pil_textures
-    def getMatrixFromGlobalMatrix(self, _x, _y, _size):
-        pass
+    def getMatrixChunck(self, _coords, _size, _global_matrix):
+        matrix = []
+        x_matrix_coord = int(_coords[0] / 25)
+        y_matrix_coord = int(_coords[1] / 25)
+        for y in range(_size[1]):
+            temp = []
+            for x in range(_size[0]):
+                temp.append(_global_matrix[y + y_matrix_coord][x + x_matrix_coord])
+            matrix.append(temp)
+        return matrix
     def loadMapAroundPlayer(self, _center_x, _center_y):
         size = (self.options["x_window_size"], self.options["y_window_size"])
         map_00_x = int(_center_x - self.options["x_window_size"] / 2)
         map_00_y = int(_center_y - self.options["y_window_size"] / 2)
-        chunck_matrix = []
         for y_map in range(3):
             temp = []
             for x_map in range(3):
-                temp.append(Chunck(size, (0, 0), [[]]))
+                temp.append(Chunck(size, (0, 0), [[]], (0, 0)))
     def loadChunck(self):
         pass
     def displayMap(self):
