@@ -166,8 +166,6 @@ class GraphicEngine(Tk):
         for y_map in range(5):
             temp = []
             for x_map in range(5):
-                x_multiplier = x_map * size[0]
-                y_multiplier = y_map * size[1]
                 matrix_chunck = self.getMatrixChunck((map_00_x + x_map * size[0], map_00_y + y_map * size[1]), (int(size[0] / 25), int(size[1] / 25)), self.matrix)
                 temp.append(Chunck((int(size[0] / 25), int(size[1] / 25)), (x_map * map_00_x, y_map * map_00_y), matrix_chunck, (x_map, y_map)))
             chunck_list.append(temp)
