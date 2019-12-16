@@ -297,45 +297,6 @@ class Fight():
         self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
         self.ManaELabel.place(x=10, y=130)
         
-    def tour_enemie(self):
-        self.Reset()
-        if self.statutE=="stun":
-            self.Reset_Visual()
-        elif self.statutE=="fire":
-            self.PVE=self.PVE-(1/100*self.PVE_max)
-            self.nbrtourfireE=self.nbrtourfireE+1
-        else:
-            print("c'est a l'enemie de jouer")
-        self.MainCan = Canvas(self, width=750, height=750, bg="white", highlightthickness=0)
-        self.MainCan.pack()
-        self.CreateAllCan(100,40,10,640,self.FightTxtrList["arme_principale"], "arme_principale", self.onFightClick)
-        self.CreateAllCan(100,40,10,680,self.FightTxtrList["arme_secondaire"], "arme_secondaire", self.onFightClick)
-        self.CreateAllCan(100,40,110,640,self.FightTxtrList["magie"], "magie", self.onFightClick)
-        self.CreateAllCan(100,40,110,680,self.FightTxtrList["defense"], "defense", self.onFightClick)
-        self.CreateAllCan(100,40,210,640,self.FightTxtrList["sac"], "sac", self.onFightClick)
-        self.CreateAllCan(100,40,210,680,self.FightTxtrList["fuite"], "fuite", self.onFightClick)
-        self.font=Font(family="Helvetica",size=14)
-        self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
-        self.armureLabel.place(x=600, y=590)
-        self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
-        self.armureELabel.place(x=10, y=50)
-        self.StatutLabel=Label(self.MainCan, text="statut:"+self.statut,font=self.font, bg="white")
-        self.StatutLabel.place(x=600, y=550)
-        self.StatutELabel=Label(self.MainCan, text="statut:"+self.statutE,font=self.font, bg="white")
-        self.StatutELabel.place(x=10, y=10)
-        self.PVLabel=Label(self.MainCan, text="PV: "+str(int(self.PV))+"/"+str(int(self.PV_Max)),font=self.font, bg="white")
-        self.PVLabel.place(x=600, y=630)
-        self.ManaLabel=Label(self.MainCan, text="Mana: "+str(int(self.Mana))+"/"+str(int(self.Mana_Max)),font=self.font, bg="white")
-        self.ManaLabel.place(x=600, y=670)
-        self.PVELabel=Label(self.MainCan, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
-        self.PVELabel.place(x=10, y=90)
-        self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
-        self.ManaELabel.place(x=10, y=130)
-        r=randint(0,100)
-        if r<50:
-            threading.Thread(target=self.Heavy_attackE).start()
-        else:
-            threading.Thread(target=self.Basic_AttackE).start()
 
 
 
@@ -435,46 +396,75 @@ class Fight():
             self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "bloodyAttack", self.onAttackWhitDaggerClick)
             self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "deadlyBlow", self.onAttackWhitDaggerClick)
         elif type_of_items == "hammer":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitHammerClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitHammerClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitHammerClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitHammerClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "simpleHit", self.onAttackWhitHammerClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "stun", self.onAttackWhitHammerClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "boneBreaker", self.onAttackWhitHammerClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "rotatingAttack", self.onAttackWhitHammerClick)
         elif type_of_items == "whip":
-            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "1", self.onAttackWhitWhipClick)
-            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "2", self.onAttackWhitWhipClick)
-            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "3", self.onAttackWhitWhipClick)
-            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "4", self.onAttackWhitWhipClick)
+            self.CreateAllCan(100,40,10,640,self.FightTxtrList["attaque_1"], "whiplash", self.onAttackWhitWhipClick)
+            self.CreateAllCan(100,40,10,680,self.FightTxtrList["attaque_2"], "laceration", self.onAttackWhitWhipClick)
+            self.CreateAllCan(100,40,110,640,self.FightTxtrList["attaque_3"], "disarmament", self.onAttackWhitWhipClick)
+            self.CreateAllCan(100,40,110,680,self.FightTxtrList["attaque_4"], "multipleStrikes", self.onAttackWhitWhipClick)
 
     def onAttackWhitBatClick(self, evt, arg):
         if arg == "battingStrike":
-            pass
+            self.battingStrike()
         elif arg == "homeRunStrike":
-            pass
+            self.homeRunStrike()
         elif arg == "skullBreach":
-            pass
+            self.skullBreach()
         elif arg == "legBreakage":
-            pass
-
+            self.legBreakage()
     def battingStrike(self):
-        pass
-    def homeRunStrike(self):
-        pass
+        a = randint(1,100)
+        if a < 90:
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+    def homeRunStrike(self): 
+        a = randint(1,100)
+        if a < 50:
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)*2*self.Strength
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
     def skullBreach(self):
-        pass
+        a = randint(1,100)
+        if a < 50:
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-(self.Strength*self.Equipment["principal_hand"].damage)
+                if 25<a<35:
+                    self.statutE = "skullBreach"
     def legBreakage(self):
-        pass
-
+        a = randint(1,100)
+        if a < 50:
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-(self.Strength*self.Equipment["principal_hand"].damage)
+                if 25<a<35:
+                    self.statutE = "leg_Break"
 
     def onAttackWhitSwordClick(self, evt, arg):
         if arg == "flankStroke":
-            pass
+            self.flankStroke()
         elif arg == "riposte":
-            pass
+            self.riposte()
         elif arg == "weakPointHit":
-            pass
+            self.weakPointHit()
         elif arg == "sequenceOfBlows":
-            pass
-
+            self.sequenceOfBlows()
     def flankStroke(self):
         pass
     def riposte(self):
@@ -486,13 +476,13 @@ class Fight():
 
     def onAttackWhitAxesClick(self, evt, arg):
         if arg == "basicAttack":
-            pass
+            self.basicAttack()
         elif arg == "shieldBreaking":
-            pass
+            self.shieldBreaking()
         elif arg == "decapitation":
-            pass
+            self.decapitation()
         elif arg == "berserkAttack":
-            pass
+            self.berserkAttack()
     def basicAttack(self):
         pass
     def shieldBreaking(self):
@@ -504,13 +494,13 @@ class Fight():
 
     def onAttackWhitDaggerClick(self, evt, arg):
         if arg == "knifeStabbing":
-            pass
+            self.knifeStabbing()
         elif arg == "sneakAttack":
-            pass
+            self.sneakAttack()
         elif arg == "bloodyAttack":
-            pass
+            self.bloodyAttack()
         elif arg == "deadlyBlow":
-            pass
+            self.deadlyBlow()
     def knifeStabbing(self):
         pass
     def sneakAttack(self):
@@ -520,27 +510,41 @@ class Fight():
     def deadlyBlow(self):
         pass
 
-
     def onAttackWhitHammerClick(self, evt, arg):
-        if arg == "1":
-            pass
-        elif arg == "2":
-            pass
-        elif arg == "3":
-            pass
-        elif arg == "4":
-            pass
+        if arg == "simpleHit":
+            self.simpleHit()
+        elif arg == "stun":
+            self.stun()
+        elif arg == "boneBreaker":
+            self.boneBreaker
+        elif arg == "rotatingAttack":
+            self.rotatingAttack()
+    def simpleHit(self):
+        pass
+    def stun(self):
+        pass
+    def boneBreaker(self):
+        pass
+    def rotatingAttack(self):
+        pass
 
     def onAttackWhitWhipClick(self, evt, arg):
-        if arg == "1":
-            pass
-        elif arg == "2":
-            pass
-        elif arg == "3":
-            pass
-        elif arg == "4":
-            pass
-
+        if arg == "whiplash":
+            self.whiplash()
+        elif arg == "laceration":
+            self.laceration()
+        elif arg == "disarmament":
+            self.disarmament()
+        elif arg == "multipleStrikes":
+            self.multipleStrikes()
+    def whiplash(self):
+        pass
+    def laceration(self):
+        pass
+    def disarmament(self):
+        pass
+    def multipleStrikes(self):
+        pass
 
 
 
