@@ -435,7 +435,7 @@ class Fight():
                 self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
     def skullBreach(self):
         a = randint(1,100)
-        if a < 50:
+        if a < 90:
             if self.defenceE > 0:
                 self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)
                 if self.defenceE < 0:
@@ -446,7 +446,7 @@ class Fight():
                     self.statutE = "skullBreach"
     def legBreakage(self):
         a = randint(1,100)
-        if a < 50:
+        if a < 90:
             if self.defenceE > 0:
                 self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)
                 if self.defenceE < 0:
@@ -464,16 +464,35 @@ class Fight():
         elif arg == "weakPointHit":
             self.weakPointHit()
         elif arg == "sequenceOfBlows":
+            self.b = 0
+            self.nombre_de_fois_attack=0
             self.sequenceOfBlows()
     def flankStroke(self):
-        pass
+        a = randint(1,100)
+        if a < 90:
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
     def riposte(self):
-        pass
+        self.statut = "riposte"
     def weakPointHit(self):
         pass
     def sequenceOfBlows(self):
-        pass
-
+        a = randint(1,100)
+        self.nombre_de_fois_attack +=1
+        if a < 90-self.b:
+            self.b -= 20
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-((self.Strength*self.Equipment["principal_hand"].damage)+self.b*2)
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+            if self.nombre_de_fois_attack < 3
+            self.sequenceOfBlows()
     def onAttackWhitAxesClick(self, evt, arg):
         if arg == "basicAttack":
             self.basicAttack()
@@ -484,7 +503,14 @@ class Fight():
         elif arg == "berserkAttack":
             self.berserkAttack()
     def basicAttack(self):
-        pass
+        a = randint(1,100)
+        if a < 90:
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
     def shieldBreaking(self):
         pass
     def decapitation(self):
@@ -520,7 +546,14 @@ class Fight():
         elif arg == "rotatingAttack":
             self.rotatingAttack()
     def simpleHit(self):
-        pass
+        a = randint(1,100)
+        if a < 90:
+            if self.defenceE > 0:
+                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
     def stun(self):
         pass
     def boneBreaker(self):
