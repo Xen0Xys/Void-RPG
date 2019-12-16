@@ -5,6 +5,8 @@ from tkinter.font import Font
 from tkinter import *
 import PIL.ImageTk
 import PIL.Image
+import threading
+import time
 import json
 import os
 
@@ -59,19 +61,22 @@ class Chunck():
         self.chunck_coords = _chunck_coords
         self.chunck_loaded = False
     def generateChunck(self, _pil_textures_list, force=False):
+        print(len(self.matrix), len(self.matrix[0]))
         if (self.chunck_loaded == False) or (force == True):
-            pil_map = PIL.Image.new("RGB", ((len(self.matrix[0]) * 25), (len(self.matrix) * 25)))
+            pil_map = PIL.Image.new("RGB", ((self.size[0] * 25), (self.size[1] * 25)))
             for y in range(self.size[1]):
                 for x in range(self.size[0]):
                     if self.matrix[y][x] != "00":
                         pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
-            pil_map.save("cache/earth_{}_{}".format(self.chunck_coords[0], self.chunck_coords[1]))
+            pil_map.save("cache/earth_{}_{}.png".format(self.chunck_coords[0], self.chunck_coords[1]))
+            self.map = pil_map
             self.chunck_loaded = True
             return pil_map
         return self.map
-    def loadChunck(self, _pil_textures_list):
+    def getChunck(self, _pil_textures_list):
         try:
-            return Image("cache/earth_{}_{}".format(self.chunck_coords[0], self.chunck_coords[1]))
+            #return Image("cache/earth_{}_{}.png".format(self.chunck_coords[0], self.chunck_coords[1]))
+            return self.map
         except FileNotFoundError:
             return self.generateChunck(_pil_textures_list, force=True)
     
@@ -101,8 +106,8 @@ class GraphicEngine(Tk):
             #Generate default options
             options = {}
             #Init all options here
-            options["x_window_size"] = 300
-            options["y_window_size"] = 300
+            options["x_window_size"] = 675
+            options["y_window_size"] = 675
             options["progressive_map_generation"] = False
             with open("ressources/configuration/graphic_engine.json", "w") as file:
                 file.write(json.dumps(options, indent=4))
@@ -149,7 +154,7 @@ class GraphicEngine(Tk):
         for y in range(_size[1]):
             temp = []
             for x in range(_size[0]):
-                temp.append(_global_matrix[y + y_matrix_coord][x + x_matrix_coord])
+                temp.append(_global_matrix[y_matrix_coord + y][x_matrix_coord + x])
             matrix.append(temp)
         return matrix
     def loadMapAroundPlayer(self, _center_x, _center_y):
@@ -161,7 +166,10 @@ class GraphicEngine(Tk):
         for y_map in range(5):
             temp = []
             for x_map in range(5):
-                temp.append(Chunck(size, (x_map * map_00_x, y_map * map_00_y), self.getMatrixChunck((map_00_x, map_00_y), size, self.matrix), (map_00_x, map_00_y)))
+                x_multiplier = x_map * size[0]
+                y_multiplier = y_map * size[1]
+                matrix_chunck = self.getMatrixChunck((map_00_x + x_map * size[0], map_00_y + y_map * size[1]), (int(size[0] / 25), int(size[1] / 25)), self.matrix)
+                temp.append(Chunck((int(size[0] / 25), int(size[1] / 25)), (x_map * map_00_x, y_map * map_00_y), matrix_chunck, (x_map, y_map)))
             chunck_list.append(temp)
         self.assembleMap(chunck_list)
     def isAllMapGenerated(self, _chunck_list):
@@ -171,19 +179,24 @@ class GraphicEngine(Tk):
                     return False
         return True
     def assembleMap(self, _chunck_list):
-        print("Assemble")
         size = (self.options["x_window_size"], self.options["y_window_size"])
         pil_map = PIL.Image.new("RGB", (size[0] * 5, size[1] * 5))
         for y in range(5):
             for x in range(5):
-                chunck = _chunck_list[y][x].generateChunck(self.pil_textures)
-                #pil_map.paste(im=chunck, box=(x * size[0], y * size[1]))
-                print(x, y)
+                print("Starting Generation {};{}".format(x, y))
+                #threading.Thread(target=_chunck_list[y][x].generateChunck, args=(self.pil_textures, )).start()
+                _chunck_list[y][x].generateChunck(self.pil_textures)
+        while self.isAllMapGenerated(_chunck_list) == False:
+            time.sleep(1 / 60)
+        print("Starting Assemble")
         for y in range(5):
             for x in range(5):
+                print("Assemble {};{}".format(x, y))
+                chunck = _chunck_list[y][x].getChunck(self.pil_textures)
                 pil_map.paste(im=chunck, box=(x * size[0], y * size[1]))
-        print("Showing")
+        print("Saving")
         pil_map.save("cache/temp.png")
+        print("End")
     def displayMap(self):
         #Display map on screen
         GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
