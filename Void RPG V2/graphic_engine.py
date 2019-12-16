@@ -66,7 +66,10 @@ class Chunck():
             for y in range(self.size[1]):
                 for x in range(self.size[0]):
                     if self.matrix[y][x] != "00":
-                        pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
+                        try:
+                            pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
+                        except AttributeError:
+                            pass
             pil_map.save("cache/earth_{}_{}.png".format(self.chunck_coords[0], self.chunck_coords[1]))
             self.map = pil_map
             self.chunck_loaded = True
