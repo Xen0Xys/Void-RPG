@@ -41,4 +41,4 @@ class MainMenuView():
             pass
         if arg=="playOne":
             #threading.Thread(target=self.parent.loadAllMap).start()
-            self.parent.loadAroundPlayer(650, 850)
+            self.parent.loadMapAroundPlayer(650, 850)

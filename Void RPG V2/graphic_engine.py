@@ -147,20 +147,27 @@ class GraphicEngine(Tk):
             matrix.append(temp)
         return matrix
     def loadMapAroundPlayer(self, _center_x, _center_y):
+        print("Loading")
         size = (self.options["x_window_size"], self.options["y_window_size"])
         map_00_x = int(_center_x - self.options["x_window_size"] / 2) - 2 * self.options["x_window_size"]
         map_00_y = int(_center_y - self.options["y_window_size"] / 2) - 2 * self.options["y_window_size"]
+        chunck_list = []
         for y_map in range(5):
             temp = []
             for x_map in range(5):
                 temp.append(Chunck(size, (x_map * map_00_x, y_map * map_00_y), self.getMatrixChunck((map_00_x, map_00_y), size, self.matrix), (map_00_x, map_00_y)))
+            chunck_list.append(temp)
+        self.assembleMap(chunck_list)
     def assembleMap(self, _chunck_list):
+        print("Assemble")
         size = (self.options["x_window_size"], self.options["y_window_size"])
         pil_map = PIL.Image.new("RGB", (size[0] * 5, size[1] * 5))
         for y in range(5):
             for x in range(5):
-                _chunck_list[y][x].generateChunck()
-                pil_map.paste(im=None, box=(x * size[0], y * size[1]))
+                chunck = _chunck_list[y][x].generateChunck(self.pil_textures)
+                pil_map.paste(im=chunck, box=(x * size[0], y * size[1]))
+        print("Showing")
+        pil_map.show()
     def displayMap(self):
         #Display map on screen
         GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
