@@ -57,13 +57,16 @@ class Chunck():
         self.size = _size
         self.real_coords = _canvas_coords
         self.chunck_coords = _chunck_coords
-    def generateChunck(self, _pil_textures_list):
-        pil_map = PIL.Image.new("RGB", ((len(self.matrix[0]) * 25), (len(self.matrix) * 25)))
-        for y in range(self.size[1]):
-            for x in range(self.size[0]):
-                if self.matrix[y][x] != "00":
-                    pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
-        self.map = PIL.ImageTk.PhotoImage(pil_map)
+        self.chunck_loaded = False
+    def generateChunck(self, _pil_textures_list, force=False):
+        if (self.chunck_loaded == False) or (force == True):
+            pil_map = PIL.Image.new("RGB", ((len(self.matrix[0]) * 25), (len(self.matrix) * 25)))
+            for y in range(self.size[1]):
+                for x in range(self.size[0]):
+                    if self.matrix[y][x] != "00":
+                        pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
+            self.map = PIL.ImageTk.PhotoImage(pil_map)
+            return self.map
         return self.map
     
 
@@ -76,6 +79,7 @@ class GraphicEngine(Tk):
         else:
             self.options = _graphic_engine_options
         self.textures, self.pil_textures = self.loadTextures()
+        self.matrix = self.loadMatrix()
         self.protocol("WM_DELETE_WINDOW", self.onWindowClosing)
         MainMenuView(self, self.textures["ui"], self.options["x_window_size"], self.options["y_window_size"])
     def onWindowClosing(self):
@@ -107,6 +111,11 @@ class GraphicEngine(Tk):
             return createOptions()
         else:
             return loadOptions() #DO CHANGE HERE
+    def loadMatrix(self):
+        map_name = "earth"
+        with open("ressources/maps/{}.json".format(map_name), "r") as file:
+            matrix = json.loads(file.read())
+        return matrix
     def saveGraphicEngineConfiguration(self):
         with open("ressources/configuration/graphic_engine.json", "w") as file:
             file.write(json.dumps(self.options, indent=4))
@@ -139,14 +148,19 @@ class GraphicEngine(Tk):
         return matrix
     def loadMapAroundPlayer(self, _center_x, _center_y):
         size = (self.options["x_window_size"], self.options["y_window_size"])
-        map_00_x = int(_center_x - self.options["x_window_size"] / 2)
-        map_00_y = int(_center_y - self.options["y_window_size"] / 2)
-        for y_map in range(3):
+        map_00_x = int(_center_x - self.options["x_window_size"] / 2) - 2 * self.options["x_window_size"]
+        map_00_y = int(_center_y - self.options["y_window_size"] / 2) - 2 * self.options["y_window_size"]
+        for y_map in range(5):
             temp = []
-            for x_map in range(3):
-                temp.append(Chunck(size, (0, 0), [[]], (0, 0)))
-    def loadChunck(self):
-        pass
+            for x_map in range(5):
+                temp.append(Chunck(size, (x_map * map_00_x, y_map * map_00_y), self.getMatrixChunck((map_00_x, map_00_y), size, self.matrix), (map_00_x, map_00_y)))
+    def assembleMap(self, _chunck_list):
+        size = (self.options["x_window_size"], self.options["y_window_size"])
+        pil_map = PIL.Image.new("RGB", (size[0] * 5, size[1] * 5))
+        for y in range(5):
+            for x in range(5):
+                _chunck_list[y][x].generateChunck()
+                pil_map.paste(im=None, box=(x * size[0], y * size[1]))
     def displayMap(self):
         #Display map on screen
         GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
