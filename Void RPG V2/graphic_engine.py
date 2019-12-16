@@ -68,6 +68,11 @@ class Chunck():
             self.map = PIL.ImageTk.PhotoImage(pil_map)
             return self.map
         return self.map
+    def loadChunck(self):
+        try:
+            return Image("cache/earth_{}_{}".format(self.chunck_coords[0], self.chunck_coords[1]))
+        except FileNotFoundError:
+            return self.generateChunck()
     
 
 class GraphicEngine(Tk):
