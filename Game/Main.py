@@ -491,8 +491,8 @@ class Fight():
                     self.defenceE = 0
             else:
                 self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
-            if self.nombre_de_fois_attack < 3
-            self.sequenceOfBlows()
+            if self.nombre_de_fois_attack < 3:
+                self.sequenceOfBlows()
     def onAttackWhitAxesClick(self, evt, arg):
         if arg == "basicAttack":
             self.basicAttack()
