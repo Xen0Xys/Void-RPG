@@ -4,35 +4,34 @@ from PIL import Image, ImageTk
 from time import sleep
 import threading
 
-class Main():
-    def LoadTextureList():
-        global textureList, encodeList, txtrnameList
-        txtrnameList=[]
-        file=open("ressources/textures/map/textures.cfg", "r")
-        content=file.read()
-        file.close()
-        content=content.replace(" ", "")
-        content=content.replace("\n", "")
-        content=content.split(";")
-        textureList={}
-        encodeList=[]
-        for i in content:
-            try:
-                if i!="" or i[0]=="#":
-                    temp=i.split("=")
-                    textureList[temp[0]]=temp[1]
-                    encodeList.append(temp[0])
-                    if temp[1]!="NONE":
-                        txtrnameList.append(temp[1])
-            except IndexError:
-                pass
-    def Init():
-        global launchTime
-        launchTime=0
-    def Load():
-        global root
-        Main.LoadTextureList()
-        root = Interface()
+def LoadTextureList():
+    global textureList, encodeList, txtrnameList
+    txtrnameList=[]
+    file=open("ressources/textures/map/textures.cfg", "r")
+    content=file.read()
+    file.close()
+    content=content.replace(" ", "")
+    content=content.replace("\n", "")
+    content=content.split(";")
+    textureList={}
+    encodeList=[]
+    for i in content:
+        try:
+            if i!="" or i[0]=="#":
+                temp=i.split("=")
+                textureList[temp[0]]=temp[1]
+                encodeList.append(temp[0])
+                if temp[1]!="NONE":
+                    txtrnameList.append(temp[1])
+        except IndexError:
+            pass
+def Init():
+    global launchTime
+    launchTime=0
+def Load():
+    global root
+    LoadTextureList()
+    root = Interface()
 
 class Interface(Tk):
     def __init__(self):
@@ -266,7 +265,7 @@ class Interface(Tk):
                     self.MainCan.create_image(j*17, i*17, image=self.TextureList[indice], anchor=NW)
     def Reload(self):
         self.destroy()
-        Main.Load()
+        Load()
 
 
 
@@ -344,5 +343,5 @@ class Viewer():
 
 
 
-Main.Init()
-Main.Load()
+Init()
+Load()
