@@ -42,7 +42,7 @@ class Chunck():
             return self.map
         except FileNotFoundError:
             return self.generateChunck(_pil_textures_list, force=True)
-    
+
 class GraphicEngine(Tk):
     def __init__(self, _graphic_engine_options=None):
         #Initialize game engine

@@ -40,7 +40,6 @@ class MainMenuView():
     def onClick(self, evt, arg):
         if arg=="quit":
             self.parent.onWindowClosing()
-            pass
         if arg=="playOne":
             #threading.Thread(target=LoadingView, args=(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"], )).start()
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])

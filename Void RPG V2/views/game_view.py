@@ -1,4 +1,3 @@
-from tkinter.font import Font
 from character.player import Player
 from tkinter import *
 import threading
