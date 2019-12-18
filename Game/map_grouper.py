@@ -1,4 +1,4 @@
-from PIL import Image, ImageTk
+from PIL import Image
 import json
 
 class Viewer():
@@ -95,7 +95,7 @@ def serializeMapFile(_map_content):
     return map_list
 
 def createJsonFileFromMapContent(_all_map_content):
-    all = []
+    _all = []
     for map_y in range(20):
         for col_number in range(30):
             temp = []
@@ -103,8 +103,8 @@ def createJsonFileFromMapContent(_all_map_content):
                 result = _all_map_content["{}_{}".format(map_x, 19 - map_y)][col_number]
                 for item in result:
                     temp.append(item)
-            all.append(temp)
-    return all
+            _all.append(temp)
+    return _all
 
 
 rs = createJsonFileFromMapContent(getAllMapContent())
