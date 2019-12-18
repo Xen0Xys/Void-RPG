@@ -9,6 +9,7 @@ class LoadingView():
         self.size_y = _size_y
         self.resetUI()
         self.setupUI()
+        print("UI setuped")
     def resetUI(self):
         for i in self.parent.winfo_children():
             i.destroy()

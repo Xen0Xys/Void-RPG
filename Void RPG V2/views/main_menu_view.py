@@ -1,6 +1,8 @@
+from views.loading_view import LoadingView
 from tkinter.font import Font
 from tkinter import *
 import threading
+import time
 
 class MainMenuView():
     def __init__(self, _parent, _ui_textures_list, _size_x, _size_y):
@@ -40,5 +42,7 @@ class MainMenuView():
             self.parent.onWindowClosing()
             pass
         if arg=="playOne":
-            #threading.Thread(target=self.parent.loadAllMap).start()
-            self.parent.loadMapAroundPlayer(1250, 1250)
+            #threading.Thread(target=LoadingView, args=(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"], )).start()
+            LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
+            #self.parent.loadMapAroundPlayer(1250, 1250)
+            threading.Thread(target=self.parent.loadMapAroundPlayer, args=(1250, 1250, )).start()

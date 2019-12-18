@@ -16,8 +16,8 @@ class Player():
         #Temp
         #self.window.bind("<KeyPress>", lambda arg1=None, arg2="KeyPress":self.move(arg1, arg2))
         #self.window.bind("<KeyRelease>", lambda arg1=None, arg2="KeyRelease":self.move(arg1, arg2))
-        self.main_loop_on = True
-        threading.Thread(target=self.mainloop).start()
+        self.player_move_loop = threading.Thread(target=self.mainloop)
+        self.player_move_loop.start()
     def move(self, evt, arg):
         if arg=="KeyPress":
             if evt.keysym.lower()=="z":
@@ -58,7 +58,7 @@ class Player():
         yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
         xdir = -self.dirXm + self.dirXp
         ydir = -self.dirYm + self.dirYp
-        while self.main_loop_on:
+        while self.parent.parent.graphic_engine_on == True:
             time.sleep(.01)
             try:
                 try:
@@ -122,8 +122,11 @@ class Player():
 
                 #Actualisation visuelle
                 #print(self.x, self.y)
-                self.parent.wallpaper_canvas.coords(self.map, self.x, self.y)
-            except AttributeError as e:
+                if self.parent.parent.graphic_engine_on == True:
+                    self.parent.wallpaper_canvas.coords(self.map, self.x, self.y)
+                else:
+                    break
+            except AttributeError:
                 pass
-            except RuntimeError as e:
+            except RuntimeError:
                 pass

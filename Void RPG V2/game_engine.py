@@ -20,6 +20,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 """
 
 from graphic_engine import GraphicEngine
+import sys
 import os
 
 class EventListner():
@@ -35,6 +36,7 @@ class GameEngine():
         self.graphic_engine.showWindow()
         self.graphic_engine.saveGraphicEngineConfiguration()
         self.clearCacheFolder()
+        sys.exit(0)
     def createCacheFolder(self):
         if not os.path.exists("cache"):
             os.mkdir("cache")
