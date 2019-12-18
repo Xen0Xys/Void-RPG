@@ -1,7 +1,5 @@
 from views.main_menu_view import MainMenuView
-from views.loading_view import LoadingView
 from views.game_view import GameView
-from tkinter.font import Font
 from tkinter import *
 import PIL.ImageTk
 import PIL.Image
@@ -146,9 +144,9 @@ class GraphicEngine(Tk):
         self.assembleMap(chunck_list)
         self.displayMap()
     def isAllMapGenerated(self, _chunck_list):
-        for y in range(len(_chunck_list)):
-            for x in range(len(_chunck_list[y])):
-                if _chunck_list[y][x].chunck_loaded == False:
+        for chunck_y in _chunck_list:
+            for chunck in chunck_y:
+                if chunck.chunck_loaded == False:
                     return False
         return True
     def assembleMap(self, _chunck_list):
@@ -170,7 +168,6 @@ class GraphicEngine(Tk):
         self.map = PIL.ImageTk.PhotoImage(image=pil_map)
         print("End")
         print(time.time() - t1)
-        
     def displayMap(self):
         #Display map on screen
         self.game_view = GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
