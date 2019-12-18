@@ -8,7 +8,7 @@ class Main():
     def LoadTextureList():
         global textureList, encodeList, txtrnameList
         txtrnameList=[]
-        file=open("ressources/config/textureList.cfg", "r")
+        file=open("ressources/textures/map/textures.cfg", "r")
         content=file.read()
         file.close()
         content=content.replace(" ", "")
@@ -69,7 +69,7 @@ class Interface(Tk):
             self.ItemMatrice.append(temp)
         self.select=False
     def InitInterface(self):
-        self.geometry("1200x625+10+10")
+        self.geometry("960x610+10+10")
         self.title("Map Creator")
         self.resizable(width=False, height=False)
         self.LoadTextures()
@@ -77,11 +77,16 @@ class Interface(Tk):
         self.InitMainGui()
     def LoadTextures(self):
         self.TextureList=[]
+        self.base_texture_list = []
         self.TextureEncode=[]
         for i in encodeList:
             if i!="00":
                 try:
-                    self.TextureList.append(PhotoImage(file ='ressources/textures/{}'.format(textureList[i])))
+                    
+                    image = Image.open("ressources/textures/map/{}".format(textureList[i]))
+                    self.base_texture_list.append(ImageTk.PhotoImage(image))
+                    tk_image = ImageTk.PhotoImage(image.resize((17, 17)))
+                    self.TextureList.append(tk_image)
                     self.TextureEncode.append(i)
                 except TclError:
                     def temp():
@@ -91,27 +96,26 @@ class Interface(Tk):
                     threading.Thread(target=temp).start()
             else:
                 pass
-
     def TexturePalet(self):
         nbre=14
-        for i in range(len(self.TextureList)):
+        for i in range(len(self.base_texture_list)):
             can=Canvas(self.TextureFrame, width=25, height=25, bg="black", highlightthickness=0)
             can.place(x=(i%nbre)*30+10, y=((i//nbre)*30)+10)
             can.bind("<Button-1>", lambda arg1=None, arg2=i:self.onClickPalet(arg1, arg2))
-            can.create_image(0,0, image = self.TextureList[i], anchor=NW)
+            can.create_image(0,0, image = self.base_texture_list[i], anchor=NW)
         self.PreviewScreen=Canvas(self.TextureFrame, width=100, height=100, bg="red", highlightthickness=0)
-        self.PreviewScreen.place(x=25, y=420)
+        self.PreviewScreen.place(x=25, y=400)
         self.nameTxt=StringVar()
-        Label(self.TextureFrame, textvariable=self.nameTxt, bg="black", fg="white").place(x=25, y=399)
+        Label(self.TextureFrame, textvariable=self.nameTxt, bg="black", fg="white").place(x=25, y=379)
     def InitMainGui(self):
-        self.MainFrame = Frame(self, bg="purple", width=750, height=750)
+        self.MainFrame = Frame(self, bg="purple", width=510, height=510)
         self.MainFrame.place(x=0, y=0)
-        self.MainCan = Canvas(self.MainFrame, highlightthickness=0, width=750, height=525)
+        self.MainCan = Canvas(self.MainFrame, highlightthickness=0, width=510, height=510, bg="grey")
         self.MainCan.place(x=0, y=0)
         self.TextureFrame = Frame(self, bg="black", width=450, height=525)
-        self.TextureFrame.place(x=750, y=0)
-        self.OptFrame = Frame(self, bg="green", width=1200, height=100)
-        self.OptFrame.place(x=0, y=525)
+        self.TextureFrame.place(x=510, y=0)
+        self.OptFrame = Frame(self, bg="green", width=960, height=100)
+        self.OptFrame.place(x=0, y=510)
         self.InitOptScreen()
         self.TexturePalet()
         self.MainCan.bind("<Button-1>", self.onClickPlacing)
@@ -138,7 +142,7 @@ class Interface(Tk):
     def onClickPalet(self, evt, arg):
         self.actualTxtr=self.TextureList[int(arg)]
         self.actualKey=int(arg)
-        photo = Image.open("ressources/textures/"+textureList[self.TextureEncode[self.actualKey]])
+        photo = Image.open("ressources/textures/map/"+textureList[self.TextureEncode[self.actualKey]])
         resolution = (100,100)
         self.imgPreview = ImageTk.PhotoImage(photo.resize(resolution))
         self.PreviewScreen.create_image(0, 0, image=self.imgPreview, anchor=NW)
@@ -152,24 +156,24 @@ class Interface(Tk):
                     if self.click[0]==2:
                         if self.click[1]<=evt.x:
                             if self.click[2]<=evt.y:
-                                for i in range(self.click[2]//25, evt.y//25+1):
-                                    for j in range(self.click[1]//25, evt.x//25+1):
-                                        self.ItemMatrice[j][i]=self.MainCan.create_image(j*25, i*25, image = self.actualTxtr, anchor=NW)
+                                for i in range(self.click[2]//17, evt.y//17+1):
+                                    for j in range(self.click[1]//17, evt.x//17+1):
+                                        self.ItemMatrice[j][i]=self.MainCan.create_image(j*17, i*17, image = self.actualTxtr, anchor=NW)
                                         self.Matrice[i][j]=encodage
                             else:
-                                for i in range(evt.y//25, self.click[2]//25+1):
-                                    for j in range(self.click[1]//25, evt.x//25+1):
-                                        self.ItemMatrice[j][i]=self.MainCan.create_image(j*25, i*25, image = self.actualTxtr, anchor=NW)
+                                for i in range(evt.y//17, self.click[2]//17+1):
+                                    for j in range(self.click[1]//17, evt.x//17+1):
+                                        self.ItemMatrice[j][i]=self.MainCan.create_image(j*17, i*17, image = self.actualTxtr, anchor=NW)
                                         self.Matrice[i][j]=encodage
                         elif self.click[2]<=evt.y:
-                            for i in range(self.click[2]//25, evt.y//25+1):
-                                for j in range(evt.x//25, self.click[1]//25+1):
-                                    self.ItemMatrice[j][i]=self.MainCan.create_image(j*25, i*25, image = self.actualTxtr, anchor=NW)
+                            for i in range(self.click[2]//17, evt.y//17+1):
+                                for j in range(evt.x//17, self.click[1]//17+1):
+                                    self.ItemMatrice[j][i]=self.MainCan.create_image(j*17, i*17, image = self.actualTxtr, anchor=NW)
                                     self.Matrice[i][j]=encodage
                         else:
-                            for i in range(evt.y//25, self.click[2]//25+1):
-                                for j in range(evt.x//25, self.click[1]//25+1):
-                                    self.ItemMatrice[j][i]=self.MainCan.create_image(j*25, i*25, image = self.actualTxtr, anchor=NW)
+                            for i in range(evt.y//17, self.click[2]//17+1):
+                                for j in range(evt.x//17, self.click[1]//17+1):
+                                    self.ItemMatrice[j][i]=self.MainCan.create_image(j*17, i*17, image = self.actualTxtr, anchor=NW)
                                     self.Matrice[i][j]=encodage
                         self.click[0]=1
                         self.LoadMatrice(self.Matrice)
@@ -178,13 +182,18 @@ class Interface(Tk):
                         self.click[1] = evt.x
                         self.click[2] = evt.y
                 else:
+                    #Do change here 540
+                    """
                     self.actualTxtr = ImageTk
                     print(self.actualTxtr)
                     photo = self.actualTxtr
-                    resolution = (20, 20)
+                    resolution = (17, 17)
                     self.actualTxtr_resize = ImageTk.PhotoImage(photo.resize(resolution))
-                    self.ItemMatrice[evt.y//20][evt.x//20]=self.MainCan.create_image(evt.x//20*20, evt.y//20*20, image = self.actualTxtr, anchor=NW)
-                    self.Matrice[evt.y//20][evt.x//20]=encodage
+                    self.ItemMatrice[evt.y//17][evt.x//17]=self.MainCan.create_image(evt.x//17*17, evt.y//17*17, image = self.actualTxtr, anchor=NW)
+                    self.Matrice[evt.y//17][evt.x//17]=encodage
+                    """
+                    self.ItemMatrice[evt.y//17][evt.x//17]=self.MainCan.create_image(evt.x//17*17, evt.y//17*17, image = self.actualTxtr, anchor=NW)
+                    self.Matrice[evt.y//17][evt.x//17]=encodage
             except AttributeError:
                 pass
     def Select(self):
@@ -207,7 +216,7 @@ class Interface(Tk):
                 for j in range(len(self.Matrice[i])):
                     final+=self.Matrice[i][j]
                 final+="\n"
-            file=open("maps/{}.map".format(self.FileName.get()), "w")
+            file=open("ressources/maps/{}.map".format(self.FileName.get()), "w")
             file.write(final)
             file.close()
         else:
@@ -217,9 +226,9 @@ class Interface(Tk):
         try:
             if fileName=="":
                 lastLoad=self.FileName.get()
-                file=open("maps/{}.map".format(self.FileName.get()), "r")
+                file=open("ressources/maps/{}.map".format(self.FileName.get()), "r")
             else:
-                file=open("maps/{}.map".format(fileName), "r")
+                file=open("ressources/maps/{}.map".format(fileName), "r")
                 lastLoad=fileName
             content=file.read()
             file.close()
@@ -254,7 +263,7 @@ class Interface(Tk):
             for j in range(len(matrice[i])):
                 if matrice[i][j]!="00":
                     indice=self.TextureEncode.index(matrice[i][j])
-                    self.MainCan.create_image(j*25, i*25, image=self.TextureList[indice], anchor=NW)
+                    self.MainCan.create_image(j*17, i*17, image=self.TextureList[indice], anchor=NW)
     def Reload(self):
         self.destroy()
         Main.Load()
@@ -267,7 +276,7 @@ class Viewer():
         threading.Thread(target=self.CreateMap).start()
     def LoadTextures(self):
         txtrnameList=[]
-        file=open("ressources/config/textureList.cfg", "r")
+        file=open("ressources/textures/textures.cfg", "r")
         content=file.read()
         file.close()
         content=content.replace(" ", "")
@@ -287,7 +296,7 @@ class Viewer():
                 pass
         for key in self.textureList.keys():
             if key!="00":
-                self.textureList[key]=Image.open("ressources/textures/{}".format(self.textureList[key]))
+                self.textureList[key]=Image.open("ressources/textures/map/{}".format(self.textureList[key]))
                 self.textureList[key]=self.textureList[key].resize((4, 4))
 
     def CreateMap(self):
@@ -295,7 +304,7 @@ class Viewer():
         for y in range(20):
             for x in range(20):
                 try:
-                    file=open("maps/earth_{}_{}.map".format(x, y), "r")
+                    file=open("ressources/maps/earth_{}_{}.map".format(x, y), "r")
                     content=file.read()
                     file.close()
                     img = self.CreateMapPicture(content)
