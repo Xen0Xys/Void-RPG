@@ -275,7 +275,7 @@ class Viewer():
         threading.Thread(target=self.CreateMap).start()
     def LoadTextures(self):
         txtrnameList=[]
-        file=open("ressources/textures/textures.cfg", "r")
+        file=open("ressources/textures/map/textures.cfg", "r")
         content=file.read()
         file.close()
         content=content.replace(" ", "")
@@ -308,11 +308,11 @@ class Viewer():
                     file.close()
                     img = self.CreateMapPicture(content)
                     self.result.paste(im=img, box=(x*30, 570-(y*30)))
-                except FileNotFoundError as e:
+                except FileNotFoundError:
                     pass
-                except AttributeError as e:
+                except AttributeError:
                     pass
-                except ValueError as e:
+                except ValueError:
                     pass
 
         self.result.save("image.png")
