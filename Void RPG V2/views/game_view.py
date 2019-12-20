@@ -16,8 +16,6 @@ class GameView():
         self.setupElements()
         #Player setup
         self.player = Player(self.map_x, self.map_y, self.picture, self.parent, self)
-        self.parent.bind("<KeyPress>", lambda arg1=None, arg2="KeyPress":self.player.move(arg1, arg2))
-        self.parent.bind("<KeyRelease>", lambda arg1=None, arg2="KeyRelease":self.player.move(arg1, arg2))
     def resetUI(self):
         for i in self.parent.winfo_children():
             i.destroy()

@@ -4,121 +4,123 @@ import threading
 
 class Player():
     def __init__(self, _x, _y, _map, _window, _parent):
-        self.dirYm = 0
-        self.dirYp = 0
-        self.dirXm = 0
-        self.dirXp = 0
+        self.y_dir_up = 0
+        self.y_dir_down = 0
+        self.x_dir_left = 0
+        self.x_dir_right = 0
         self.x = _x
         self.y = _y
         self.map = _map
         self.window = _window
         self.parent = _parent
         #Temp
-        #self.window.bind("<KeyPress>", lambda arg1=None, arg2="KeyPress":self.move(arg1, arg2))
-        #self.window.bind("<KeyRelease>", lambda arg1=None, arg2="KeyRelease":self.move(arg1, arg2))
+        self.window.bind("<KeyPress>", self.keyPress)
+        self.window.bind("<KeyRelease>", self.keyRelease)
         self.player_move_loop = threading.Thread(target=self.mainloop)
         self.player_move_loop.start()
-    def move(self, evt, arg):
-        if arg=="KeyPress":
-            if evt.keysym.lower()=="z":
-                try:
-                    if self.dirYm==0:
-                        self.dirYm=1
-                except AttributeError:
-                    self.dirYm=1
-            elif evt.keysym.lower()=="s":
-                try:
-                    if self.dirYp==0:
-                        self.dirYp=1
-                except AttributeError:
-                    self.dirYp=1
-            elif evt.keysym.lower()=="q":
-                try:
-                    if self.dirXm==0:
-                        self.dirXm=1
-                except AttributeError:
-                    self.dirXm=1
-            elif evt.keysym.lower()=="d":
-                try:
-                    if self.dirXp==0:
-                        self.dirXp=1
-                except AttributeError:
-                    self.dirXp=1
-        if arg=="KeyRelease":
-            if evt.keysym.lower()=="z":
-                self.dirYm=0
-            elif evt.keysym.lower()=="s":
-                self.dirYp=0
-            elif evt.keysym.lower()=="q":
-                self.dirXm=0
-            elif evt.keysym.lower()=="d":
-                self.dirXp=0
+    def keyPress(self, evt):
+        if evt.keysym.lower()=="z":
+            try:
+                if self.y_dir_up==0:
+                    self.y_dir_up=1
+            except AttributeError:
+                self.y_dir_up=1
+        elif evt.keysym.lower()=="s":
+            try:
+                if self.y_dir_down==0:
+                    self.y_dir_down=1
+            except AttributeError:
+                self.y_dir_down=1
+        elif evt.keysym.lower()=="q":
+            try:
+                if self.x_dir_left==0:
+                    self.x_dir_left=1
+            except AttributeError:
+                self.x_dir_left=1
+        elif evt.keysym.lower()=="d":
+            try:
+                if self.x_dir_right==0:
+                    self.x_dir_right=1
+            except AttributeError:
+                self.x_dir_right=1
+    def keyRelease(self, evt):
+        if evt.keysym.lower()=="z":
+            self.y_dir_up=0
+        elif evt.keysym.lower()=="s":
+            self.y_dir_down=0
+        elif evt.keysym.lower()=="q":
+            self.x_dir_left=0
+        elif evt.keysym.lower()=="d":
+            self.x_dir_right=0
     def mainloop(self):
-        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
-        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":2.2, "accel_speed":8}
-        xdir = -self.dirXm + self.dirXp
-        ydir = -self.dirYm + self.dirYp
+        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":4}
+        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":4}
+        x_dir =  self.x_dir_right - self.x_dir_left
+        y_dir =  self.y_dir_down - self.y_dir_up
+        exec_time = 0
+        #threading.Thread(target=self.calcPxPerSeconds).start()
         while self.parent.parent.graphic_engine_on == True:
-            time.sleep(.01)
+            time.sleep(1/60 - exec_time)
+            t1 = time.time()
             try:
                 try:
-                    lastxdir = xdir
-                    lastydir = ydir
+                    last_x_dir = x_dir
+                    last_y_dir = y_dir
                 except UnboundLocalError:
-                    lastxdir = 0
-                    lastydir = 0
-                xdir = -self.dirXm + self.dirXp
-                ydir = -self.dirYm + self.dirYp
+                    last_x_dir = 0
+                    last_y_dir = 0
+                x_dir =  self.x_dir_right - self.x_dir_left
+                y_dir =  self.y_dir_down - self.y_dir_up
 
-                if lastxdir!=xdir:
-                    xinfos["deceleration"], xinfos["decel_dir"] = True, lastxdir
-                    xinfos["decel_multiplier"]=xinfos["multiplier"]
+                if last_x_dir!=x_dir:
+                    xinfos["deceleration"], xinfos["decel_dir"] = True, last_x_dir
+                    xinfos["decel_multiplier"] = xinfos["multiplier"]
                     xinfos["accel_nbre"], xinfos["decel_nbre"] = 1, 1
                     xinfos["multiplier"] = 1
 
-                if lastydir!=ydir:
-                    yinfos["deceleration"], yinfos["decel_dir"] = True, lastydir
-                    yinfos["decel_multiplier"]=yinfos["multiplier"]
+                if last_y_dir!=y_dir:
+                    yinfos["deceleration"], yinfos["decel_dir"] = True, last_y_dir
+                    yinfos["decel_multiplier"] = yinfos["multiplier"]
                     yinfos["accel_nbre"], yinfos["decel_nbre"] = 1, 1
                     yinfos["multiplier"] = 1
 
                 #Gestion de la deceleration
-                if xinfos["deceleration"]==True:
-                    xinfos["decel_nbre"]+=1
-                    if xinfos["decel_multiplier"]>1:
-                        if xinfos["decel_nbre"]%randint(1, 2)==0:
-                            xinfos["decel_multiplier"]-=0.10
-                            self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                if xinfos["deceleration"] == True and x_dir == 0:
+                    xinfos["decel_nbre"] += 1
+                    if xinfos["decel_multiplier"] > 1:
+                        if xinfos["decel_nbre"] % randint(1, 2) == 0:
+                            xinfos["decel_multiplier"] -= 0.10
+                            self.x -= xinfos["decel_dir"] * xinfos["decel_multiplier"]
                         else:
-                            self.x-=xinfos["decel_dir"]*xinfos["decel_multiplier"]
+                            self.x -= xinfos["decel_dir"] * xinfos["decel_multiplier"]
                     else:
-                        xinfos["deceleration"]=False
-                if yinfos["deceleration"]==True:
-                    yinfos["decel_nbre"]+=1
-                    if yinfos["decel_multiplier"]>1:
-                        if yinfos["decel_nbre"]%randint(1, 2)==0:
-                            yinfos["decel_multiplier"]-=0.10
-                            self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                        xinfos["deceleration"] = False
+                if yinfos["deceleration"] == True and y_dir == 0:
+                    yinfos["decel_nbre"] += 1
+                    if yinfos["decel_multiplier"] > 1:
+                        if yinfos["decel_nbre"] % randint(1, 2) == 0:
+                            yinfos["decel_multiplier"] -= 0.10
+                            self.y -= yinfos["decel_dir"] * yinfos["decel_multiplier"]
                         else:
-                            self.y-=yinfos["decel_dir"]*yinfos["decel_multiplier"]
+                            self.y -= yinfos["decel_dir"] * yinfos["decel_multiplier"]
                     else:
-                        yinfos["deceleration"]=False
+                        yinfos["deceleration"] = False
 
                 #Acceleration dans tous les cas
-                if xdir!=0:
-                    xinfos["accel_nbre"]+=1
-                if xinfos["multiplier"]<=xinfos["speed_lim"] and xinfos["accel_nbre"]%xinfos["accel_speed"]==0:
-                    xinfos["multiplier"]+=0.2
-                    self.x-=lastxdir*xinfos["multiplier"]
+                if x_dir != 0:
+                    xinfos["accel_nbre"] += 1
+                if xinfos["multiplier"] <= xinfos["speed_lim"] and xinfos["accel_nbre"] % xinfos["accel_speed"] == 0:
+                    xinfos["multiplier"] += 0.2
+                    self.x -= last_x_dir * xinfos["multiplier"]
                 else:
-                    self.x-=lastxdir*xinfos["multiplier"]
-                if ydir!=0:
-                    yinfos["accel_nbre"]+=1
-                if yinfos["multiplier"]<=yinfos["speed_lim"] and yinfos["accel_nbre"]%yinfos["accel_speed"]==0:
-                    yinfos["multiplier"]+=0.2
-                    self.y-=lastydir*yinfos["multiplier"]
+                    self.x -= last_x_dir * xinfos["multiplier"]
+                if y_dir != 0:
+                    yinfos["accel_nbre"] += 1
+                if yinfos["multiplier"] <= yinfos["speed_lim"] and yinfos["accel_nbre"] % yinfos["accel_speed"] == 0:
+                    yinfos["multiplier"] += 0.2
+                    self.y -= last_y_dir * yinfos["multiplier"]
                 else:
-                    self.y-=lastydir*yinfos["multiplier"]
+                    self.y -= last_y_dir * yinfos["multiplier"]
 
                 #Actualisation visuelle
                 #print(self.x, self.y)
@@ -126,7 +128,14 @@ class Player():
                     self.parent.wallpaper_canvas.coords(self.map, self.x, self.y)
                 else:
                     break
+                exec_time = time.time() - t1
+                #print(time.time() - mesure)
             except AttributeError:
                 pass
             except RuntimeError:
                 pass
+    def calcPxPerSeconds(self):
+        while self.parent.parent.graphic_engine_on == True:
+            x, y = self.x, self.y
+            time.sleep(1)
+            print(x - self.x, y - self.y)
