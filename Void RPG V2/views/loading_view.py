@@ -14,5 +14,8 @@ class LoadingView():
         for i in self.parent.winfo_children():
             i.destroy()
     def setupUI(self):
+        bg_color = "grey"
+        can = Canvas(self.parent, height=self.size_y, width=self.size_x, highlightthickness=0,bg=bg_color)
+        can.pack()
         police = Font(family="Oldania ADF Std", size=20)
-        Label(self.parent, text = "Loading...", anchor=W, font=police).place(x=self.size_x / 2 - self.size_x / 20, y=self.size_y / 2)
+        Label(can, text = "Loading...", anchor=W, font=police, bg=bg_color).place(x=self.size_x / 2 - self.size_x / 20, y=self.size_y / 2)

@@ -69,7 +69,7 @@ class Player():
         exec_time = 0
         #threading.Thread(target=self.calcPxPerSeconds).start()
         while self.parent.parent.graphic_engine_on == True:
-            time.sleep(1/60 - exec_time)
+            time.sleep(abs(1/60 - exec_time))
             t1 = time.time()
             try:
                 try:
@@ -94,20 +94,20 @@ class Player():
                     yinfos["multiplier"] = 1
 
                 #Gestion de la deceleration
-                if xinfos["deceleration"] == True and x_dir == 0:
+                if xinfos["deceleration"] == True:
                     xinfos["decel_nbre"] += 1
                     if xinfos["decel_multiplier"] > 1:
-                        if xinfos["decel_nbre"] % randint(1, 2) == 0:
+                        if xinfos["decel_nbre"] % 2 == 0:
                             xinfos["decel_multiplier"] -= 0.10
                             self.x -= xinfos["decel_dir"] * xinfos["decel_multiplier"]
                         else:
                             self.x -= xinfos["decel_dir"] * xinfos["decel_multiplier"]
                     else:
                         xinfos["deceleration"] = False
-                if yinfos["deceleration"] == True and y_dir == 0:
+                if yinfos["deceleration"] == True:
                     yinfos["decel_nbre"] += 1
                     if yinfos["decel_multiplier"] > 1:
-                        if yinfos["decel_nbre"] % randint(1, 2) == 0:
+                        if yinfos["decel_nbre"] % 2 == 0:
                             yinfos["decel_multiplier"] -= 0.10
                             self.y -= yinfos["decel_dir"] * yinfos["decel_multiplier"]
                         else:

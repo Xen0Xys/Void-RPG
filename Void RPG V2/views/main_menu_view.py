@@ -43,3 +43,4 @@ class MainMenuView():
         if arg=="playOne":
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
             threading.Thread(target=self.parent.loadMapAroundPlayer, args=(1250, 1250, )).start()
+            
