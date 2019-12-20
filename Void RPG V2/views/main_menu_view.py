@@ -41,7 +41,5 @@ class MainMenuView():
         if arg=="quit":
             self.parent.onWindowClosing()
         if arg=="playOne":
-            #threading.Thread(target=LoadingView, args=(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"], )).start()
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
-            #self.parent.loadMapAroundPlayer(1250, 1250)
             threading.Thread(target=self.parent.loadMapAroundPlayer, args=(1250, 1250, )).start()

@@ -1,6 +1,7 @@
 import time
 from random import randint
 import threading
+from pynput import keyboard
 
 class Player():
     def __init__(self, _x, _y, _map, _window, _parent):
@@ -10,51 +11,59 @@ class Player():
         self.x_dir_right = 0
         self.x = _x
         self.y = _y
+        self.real_x = 0
+        self.read_y = 0
         self.map = _map
         self.window = _window
         self.parent = _parent
         #Temp
-        self.window.bind("<KeyPress>", self.keyPress)
-        self.window.bind("<KeyRelease>", self.keyRelease)
+        self.listener = keyboard.Listener(on_press=self.keyPress, on_release=self.keyRelease)
+        self.listener.start()
         self.player_move_loop = threading.Thread(target=self.mainloop)
         self.player_move_loop.start()
-    def keyPress(self, evt):
-        if evt.keysym.lower()=="z":
-            try:
-                if self.y_dir_up==0:
+    def keyPress(self, key):
+        try:
+            if key.char.lower()=="z":
+                try:
+                    if self.y_dir_up==0:
+                        self.y_dir_up=1
+                except AttributeError:
                     self.y_dir_up=1
-            except AttributeError:
-                self.y_dir_up=1
-        elif evt.keysym.lower()=="s":
-            try:
-                if self.y_dir_down==0:
+            elif key.char.lower()=="s":
+                try:
+                    if self.y_dir_down==0:
+                        self.y_dir_down=1
+                except AttributeError:
                     self.y_dir_down=1
-            except AttributeError:
-                self.y_dir_down=1
-        elif evt.keysym.lower()=="q":
-            try:
-                if self.x_dir_left==0:
+            elif key.char.lower()=="q":
+                try:
+                    if self.x_dir_left==0:
+                        self.x_dir_left=1
+                except AttributeError:
                     self.x_dir_left=1
-            except AttributeError:
-                self.x_dir_left=1
-        elif evt.keysym.lower()=="d":
-            try:
-                if self.x_dir_right==0:
+            elif key.char.lower()=="d":
+                try:
+                    if self.x_dir_right==0:
+                        self.x_dir_right=1
+                except AttributeError:
                     self.x_dir_right=1
-            except AttributeError:
-                self.x_dir_right=1
-    def keyRelease(self, evt):
-        if evt.keysym.lower()=="z":
-            self.y_dir_up=0
-        elif evt.keysym.lower()=="s":
-            self.y_dir_down=0
-        elif evt.keysym.lower()=="q":
-            self.x_dir_left=0
-        elif evt.keysym.lower()=="d":
-            self.x_dir_right=0
+        except AttributeError:
+            pass
+    def keyRelease(self, key):
+        try:
+            if key.char.lower()=="z":
+                self.y_dir_up=0
+            elif key.char.lower()=="s":
+                self.y_dir_down=0
+            elif key.char.lower()=="q":
+                self.x_dir_left=0
+            elif key.char.lower()=="d":
+                self.x_dir_right=0
+        except AttributeError:
+            pass
     def mainloop(self):
-        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":4}
-        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":3.5, "accel_speed":4}
+        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
+        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
         x_dir =  self.x_dir_right - self.x_dir_left
         y_dir =  self.y_dir_down - self.y_dir_up
         exec_time = 0
