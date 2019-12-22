@@ -42,6 +42,8 @@ class Chunck():
             return self.map
         except FileNotFoundError:
             return self.generateChunck(_pil_textures_list, force=True)
+    def isPlayerOnChunck(self, player_x, player_y):
+        pass
 
 class GraphicEngine(Tk):
     def __init__(self, _graphic_engine_options=None):
@@ -156,7 +158,6 @@ class GraphicEngine(Tk):
         pil_map = PIL.Image.new("RGB", (size[0] * 5, size[1] * 5))
         for y in range(5):
             for x in range(5):
-                #threading.Thread(target=_chunck_list[y][x].generateChunck, args=(self.pil_textures, )).start()
                 _chunck_list[y][x].generateChunck(self.pil_textures)
         while self.isAllMapGenerated(_chunck_list) == False:
             time.sleep(1 / 60)
@@ -165,9 +166,15 @@ class GraphicEngine(Tk):
                 chunck = _chunck_list[y][x].getChunck(self.pil_textures)
                 pil_map.paste(im=chunck, box=(x * size[0], y * size[1]))
         pil_map.save("cache/temp.png")
-        self.map = PIL.ImageTk.PhotoImage(image=pil_map)
+        try:
+            self.map = PIL.ImageTk.PhotoImage(image=pil_map)
+        except RuntimeError:
+            return 1
         print("End")
         print(time.time() - t1)
     def displayMap(self):
         #Display map on screen
-        self.game_view = GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
+        try:
+            self.game_view = GameView(self, self.options, None, self.textures, self.pil_textures, self.map)
+        except AttributeError:
+            return 1

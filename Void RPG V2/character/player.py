@@ -23,53 +23,55 @@ class Player():
         self.player_move_loop.start()
     def keyPress(self, key):
         try:
-            if key.char.lower()=="z":
+            if key.char.lower() == "z":
                 try:
-                    if self.y_dir_up==0:
-                        self.y_dir_up=1
+                    if self.y_dir_up == 0:
+                        self.y_dir_up = 1
                 except AttributeError:
-                    self.y_dir_up=1
-            elif key.char.lower()=="s":
+                    self.y_dir_up = 1
+            elif key.char.lower() == "s":
                 try:
-                    if self.y_dir_down==0:
-                        self.y_dir_down=1
+                    if self.y_dir_down == 0:
+                        self.y_dir_down = 1
                 except AttributeError:
-                    self.y_dir_down=1
-            elif key.char.lower()=="q":
+                    self.y_dir_down = 1
+            elif key.char.lower() == "q":
                 try:
-                    if self.x_dir_left==0:
-                        self.x_dir_left=1
+                    if self.x_dir_left == 0:
+                        self.x_dir_left = 1
                 except AttributeError:
-                    self.x_dir_left=1
-            elif key.char.lower()=="d":
+                    self.x_dir_left = 1
+            elif key.char.lower() == "d":
                 try:
-                    if self.x_dir_right==0:
-                        self.x_dir_right=1
+                    if self.x_dir_right == 0:
+                        self.x_dir_right = 1
                 except AttributeError:
-                    self.x_dir_right=1
+                    self.x_dir_right = 1
         except AttributeError:
             pass
     def keyRelease(self, key):
         try:
-            if key.char.lower()=="z":
-                self.y_dir_up=0
-            elif key.char.lower()=="s":
-                self.y_dir_down=0
-            elif key.char.lower()=="q":
-                self.x_dir_left=0
-            elif key.char.lower()=="d":
-                self.x_dir_right=0
+            if key.char.lower() == "z":
+                self.y_dir_up = 0
+            elif key.char.lower() == "s":
+                self.y_dir_down = 0
+            elif key.char.lower() == "q":
+                self.x_dir_left = 0
+            elif key.char.lower() == "d":
+                self.x_dir_right = 0
         except AttributeError:
             pass
     def mainloop(self):
-        xinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
-        yinfos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
+        x_infos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
+        y_infos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
         x_dir =  self.x_dir_right - self.x_dir_left
         y_dir =  self.y_dir_down - self.y_dir_up
         exec_time = 0
         #threading.Thread(target=self.calcPxPerSeconds).start()
         while self.parent.parent.graphic_engine_on == True:
-            time.sleep(abs(1/60 - exec_time))
+            sleep_time = 1/60 - exec_time
+            if sleep_time > 0:
+                time.sleep(1/60 - exec_time)
             t1 = time.time()
             try:
                 try:
@@ -82,65 +84,60 @@ class Player():
                 y_dir =  self.y_dir_down - self.y_dir_up
 
                 if last_x_dir!=x_dir:
-                    xinfos["deceleration"], xinfos["decel_dir"] = True, last_x_dir
-                    xinfos["decel_multiplier"] = xinfos["multiplier"]
-                    xinfos["accel_nbre"], xinfos["decel_nbre"] = 1, 1
-                    xinfos["multiplier"] = 1
-
+                    x_infos["deceleration"], x_infos["decel_dir"] = True, last_x_dir
+                    x_infos["decel_multiplier"] = x_infos["multiplier"]
+                    x_infos["accel_nbre"], x_infos["decel_nbre"] = 1, 1
+                    x_infos["multiplier"] = 1
                 if last_y_dir!=y_dir:
-                    yinfos["deceleration"], yinfos["decel_dir"] = True, last_y_dir
-                    yinfos["decel_multiplier"] = yinfos["multiplier"]
-                    yinfos["accel_nbre"], yinfos["decel_nbre"] = 1, 1
-                    yinfos["multiplier"] = 1
+                    y_infos["deceleration"], y_infos["decel_dir"] = True, last_y_dir
+                    y_infos["decel_multiplier"] = y_infos["multiplier"]
+                    y_infos["accel_nbre"], y_infos["decel_nbre"] = 1, 1
+                    y_infos["multiplier"] = 1
 
                 #Gestion de la deceleration
-                if xinfos["deceleration"] == True:
-                    xinfos["decel_nbre"] += 1
-                    if xinfos["decel_multiplier"] > 1:
-                        if xinfos["decel_nbre"] % 2 == 0:
-                            xinfos["decel_multiplier"] -= 0.10
-                            self.x -= xinfos["decel_dir"] * xinfos["decel_multiplier"]
+                if x_infos["deceleration"] == True:
+                    x_infos["decel_nbre"] += 1
+                    if x_infos["decel_multiplier"] > 1:
+                        if x_infos["decel_nbre"] % 2 == 0:
+                            x_infos["decel_multiplier"] -= 0.10
+                            self.x -= x_infos["decel_dir"] * x_infos["decel_multiplier"]
                         else:
-                            self.x -= xinfos["decel_dir"] * xinfos["decel_multiplier"]
+                            self.x -= x_infos["decel_dir"] * x_infos["decel_multiplier"]
                     else:
-                        xinfos["deceleration"] = False
-                if yinfos["deceleration"] == True:
-                    yinfos["decel_nbre"] += 1
-                    if yinfos["decel_multiplier"] > 1:
-                        if yinfos["decel_nbre"] % 2 == 0:
-                            yinfos["decel_multiplier"] -= 0.10
-                            self.y -= yinfos["decel_dir"] * yinfos["decel_multiplier"]
+                        x_infos["deceleration"] = False
+                if y_infos["deceleration"] == True:
+                    y_infos["decel_nbre"] += 1
+                    if y_infos["decel_multiplier"] > 1:
+                        if y_infos["decel_nbre"] % 2 == 0:
+                            y_infos["decel_multiplier"] -= 0.10
+                            self.y -= y_infos["decel_dir"] * y_infos["decel_multiplier"]
                         else:
-                            self.y -= yinfos["decel_dir"] * yinfos["decel_multiplier"]
+                            self.y -= y_infos["decel_dir"] * y_infos["decel_multiplier"]
                     else:
-                        yinfos["deceleration"] = False
+                        y_infos["deceleration"] = False
 
                 #Acceleration dans tous les cas
                 if x_dir != 0:
-                    xinfos["accel_nbre"] += 1
-                if xinfos["multiplier"] <= xinfos["speed_lim"] and xinfos["accel_nbre"] % xinfos["accel_speed"] == 0:
-                    xinfos["multiplier"] += 0.2
-                    self.x -= last_x_dir * xinfos["multiplier"]
+                    x_infos["accel_nbre"] += 1
+                if x_infos["multiplier"] <= x_infos["speed_lim"] and x_infos["accel_nbre"] % x_infos["accel_speed"] == 0:
+                    x_infos["multiplier"] += 0.2
+                    self.x -= last_x_dir * x_infos["multiplier"]
                 else:
-                    self.x -= last_x_dir * xinfos["multiplier"]
+                    self.x -= last_x_dir * x_infos["multiplier"]
                 if y_dir != 0:
-                    yinfos["accel_nbre"] += 1
-                if yinfos["multiplier"] <= yinfos["speed_lim"] and yinfos["accel_nbre"] % yinfos["accel_speed"] == 0:
-                    yinfos["multiplier"] += 0.2
-                    self.y -= last_y_dir * yinfos["multiplier"]
+                    y_infos["accel_nbre"] += 1
+                if y_infos["multiplier"] <= y_infos["speed_lim"] and y_infos["accel_nbre"] % y_infos["accel_speed"] == 0:
+                    y_infos["multiplier"] += 0.2
+                    self.y -= last_y_dir * y_infos["multiplier"]
                 else:
-                    self.y -= last_y_dir * yinfos["multiplier"]
+                    self.y -= last_y_dir * y_infos["multiplier"]
 
                 #Actualisation visuelle
-                #print(self.x, self.y)
                 if self.parent.parent.graphic_engine_on == True:
                     self.parent.wallpaper_canvas.coords(self.map, self.x, self.y)
                 else:
                     break
                 exec_time = time.time() - t1
-                #print(time.time() - mesure)
-            except AttributeError:
-                pass
             except RuntimeError:
                 pass
     def calcPxPerSeconds(self):

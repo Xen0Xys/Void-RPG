@@ -43,7 +43,13 @@ class GameEngine():
     def clearCacheFolder(self):
         file_list = os.listdir("cache/")
         for file in file_list:
-            os.remove("cache/{}".format(file))
+            ctn = True
+            while ctn == True:
+                try:
+                    os.remove("cache/{}".format(file))
+                    ctn = False
+                except PermissionError:
+                    pass
 
 if __name__ == "__main__":
     engine = GameEngine()
