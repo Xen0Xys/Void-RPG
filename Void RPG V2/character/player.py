@@ -11,8 +11,9 @@ class Player():
         self.x_dir_right = 0
         self.x = _x
         self.y = _y
-        self.real_x = 0
-        self.read_y = 0
+        self.real_x = self.x + 2.5 * _window.options["x_window_size"]
+        self.real_y = self.y + 2.5 * _window.options["y_window_size"]
+        print(self.real_x, self.real_y)
         self.map = _map
         self.window = _window
         self.parent = _parent
