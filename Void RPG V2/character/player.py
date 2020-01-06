@@ -18,6 +18,7 @@ class Player():
         self.window = _window
         self.parent = _parent
         #Temp
+    def start(self):
         self.listener = keyboard.Listener(on_press=self.keyPress, on_release=self.keyRelease)
         self.listener.start()
         self.player_move_loop = threading.Thread(target=self.mainloop)
@@ -69,7 +70,7 @@ class Player():
         y_dir =  self.y_dir_down - self.y_dir_up
         exec_time = 0
         #threading.Thread(target=self.calcPxPerSeconds).start()
-        while self.parent.parent.graphic_engine_on == True:
+        while self.parent.graphic_engine_on == True:
             sleep_time = 1/60 - exec_time
             if sleep_time > 0:
                 time.sleep(1/60 - exec_time)
@@ -134,15 +135,15 @@ class Player():
                     self.y -= last_y_dir * y_infos["multiplier"]
 
                 #Actualisation visuelle
-                if self.parent.parent.graphic_engine_on == True:
-                    self.parent.wallpaper_canvas.coords(self.map, self.x, self.y)
+                if self.parent.graphic_engine_on == True:
+                    self.parent.game_view.getCanvas().coords(self.map, self.x, self.y)
                 else:
                     break
                 exec_time = time.time() - t1
             except RuntimeError:
                 pass
     def calcPxPerSeconds(self):
-        while self.parent.parent.graphic_engine_on == True:
+        while self.parent.graphic_engine_on == True:
             x, y = self.x, self.y
             time.sleep(1)
             print(x - self.x, y - self.y)

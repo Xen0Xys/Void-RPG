@@ -1,4 +1,3 @@
-from character.player import Player
 from tkinter import *
 import threading
 import time
@@ -16,7 +15,9 @@ class GameView():
         self.resetUI()
         self.setupElements()
         #Player setup
-        self.player = Player(self.map_x, self.map_y, self.picture, self.parent, self)
+        self.player = _player
+    def start(self):
+        self.player.start()
     def resetUI(self):
         for i in self.parent.winfo_children():
             i.destroy()
@@ -29,6 +30,9 @@ class GameView():
         for i in range(5000):
             time.sleep(.01)
             self.wallpaper_canvas.coords(self.picture, x + i, y + i / 2)
+    def getCanvas(self):
+        print("here")
+        return self.wallpaper_canvas
     def loadMapGestionnary(self):
         while self.parent.graphic_engine_on == True:
             pass

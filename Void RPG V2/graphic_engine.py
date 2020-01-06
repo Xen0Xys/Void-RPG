@@ -1,5 +1,6 @@
 from views.main_menu_view import MainMenuView
 from views.game_view import GameView
+from character.player import Player
 from tkinter import *
 import PIL.ImageTk
 import PIL.Image
@@ -106,14 +107,10 @@ class ChunckLoader():
                 temp.append(Chunck((int(size[0] / 25), int(size[1] / 25)), (x_map * map_00_x, y_map * map_00_y), matrix_chunck, (x_map, y_map)))
             chunck_list.append(temp)
         self.map = self.assembleMap(chunck_list)
-        print("hete")
         self.is_map_generating = False
-        print("generated")
         return self.map
     def startLoadingLoop(self):
         pass
-
-
 
 class GraphicEngine(Tk):
     def __init__(self, _graphic_engine_options=None):
@@ -197,12 +194,18 @@ class GraphicEngine(Tk):
         return textures, pil_textures
     def loadMap(self, options):
         x, y = options["player_x"], options["player_y"]
+
+        self.screen_size = (self.options["x_window_size"], self.options["y_window_size"])
+        self.map_x, self.map_y = self.screen_size[0] * (-2), self.screen_size[1] * (-2)
+
         self.chunck_loader = ChunckLoader(x, y, self.options, self.pil_textures, self.matrix)
-        map = self.chunck_loader.loadMapAroundPlayer(x, y)
-        self.displayMap(map)
-    def displayMap(self, map):
+        self.map = self.chunck_loader.loadMapAroundPlayer(x, y)
+        self.player = Player(self.map_x, self.map_y, self.map, self, self)
+        self.displayMap()
+    def displayMap(self):
         #Display map on screen
         try:
-            self.game_view = GameView(self, self.options, None, self.textures, self.pil_textures, map)
+            self.game_view = GameView(self, self.options, self.player, self.textures, self.pil_textures, self.map)
+            self.game_view.start()
         except AttributeError:
             return 1
