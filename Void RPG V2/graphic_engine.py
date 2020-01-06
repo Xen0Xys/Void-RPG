@@ -50,6 +50,7 @@ class ChunckLoader():
         self.options = _graphic_engine_options
         self.pil_textures = _pil_textures
         self.matrix = _matrix
+        self.is_map_generating = False
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
         matrix = []
@@ -83,12 +84,15 @@ class ChunckLoader():
                 pil_map.paste(im=chunck, box=(x * size[0], y * size[1]))
         pil_map.save("cache/temp.png")
         try:
-            return PIL.ImageTk.PhotoImage(image=pil_map)
-        except RuntimeError:
+            convert_map = PIL.ImageTk.PhotoImage(image=pil_map)
+            return convert_map
+        except RuntimeError as e:
+            print(e)
             return 1
         print("End")
         print(time.time() - t1)
     def loadMapAroundPlayer(self, _center_x, _center_y):
+        self.is_map_generating = True
         #Load 5 chuncks around playeroad 5 chuncks around player
         size = (self.options["x_window_size"], self.options["y_window_size"])
         #LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
@@ -101,7 +105,11 @@ class ChunckLoader():
                 matrix_chunck = self.getMatrixChunck((map_00_x + x_map * size[0], map_00_y + y_map * size[1]), (int(size[0] / 25), int(size[1] / 25)), self.matrix)
                 temp.append(Chunck((int(size[0] / 25), int(size[1] / 25)), (x_map * map_00_x, y_map * map_00_y), matrix_chunck, (x_map, y_map)))
             chunck_list.append(temp)
-        return self.assembleMap(chunck_list)
+        self.map = self.assembleMap(chunck_list)
+        print("hete")
+        self.is_map_generating = False
+        print("generated")
+        return self.map
     def startLoadingLoop(self):
         pass
 
@@ -122,6 +130,12 @@ class GraphicEngine(Tk):
         MainMenuView(self, self.textures["ui"], self.options["x_window_size"], self.options["y_window_size"])
     def onWindowClosing(self):
         #Closing window event
+        try:
+            while self.chunck_loader.is_map_generating == True:
+                time.sleep(.1)
+                print("waiting")
+        except AttributeError:
+            pass
         self.graphic_engine_on = False
         try:
             self.game_view.player.player_move_loop.join(1)
