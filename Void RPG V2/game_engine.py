@@ -31,6 +31,7 @@ class GameEngine():
     def __init__(self):
         self.startGameEngines()
     def startGameEngines(self):
+        self.clearCacheFolder()
         self.createCacheFolder()
         self.graphic_engine = GraphicEngine()
         self.graphic_engine.showWindow()

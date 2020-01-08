@@ -31,7 +31,6 @@ class GameView():
             time.sleep(.01)
             self.wallpaper_canvas.coords(self.picture, x + i, y + i / 2)
     def getCanvas(self):
-        print("here")
         return self.wallpaper_canvas
     def loadMapGestionnary(self):
         while self.parent.graphic_engine_on == True:

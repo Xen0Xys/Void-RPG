@@ -2,6 +2,7 @@ import time
 from random import randint
 import threading
 from pynput import keyboard
+from tkinter import *
 
 class Player():
     def __init__(self, _x, _y, _map, _window, _parent):
@@ -23,6 +24,7 @@ class Player():
         self.listener.start()
         self.player_move_loop = threading.Thread(target=self.mainloop)
         self.player_move_loop.start()
+        #self.parent.game_view.getCanvas().create_image(self.x, self.y, image=self.map, anchor=NW)
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
@@ -136,7 +138,7 @@ class Player():
 
                 #Actualisation visuelle
                 if self.parent.graphic_engine_on == True:
-                    self.parent.game_view.getCanvas().coords(self.map, self.x, self.y)
+                    self.parent.game_view.getCanvas().coords(self.parent.game_view.picture, self.x, self.y)
                 else:
                     break
                 exec_time = time.time() - t1

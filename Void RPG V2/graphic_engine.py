@@ -47,11 +47,16 @@ class Chunck():
         pass
 
 class ChunckLoader():
-    def __init__(self, _player_x, _player_y, _graphic_engine_options, _pil_textures, _matrix):
-        self.options = _graphic_engine_options
+    def __init__(self, _player_x, _player_y, _graphic_engine, _pil_textures, _matrix):
+        self.options = _graphic_engine.options
         self.pil_textures = _pil_textures
         self.matrix = _matrix
         self.is_map_generating = False
+        self.graphic_engine = _graphic_engine
+    def startCheckLoop(self, player):
+        while self.graphic_engine.graphic_engine_on == True:
+            time.sleep(1/60)
+            #Do Chunck verification
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
         matrix = []
@@ -130,7 +135,6 @@ class GraphicEngine(Tk):
         try:
             while self.chunck_loader.is_map_generating == True:
                 time.sleep(.1)
-                print("waiting")
         except AttributeError:
             pass
         self.graphic_engine_on = False
@@ -198,9 +202,10 @@ class GraphicEngine(Tk):
         self.screen_size = (self.options["x_window_size"], self.options["y_window_size"])
         self.map_x, self.map_y = self.screen_size[0] * (-2), self.screen_size[1] * (-2)
 
-        self.chunck_loader = ChunckLoader(x, y, self.options, self.pil_textures, self.matrix)
+        self.chunck_loader = ChunckLoader(x, y, self, self.pil_textures, self.matrix)
         self.map = self.chunck_loader.loadMapAroundPlayer(x, y)
         self.player = Player(self.map_x, self.map_y, self.map, self, self)
+        threading.Thread(target=self.chunck_loader.startCheckLoop, args=(self.player, )).start()
         self.displayMap()
     def displayMap(self):
         #Display map on screen
