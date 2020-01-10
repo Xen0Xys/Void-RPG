@@ -74,5 +74,3 @@ class ChunckLoader():
         self.map = self.assembleMap(chunck_list)
         self.is_map_generating = False
         return self.map
-    def startLoadingLoop(self):
-        pass
