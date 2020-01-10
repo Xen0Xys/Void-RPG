@@ -16,7 +16,7 @@ class ChunckLoader():
             time.sleep(1/60)
             self.x = -self.player.x + self.graphic_engine.options["x_window_size"] / 2
             self.y = -self.player.y + self.graphic_engine.options["y_window_size"] / 2
-            print(self.x, self.y)
+            #print(self.x, self.y)
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
         matrix = []

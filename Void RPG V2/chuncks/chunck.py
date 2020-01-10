@@ -4,11 +4,23 @@ import PIL.Image
 class Chunck():
     def __init__(self, _size, _canvas_coords, _matrix, _chunck_coords):
         self.map = None
+        self.texture_size = 25
         self.matrix = _matrix
         self.size = _size
         self.real_coords = _canvas_coords
         self.chunck_coords = _chunck_coords
         self.chunck_loaded = False
+        self.real_chunck_coords = self.getRealChunckCoords(self.chunck_coords[0], self.chunck_coords[1], self.size[0], self.size[1])
+        self.chunck_center = self.getCenter(self.size[0], self.size[1], self.real_chunck_coords[0], self.real_chunck_coords[1])
+        print(self.chunck_center)
+        print(self.real_chunck_coords)
+        print("-----------------")
+    def getCenter(self, _size_x, _size_y, _real_x, _real_y):
+        center_x = int(_real_x + (_size_x * self.texture_size / 2))
+        center_y = int(_real_y + (_size_y * self.texture_size / 2))
+        return (center_x, center_y)
+    def getRealChunckCoords(self, _x_chunck, _y_chunck, _size_x, _size_y):
+        return (_x_chunck * _size_x * self.texture_size, _y_chunck * _size_y * self.texture_size)
     def generateChunck(self, _pil_textures_list, force=False):
         if (self.chunck_loaded == False) or (force == True):
             try:
