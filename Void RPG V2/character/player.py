@@ -25,6 +25,14 @@ class Player():
         self.player_move_loop = threading.Thread(target=self.mainloop)
         self.player_move_loop.start()
         #self.parent.game_view.getCanvas().create_image(self.x, self.y, image=self.map, anchor=NW)
+    def setupNewMap(self, _pil_map):
+        for c in self.window.winfo_children():
+            c.destroy()
+        self.wallpaper_canvas = Canvas(self.parent, width=self.parent.graphic_engine_options["x_window_size"], height=self.parent.graphic_engine_options["y_window_size"], bg="#9a9a9a", highlightthickness=0)
+        self.wallpaper_canvas.place(x=0, y=0)
+        self.parent.game_view.picture = self.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
+        self.x = 0
+        self.y = 0
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
