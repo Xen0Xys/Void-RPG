@@ -18,10 +18,10 @@ class Chunck():
     def isPlayerOnChunck(self, _player_x, _player_y):
         size_x = self.size[0] * self.texture_size
         size_y = self.size[1] * self.texture_size
-        if self.real_coords[0] < _player_x < self.real_coords[0] + size_x:
-            if self.real_coords[1] < _player_y < self.real_coords[1] + size_y:
+        if self.real_chunck_coords[0] < _player_x < self.real_chunck_coords[0] + size_x:
+            if self.real_chunck_coords[1] < _player_y < self.real_chunck_coords[1] + size_y:
                 return True
-        return False
+        return (False, _player_x, self.real_chunck_coords[0], self.real_chunck_coords[0] + size_x)
     def getCenter(self, _size_x, _size_y, _real_x, _real_y):
         center_x = int(_real_x + (_size_x * self.texture_size / 2))
         center_y = int(_real_y + (_size_y * self.texture_size / 2))

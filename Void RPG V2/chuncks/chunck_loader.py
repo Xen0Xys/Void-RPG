@@ -17,8 +17,11 @@ class ChunckLoader():
             time.sleep(1/60)
             self.x = -self.player.x + self.graphic_engine.options["x_window_size"] / 2
             self.y = -self.player.y + self.graphic_engine.options["y_window_size"] / 2
-            print(self.x, self.y)
-            print(self.chunck_list[0][0].isPlayerOnChunck(self.x, self.y))
+            if self.is_map_generating == False:
+                if not self.chunck_list[3][3].isPlayerOnChunck(self.x, self.y):
+                    #self.loadMapFromCenter(self.x, self.y)
+                    #self.player.setupNewMap(self.map)
+                    print("here")
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
         matrix = []
@@ -77,7 +80,7 @@ class ChunckLoader():
         self.map = self.assembleMap(self.chunck_list)
         self.is_map_generating = False
         return self.map
-    def loadMapFromCenter(self, _player_x, _player_y, _chunk_where_player_be):
+    def loadMapFromCenter(self, _player_x, _player_y):
         self.is_map_generating = True
         size = (self.options["x_window_size"], self.options["y_window_size"])
         #Ici appeler le chunck sur lequel est le joueur pour avoir son centre
@@ -92,5 +95,6 @@ class ChunckLoader():
                 matrix_chunck = self.getMatrixChunck((chunck_x * size[0], chunck_y * size[1]), (int(size[0] / self.texture_size), int(size[1] / self.texture_size)), self.matrix)
                 temp.append(Chunck((int(size[0] / self.texture_size), int(size[1] / self.texture_size)), (chunck_x * center_x, chunck_y * center_y), matrix_chunck, (chunck_x, chunck_y), self.texture_size))
             chunck_list.append(temp)
+        self.map = self.assembleMap(self.chunck_list)
         self.is_map_generating = False
-        return 0
+        return self.map
