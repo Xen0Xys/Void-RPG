@@ -20,19 +20,27 @@ class Player():
         self.parent = _parent
         #Temp
     def start(self):
+        self.player_loop = True
         self.listener = keyboard.Listener(on_press=self.keyPress, on_release=self.keyRelease)
         self.listener.start()
         self.player_move_loop = threading.Thread(target=self.mainloop)
         self.player_move_loop.start()
         #self.parent.game_view.getCanvas().create_image(self.x, self.y, image=self.map, anchor=NW)
     def setupNewMap(self, _pil_map):
+        #self.player_loop = False
+        #self.player_move_loop.join(1)
         for c in self.window.winfo_children():
             c.destroy()
-        self.wallpaper_canvas = Canvas(self.parent, width=self.parent.graphic_engine_options["x_window_size"], height=self.parent.graphic_engine_options["y_window_size"], bg="#9a9a9a", highlightthickness=0)
-        self.wallpaper_canvas.place(x=0, y=0)
-        self.parent.game_view.picture = self.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
+        self.parent.game_view.wallpaper_canvas = Canvas(self.parent, width=self.parent.options["x_window_size"], height=self.parent.options["y_window_size"], bg="#9a9a9a", highlightthickness=0)
+        self.parent.game_view.wallpaper_canvas.place(x=0, y=0)
+        self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
         self.x = 0
         self.y = 0
+        """
+        self.player_loop = True
+        self.player_move_loop = threading.Thread(target=self.mainloop)
+        self.player_move_loop.start()
+        """
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
@@ -80,7 +88,7 @@ class Player():
         y_dir =  self.y_dir_down - self.y_dir_up
         exec_time = 0
         #threading.Thread(target=self.calcPxPerSeconds).start()
-        while self.parent.graphic_engine_on == True:
+        while self.parent.graphic_engine_on == True and self.player_loop == True:
             sleep_time = 1/60 - exec_time
             if sleep_time > 0:
                 time.sleep(1/60 - exec_time)
@@ -146,7 +154,7 @@ class Player():
 
                 #Actualisation visuelle
                 if self.parent.graphic_engine_on == True:
-                    self.parent.game_view.getCanvas().coords(self.parent.game_view.picture, self.x, self.y)
+                    self.parent.game_view.wallpaper_canvas.coords(self.parent.game_view.picture, self.x, self.y)
                 else:
                     break
                 exec_time = time.time() - t1

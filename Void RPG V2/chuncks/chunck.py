@@ -21,7 +21,7 @@ class Chunck():
         if self.real_chunck_coords[0] < _player_x < self.real_chunck_coords[0] + size_x:
             if self.real_chunck_coords[1] < _player_y < self.real_chunck_coords[1] + size_y:
                 return True
-        return (False, _player_x, self.real_chunck_coords[0], self.real_chunck_coords[0] + size_x)
+        return False
     def getCenter(self, _size_x, _size_y, _real_x, _real_y):
         center_x = int(_real_x + (_size_x * self.texture_size / 2))
         center_y = int(_real_y + (_size_y * self.texture_size / 2))

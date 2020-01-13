@@ -13,15 +13,16 @@ class ChunckLoader():
         self.texture_size = self.graphic_engine.options["texture_size"]
     def startCheckLoop(self, _player):
         self.player = _player
+        t = 0
         while self.graphic_engine.graphic_engine_on == True:
             time.sleep(1/60)
             self.x = -self.player.x + self.graphic_engine.options["x_window_size"] / 2
             self.y = -self.player.y + self.graphic_engine.options["y_window_size"] / 2
-            if self.is_map_generating == False:
-                if not self.chunck_list[3][3].isPlayerOnChunck(self.x, self.y):
-                    #self.loadMapFromCenter(self.x, self.y)
-                    #self.player.setupNewMap(self.map)
-                    print("here")
+            if self.is_map_generating == False and t <= 0:
+                if not self.chunck_list[2][2].isPlayerOnChunck(self.x, self.y):
+                    t += 1
+                    self.loadMapFromCenter(self.x, self.y)
+                    self.player.setupNewMap(self.map)
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
         matrix = []
