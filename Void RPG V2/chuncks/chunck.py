@@ -2,9 +2,9 @@ import PIL.ImageTk
 import PIL.Image
 
 class Chunck():
-    def __init__(self, _size, _canvas_coords, _matrix, _chunck_coords):
+    def __init__(self, _size, _canvas_coords, _matrix, _chunck_coords, _texture_size):
         self.map = None
-        self.texture_size = 25
+        self.texture_size = _texture_size
         self.matrix = _matrix
         self.size = _size
         self.real_coords = _canvas_coords
@@ -26,14 +26,14 @@ class Chunck():
             try:
                 pil_map = PIL.Image.open("cache/earth_{}_{}.png".format(self.chunck_coords[0], self.chunck_coords[1]))
             except FileNotFoundError:
-                pil_map = PIL.Image.new("RGB", ((self.size[0] * 25), (self.size[1] * 25)))
+                pil_map = PIL.Image.new("RGB", ((self.size[0] * self.texture_size), (self.size[1] * self.texture_size)))
                 for y in range(self.size[1]):
                     for x in range(self.size[0]):
                         if self.matrix[y][x] != "00":
                             loaded = False
                             while loaded == False:
                                 try:
-                                    pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * 25, y * 25))
+                                    pil_map.paste(im=_pil_textures_list["map"][self.matrix[y][x]], box=(x * self.texture_size, y * self.texture_size))
                                     loaded = True
                                 except AttributeError:
                                     pass

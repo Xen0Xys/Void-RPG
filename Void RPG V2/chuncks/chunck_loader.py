@@ -10,6 +10,7 @@ class ChunckLoader():
         self.matrix = _matrix
         self.is_map_generating = False
         self.graphic_engine = _graphic_engine
+        self.texture_size = self.graphic_engine.options["texture_size"]
     def startCheckLoop(self, _player):
         self.player = _player
         while self.graphic_engine.graphic_engine_on == True:
@@ -20,8 +21,8 @@ class ChunckLoader():
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
         matrix = []
-        x_matrix_coord = int(_coords[0] / 25)
-        y_matrix_coord = int(_coords[1] / 25)
+        x_matrix_coord = int(_coords[0] / self.texture_size)
+        y_matrix_coord = int(_coords[1] / self.texture_size)
         for y in range(_size[1]):
             temp = []
             for x in range(_size[0]):
@@ -68,8 +69,8 @@ class ChunckLoader():
         for y_map in range(5):
             temp = []
             for x_map in range(5):
-                matrix_chunck = self.getMatrixChunck((map_00_x + x_map * size[0], map_00_y + y_map * size[1]), (int(size[0] / 25), int(size[1] / 25)), self.matrix)
-                temp.append(Chunck((int(size[0] / 25), int(size[1] / 25)), (x_map * map_00_x, y_map * map_00_y), matrix_chunck, (x_map, y_map)))
+                matrix_chunck = self.getMatrixChunck((map_00_x + x_map * size[0], map_00_y + y_map * size[1]), (int(size[0] / self.texture_size), int(size[1] / self.texture_size)), self.matrix)
+                temp.append(Chunck((int(size[0] / self.texture_size), int(size[1] / self.texture_size)), (x_map * map_00_x, y_map * map_00_y), matrix_chunck, (x_map, y_map), self.texture_size))
             chunck_list.append(temp)
         self.map = self.assembleMap(chunck_list)
         self.is_map_generating = False

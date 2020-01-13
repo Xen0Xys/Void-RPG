@@ -51,6 +51,7 @@ class GraphicEngine(Tk):
             options["x_window_size"] = 625
             options["y_window_size"] = 625
             options["progressive_map_generation"] = False
+            options["texture_size"] = 25
             with open("ressources/configuration/graphic_engine.json", "w") as file:
                 file.write(json.dumps(options, indent=4))
             return options
@@ -80,6 +81,7 @@ class GraphicEngine(Tk):
             json_content = json.loads(file.read())
         textures = {}
         pil_textures = {}
+        size = self.options["texture_size"]
         for category in json_content.keys():
             textures[category] = {}
             pil_textures[category] = {}
@@ -87,7 +89,7 @@ class GraphicEngine(Tk):
                 if json_content[category][content] != "NONE":
                     try:
                         textures[category][content] = PhotoImage(file="ressources/textures/{}/{}".format(category, json_content[category][content]))
-                        pil_textures[category][content] = PIL.Image.open("ressources/textures/{}/{}".format(category, json_content[category][content]))
+                        pil_textures[category][content] = PIL.Image.open("ressources/textures/{}/{}".format(category, json_content[category][content])).resize((size, size))
                     except TclError as e:
                         print(e)
         return textures, pil_textures
