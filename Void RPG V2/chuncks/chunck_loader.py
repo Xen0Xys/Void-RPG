@@ -21,7 +21,8 @@ class ChunckLoader():
             if self.is_map_generating == False and t <= 0:
                 if not self.chunck_list[2][2].isPlayerOnChunck(self.x, self.y):
                     t += 1
-                    self.loadMapFromCenter(self.x, self.y)
+                    if self.chunck_list[2][1].isPlayerOnChunck(self.x, self.y):
+                        self.loadMapFromCenter(self.x, self.y, self.chunck_list[2][1])
                     self.player.setupNewMap(self.map)
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
@@ -81,21 +82,23 @@ class ChunckLoader():
         self.map = self.assembleMap(self.chunck_list)
         self.is_map_generating = False
         return self.map
-    def loadMapFromCenter(self, _player_x, _player_y):
+    def loadMapFromCenter(self, _player_x, _player_y, _current_chunck):
         self.is_map_generating = True
         size = (self.options["x_window_size"], self.options["y_window_size"])
         #Ici appeler le chunck sur lequel est le joueur pour avoir son centre
-        center_x = _player_x
-        center_y = _player_y
+        center_x = _current_chunck.chunck_center[0]
+        center_y = _current_chunck.chunck_center[1]
         chunck_00_x = - int((3 * size[0] - center_x) / (size[0]))
         chunck_00_y = - int((3 * size[1] - center_y) / (size[1]))
         chunck_list = []
         for chunck_y in range(chunck_00_y, chunck_00_y + 5):
             temp = []
             for chunck_x in range(chunck_00_x, chunck_00_x + 5):
+                print(chunck_x * size[0], chunck_y * size[1])
                 matrix_chunck = self.getMatrixChunck((chunck_x * size[0], chunck_y * size[1]), (int(size[0] / self.texture_size), int(size[1] / self.texture_size)), self.matrix)
                 temp.append(Chunck((int(size[0] / self.texture_size), int(size[1] / self.texture_size)), (chunck_x * center_x, chunck_y * center_y), matrix_chunck, (chunck_x, chunck_y), self.texture_size))
             chunck_list.append(temp)
-        self.map = self.assembleMap(self.chunck_list)
+        self.map = self.assembleMap(chunck_list)
+        self.chunck_list = chunck_list
         self.is_map_generating = False
         return self.map
