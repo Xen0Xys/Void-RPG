@@ -58,7 +58,7 @@ class MainMenuView():
         if arg=="playOne":
             options = {}
             #Temp
-            options["player_x"] = 0
+            options["player_x"] = 500
             options["player_y"] = 0
             #
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])

@@ -2,7 +2,7 @@ import PIL.ImageTk
 import PIL.Image
 
 class Chunck():
-    def __init__(self, _size, _canvas_coords, _matrix, _chunck_coords, _texture_size):
+    def __init__(self, _size, _canvas_coords, _matrix, _chunck_coords, _texture_size, _coefs):
         self.map = None
         self.texture_size = _texture_size
         self.matrix = _matrix
@@ -10,7 +10,7 @@ class Chunck():
         self.real_coords = _canvas_coords
         self.chunck_coords = _chunck_coords
         self.chunck_loaded = False
-        self.real_chunck_coords = self.getRealChunckCoords(self.chunck_coords[0], self.chunck_coords[1], self.size[0], self.size[1])
+        self.real_chunck_coords = self.getRealChunckCoords(self.chunck_coords[0], self.chunck_coords[1], self.size[0], self.size[1], _coefs[0], _coefs[1])
         self.chunck_center = self.getCenter(self.size[0], self.size[1], self.real_chunck_coords[0], self.real_chunck_coords[1])
         print(self.chunck_center)
         print(self.real_chunck_coords)
@@ -27,8 +27,8 @@ class Chunck():
         center_x = int(_real_x + (_size_x * self.texture_size / 2))
         center_y = int(_real_y + (_size_y * self.texture_size / 2))
         return (center_x, center_y)
-    def getRealChunckCoords(self, _x_chunck, _y_chunck, _size_x, _size_y):
-        return (_x_chunck * _size_x * self.texture_size, _y_chunck * _size_y * self.texture_size)
+    def getRealChunckCoords(self, _x_chunck, _y_chunck, _size_x, _size_y, _coef_x, _coef_y):
+        return (_x_chunck * _size_x * self.texture_size - _coef_x, _y_chunck * _size_y * self.texture_size - _coef_y)
     def generateChunck(self, _pil_textures_list, force=False):
         if (self.chunck_loaded == False) or (force == True):
             try:
