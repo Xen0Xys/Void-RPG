@@ -4,25 +4,34 @@ import PIL.Image
 import time
 
 class ChunckLoader():
-    def __init__(self, _player_x, _player_y, _graphic_engine, _pil_textures, _matrix):
+    def __init__(self, _player_x, _player_y, _graphic_engine, _pil_textures, _matrix, _coefs):
         self.options = _graphic_engine.options
         self.pil_textures = _pil_textures
         self.matrix = _matrix
         self.is_map_generating = False
         self.graphic_engine = _graphic_engine
         self.texture_size = self.graphic_engine.options["texture_size"]
+        self.x_coef = _coefs[0]
+        self.y_coef = _coefs[1]
     def startCheckLoop(self, _player):
+        ###Mettte en place les coefs des le chargement
         self.player = _player
+        size = (self.graphic_engine.options["x_window_size"], self.graphic_engine.options["y_window_size"])
         t = 0
         while self.graphic_engine.graphic_engine_on == True:
             time.sleep(1/60)
-            self.x = -self.player.x + self.graphic_engine.options["x_window_size"] / 2
-            self.y = -self.player.y + self.graphic_engine.options["y_window_size"] / 2
-            if self.is_map_generating == False and t <= 0:
+            self.x = (size[0] * 2.5 - self.player.x - size[0] * 4) + self.x_coef
+            self.y = (size[1] * 2.5 - self.player.y - size[1] * 4) + self.y_coef
+            print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], self.chunck_list[2][2].real_chunck_coords[0] + size[0], self.chunck_list[2][2].real_chunck_coords[1], self.chunck_list[2][2].real_chunck_coords[1] + size[1], self.is_map_generating)
+            if self.is_map_generating == False and t <= 1 and False:
                 if not self.chunck_list[2][2].isPlayerOnChunck(self.x, self.y):
+                    #print("Round number :", t)
                     t += 1
                     if self.chunck_list[2][1].isPlayerOnChunck(self.x, self.y):
+                        self.is_map_generating = False
                         self.loadMapFromCenter(self.x, self.y, self.chunck_list[2][1])
+                        self.x_coef -= size[0]
+                        self.player.x -= size[0]
                     self.player.setupNewMap(self.map)
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
@@ -82,12 +91,16 @@ class ChunckLoader():
         self.map = self.assembleMap(self.chunck_list)
         self.is_map_generating = False
         return self.map
-    def loadMapFromCenter(self, _player_x, _player_y, _current_chunck):
+    def loadMapFromCenter(self, _player_x, _player_y, _current_chunck=None):
         self.is_map_generating = True
         size = (self.options["x_window_size"], self.options["y_window_size"])
         #Ici appeler le chunck sur lequel est le joueur pour avoir son centre
-        center_x = _current_chunck.chunck_center[0]
-        center_y = _current_chunck.chunck_center[1]
+        if _current_chunck != None:
+            center_x = _current_chunck.chunck_center[0]
+            center_y = _current_chunck.chunck_center[1]
+        else:
+            center_x = _player_x + size[0]
+            center_y = _player_y + size[1]
         chunck_00_x = - int((3 * size[0] - center_x) / (size[0]))
         chunck_00_y = - int((3 * size[1] - center_y) / (size[1]))
         chunck_list = []
@@ -98,7 +111,7 @@ class ChunckLoader():
                 matrix_chunck = self.getMatrixChunck((chunck_x * size[0], chunck_y * size[1]), (int(size[0] / self.texture_size), int(size[1] / self.texture_size)), self.matrix)
                 temp.append(Chunck((int(size[0] / self.texture_size), int(size[1] / self.texture_size)), (chunck_x * center_x, chunck_y * center_y), matrix_chunck, (chunck_x, chunck_y), self.texture_size))
             chunck_list.append(temp)
-        self.map = self.assembleMap(chunck_list)
         self.chunck_list = chunck_list
+        self.map = self.assembleMap(self.chunck_list)
         self.is_map_generating = False
         return self.map
