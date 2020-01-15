@@ -11,8 +11,8 @@ class ChunckLoader():
         self.is_map_generating = False
         self.graphic_engine = _graphic_engine
         self.texture_size = self.graphic_engine.options["texture_size"]
-        self.x_coef = 0
-        self.y_coef = 0
+        self.x_coef = _coefs[0]
+        self.y_coef = _coefs[1]
     def startCheckLoop(self, _player):
         ###Mettte en place les coefs des le chargement
         self.player = _player

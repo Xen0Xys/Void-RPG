@@ -97,11 +97,18 @@ class GraphicEngine(Tk):
         x, y = options["player_x"], options["player_y"]
 
         self.screen_size = (self.options["x_window_size"], self.options["y_window_size"])
-        self.map_x, self.map_y = self.screen_size[0] * (-2) - x % self.screen_size[0], self.screen_size[1] * (-2) - y % self.screen_size[0]
+
+        coef_x = (x // self.screen_size[0]) * self.screen_size[0]
+        coef_y = (y // self.screen_size[1]) * self.screen_size[1]
+
+        self.map_x = self.screen_size[0] * (-2) - x % self.screen_size[0]
+        self.map_y = self.screen_size[1] * (-2) - y % self.screen_size[1]
 
         print("Map coords", self.map_x, self.map_y)
 
-        self.chunck_loader = ChunckLoader(x, y, self, self.pil_textures, self.matrix, (x % self.screen_size[0], y % self.screen_size[0]))
+        
+
+        self.chunck_loader = ChunckLoader(x, y, self, self.pil_textures, self.matrix, (coef_x, coef_y))
         #self.map = self.chunck_loader.loadMapAroundPlayer(x, y)
         self.map = self.chunck_loader.loadMapFromCenter(x, y)
         self.player = Player(self.map_x, self.map_y, self.map, self, self)

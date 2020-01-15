@@ -58,8 +58,8 @@ class MainMenuView():
         if arg=="playOne":
             options = {}
             #Temp
-            options["player_x"] = 500
-            options["player_y"] = 2000
+            options["player_x"] = 0
+            options["player_y"] = 1300
             #
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
             threading.Thread(target=self.parent.loadMap, args=(options, )).start()
