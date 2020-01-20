@@ -23,7 +23,7 @@ class ChunckLoader():
             self.x = ((size[0] * (-1.5) - self.player.x) + self.x_coef) / (self.texture_size // 25)
             self.y = ((size[1] * (-1.5) - self.player.y) + self.y_coef) / (self.texture_size // 25)
             print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], (self.chunck_list[2][2].real_chunck_coords[0] + size[0]) / (self.texture_size // 25), self.chunck_list[2][2].real_chunck_coords[1], (self.chunck_list[2][2].real_chunck_coords[1] + size[1]) / (self.texture_size // 25), self.is_map_generating)
-            if self.is_map_generating == False and t <= 10:
+            if self.is_map_generating == False and t <= 9999999:
                 if not self.chunck_list[2][2].isPlayerOnChunck(self.x, self.y):
                     print("Round number :", t)
                     t += 1
@@ -48,7 +48,10 @@ class ChunckLoader():
                         self.y_coef += size[1]
                         self.player.y += size[1]
                     else:
+                        self.is_map_generating = False
                         self.loadMapFromCenter(self.x, self.y)
+                        self.x_coef = self.x // size[0] * size[0]
+                        self.y_coef = self.y // size[1] * size[1]
                         self.player_x = size[0] * (-1.5) - self.x
                         self.player_y = size[1] * (-1.5) - self.y
                     self.player.setupNewMap(self.map)
