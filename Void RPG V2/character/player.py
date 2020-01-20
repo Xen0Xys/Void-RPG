@@ -1,4 +1,6 @@
+from fight.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 import time
+from random import randint
 import threading
 from pynput import keyboard
 from tkinter import *
@@ -74,6 +76,8 @@ class Player():
                 self.x_dir_left = 0
             elif key.char.lower() == "d":
                 self.x_dir_right = 0
+            elif key.char.lower()=="f":                #relier au sys de combats
+                self.fight = ItemsSpellsDeserialiseur()
         except AttributeError:
             pass
     def mainloop(self):
