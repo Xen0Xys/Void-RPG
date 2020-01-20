@@ -23,10 +23,6 @@ from graphic_engine import GraphicEngine
 import sys
 import os
 
-class EventListner():
-    def __init__(self):
-        pass
-
 class GameEngine():
     def __init__(self):
         self.startGameEngines()
