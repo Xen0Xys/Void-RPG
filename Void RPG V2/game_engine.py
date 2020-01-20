@@ -42,7 +42,10 @@ class GameEngine():
         if not os.path.exists("cache"):
             os.mkdir("cache")
     def clearCacheFolder(self):
-        file_list = os.listdir("cache/")
+        try:
+            file_list = os.listdir("cache/")
+        except FileNotFoundError:
+            return 1
         for file in file_list:
             ctn = True
             while ctn == True:

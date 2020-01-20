@@ -28,7 +28,7 @@ class Chunck():
         center_y = int(_real_y + (_size_y * self.texture_size / 2))
         return (center_x, center_y)
     def getRealChunckCoords(self, _x_chunck, _y_chunck, _size_x, _size_y):
-        return (_x_chunck * _size_x * self.texture_size, _y_chunck * _size_y * self.texture_size)
+        return (int(_x_chunck * _size_x * self.texture_size / (self.texture_size // 25)), int(_y_chunck * _size_y * self.texture_size / (self.texture_size // 25)))
     def generateChunck(self, _pil_textures_list, force=False):
         if (self.chunck_loaded == False) or (force == True):
             try:

@@ -20,10 +20,10 @@ class ChunckLoader():
         t = 0
         while self.graphic_engine.graphic_engine_on == True:
             time.sleep(1/60)
-            self.x = (size[0] * (-1.5) - self.player.x) + self.x_coef
-            self.y = (size[1] * (-1.5) - self.player.y) + self.y_coef
-            print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], self.chunck_list[2][2].real_chunck_coords[0] + size[0], self.chunck_list[2][2].real_chunck_coords[1], self.chunck_list[2][2].real_chunck_coords[1] + size[1], self.is_map_generating)
-            if self.is_map_generating == False and t <= 10 and False:
+            self.x = ((size[0] * (-1.5) - self.player.x) + self.x_coef) / (self.texture_size // 25)
+            self.y = ((size[1] * (-1.5) - self.player.y) + self.y_coef) / (self.texture_size // 25)
+            print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], (self.chunck_list[2][2].real_chunck_coords[0] + size[0]) / (self.texture_size // 25), self.chunck_list[2][2].real_chunck_coords[1], (self.chunck_list[2][2].real_chunck_coords[1] + size[1]) / (self.texture_size // 25), self.is_map_generating)
+            if self.is_map_generating == False and t <= 10:
                 if not self.chunck_list[2][2].isPlayerOnChunck(self.x, self.y):
                     print("Round number :", t)
                     t += 1
@@ -37,6 +37,20 @@ class ChunckLoader():
                         self.loadMapFromCenter(self.x, self.y, self.chunck_list[2][3])
                         self.x_coef += size[0]
                         self.player.x += size[0]
+                    elif self.chunck_list[1][2].isPlayerOnChunck(self.x, self.y):
+                        self.is_map_generating = False
+                        self.loadMapFromCenter(self.x, self.y, self.chunck_list[1][2])
+                        self.y_coef -= size[1]
+                        self.player.y -= size[1]
+                    elif self.chunck_list[3][2].isPlayerOnChunck(self.x, self.y):
+                        self.is_map_generating = False
+                        self.loadMapFromCenter(self.x, self.y, self.chunck_list[3][2])
+                        self.y_coef += size[1]
+                        self.player.y += size[1]
+                    else:
+                        self.loadMapFromCenter(self.x, self.y)
+                        self.player_x = size[0] * (-1.5) - self.x
+                        self.player_y = size[1] * (-1.5) - self.y
                     self.player.setupNewMap(self.map)
     def getMatrixChunck(self, _coords, _size, _global_matrix):
         #Get matrix with coords and size
@@ -78,24 +92,6 @@ class ChunckLoader():
             return 1
         print("End")
         print(time.time() - t1)
-    def loadMapAroundPlayer(self, _center_x, _center_y):
-        self.is_map_generating = True
-        #Load 5 chuncks around playeroad 5 chuncks around player
-        size = (self.options["x_window_size"], self.options["y_window_size"])
-        #LoadingView(self, self.options["x_window_size"], self.options["y_window_size"])
-        map_00_x = int(_center_x - self.options["x_window_size"] / 2) - 2 * self.options["x_window_size"]
-        map_00_y = int(_center_y - self.options["y_window_size"] / 2) - 2 * self.options["y_window_size"]
-        print("Map 00 is:", map_00_x)
-        self.chunck_list = []
-        for y_map in range(5):
-            temp = []
-            for x_map in range(5):
-                matrix_chunck = self.getMatrixChunck((x_map * size[0], y_map * size[1]), (int(size[0] / self.texture_size), int(size[1] / self.texture_size)), self.matrix)
-                #temp.append(Chunck((int(size[0] / self.texture_size), int(size[1] / self.texture_size)), (x_map * map_00_x, y_map * map_00_y), matrix_chunck, (x_map, y_map), self.texture_size))
-            self.chunck_list.append(temp)
-        self.map = self.assembleMap(self.chunck_list)
-        self.is_map_generating = False
-        return self.map
     def loadMapFromCenter(self, _player_x, _player_y, _current_chunck=None):
         self.is_map_generating = True
         size = (self.options["x_window_size"], self.options["y_window_size"])
@@ -104,12 +100,8 @@ class ChunckLoader():
             center_x = _current_chunck.chunck_center[0]
             center_y = _current_chunck.chunck_center[1]
         else:
-            """
-            center_x = _player_x + int(size[0] / 2)
-            center_y = _player_y + int(size[1] / 2)
-            """
-            center_x = _player_x
-            center_y = _player_y
+            center_x = int(_player_x)
+            center_y = int(_player_y)
         chunck_00_x = (center_x - 2 * size[0]) // size[0]
         chunck_00_y = (center_y - 2 * size[1]) // size[1]
         chunck_list = []

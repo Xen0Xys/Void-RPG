@@ -6,10 +6,13 @@ from tkinter import *
 
 class Player():
     def __init__(self, _x, _y, _map, _window, _parent):
+        self.size = (_window.options["x_window_size"], _window.options["y_window_size"])
+        self.texture_size = _window.options["texture_size"]
         self.y_dir_up = 0
         self.y_dir_down = 0
         self.x_dir_left = 0
         self.x_dir_right = 0
+        self.multiplier = (self.texture_size // 25)
         self.x = _x
         self.y = _y
         self.real_x = self.x + 2.5 * _window.options["x_window_size"]
@@ -118,9 +121,9 @@ class Player():
                     if x_infos["decel_multiplier"] > 1:
                         if x_infos["decel_nbre"] % 2 == 0:
                             x_infos["decel_multiplier"] -= 0.10
-                            self.x -= x_infos["decel_dir"] * x_infos["decel_multiplier"]
+                            self.x -= x_infos["decel_dir"] * x_infos["decel_multiplier"] * self.multiplier
                         else:
-                            self.x -= x_infos["decel_dir"] * x_infos["decel_multiplier"]
+                            self.x -= x_infos["decel_dir"] * x_infos["decel_multiplier"] * self.multiplier
                     else:
                         x_infos["deceleration"] = False
                 if y_infos["deceleration"] == True:
@@ -128,9 +131,9 @@ class Player():
                     if y_infos["decel_multiplier"] > 1:
                         if y_infos["decel_nbre"] % 2 == 0:
                             y_infos["decel_multiplier"] -= 0.10
-                            self.y -= y_infos["decel_dir"] * y_infos["decel_multiplier"]
+                            self.y -= y_infos["decel_dir"] * y_infos["decel_multiplier"] * self.multiplier
                         else:
-                            self.y -= y_infos["decel_dir"] * y_infos["decel_multiplier"]
+                            self.y -= y_infos["decel_dir"] * y_infos["decel_multiplier"] * self.multiplier
                     else:
                         y_infos["deceleration"] = False
 
@@ -139,16 +142,16 @@ class Player():
                     x_infos["accel_nbre"] += 1
                 if x_infos["multiplier"] <= x_infos["speed_lim"] and x_infos["accel_nbre"] % x_infos["accel_speed"] == 0:
                     x_infos["multiplier"] += 0.2
-                    self.x -= last_x_dir * x_infos["multiplier"]
+                    self.x -= last_x_dir * x_infos["multiplier"] * self.multiplier
                 else:
-                    self.x -= last_x_dir * x_infos["multiplier"]
+                    self.x -= last_x_dir * x_infos["multiplier"] * self.multiplier
                 if y_dir != 0:
                     y_infos["accel_nbre"] += 1
                 if y_infos["multiplier"] <= y_infos["speed_lim"] and y_infos["accel_nbre"] % y_infos["accel_speed"] == 0:
                     y_infos["multiplier"] += 0.2
-                    self.y -= last_y_dir * y_infos["multiplier"]
+                    self.y -= last_y_dir * y_infos["multiplier"] * self.multiplier
                 else:
-                    self.y -= last_y_dir * y_infos["multiplier"]
+                    self.y -= last_y_dir * y_infos["multiplier"] * self.multiplier
 
                 #Actualisation visuelle
                 if self.parent.graphic_engine_on == True:
