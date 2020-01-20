@@ -2,7 +2,6 @@ from views.loading_view import LoadingView
 from tkinter.font import Font
 from tkinter import *
 import threading
-import time
 import json
 import os
 

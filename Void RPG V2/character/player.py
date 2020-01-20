@@ -1,5 +1,4 @@
 import time
-from random import randint
 import threading
 from pynput import keyboard
 from tkinter import *
@@ -37,11 +36,6 @@ class Player():
         self.parent.game_view.wallpaper_canvas = Canvas(self.parent, width=self.parent.options["x_window_size"], height=self.parent.options["y_window_size"], bg="#9a9a9a", highlightthickness=0)
         self.parent.game_view.wallpaper_canvas.place(x=0, y=0)
         self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
-        """
-        self.player_loop = True
-        self.player_move_loop = threading.Thread(target=self.mainloop)
-        self.player_move_loop.start()
-        """
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
