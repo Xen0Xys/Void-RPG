@@ -19,35 +19,73 @@ class ChunckLoader():
         size = (self.graphic_engine.options["x_window_size"], self.graphic_engine.options["y_window_size"])
         t = 0
         while self.graphic_engine.graphic_engine_on == True:
-            time.sleep(1/60)
+            #30Hz loop
+            time.sleep(1/30)
             self.x = ((size[0] * (-1.5) - self.player.x) + self.x_coef) / (self.texture_size // 25)
             self.y = ((size[1] * (-1.5) - self.player.y) + self.y_coef) / (self.texture_size // 25)
-            print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], (self.chunck_list[2][2].real_chunck_coords[0] + size[0]) / (self.texture_size // 25), self.chunck_list[2][2].real_chunck_coords[1], (self.chunck_list[2][2].real_chunck_coords[1] + size[1]) / (self.texture_size // 25), self.is_map_generating)
+            #print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], (self.chunck_list[2][2].real_chunck_coords[0] + size[0]) / (self.texture_size // 25), self.chunck_list[2][2].real_chunck_coords[1], (self.chunck_list[2][2].real_chunck_coords[1] + size[1]) / (self.texture_size // 25), self.is_map_generating)
             if self.is_map_generating == False and t <= 9999999:
                 if not self.chunck_list[2][2].isPlayerOnChunck(self.x, self.y):
                     print("Round number :", t)
                     t += 1
                     if self.chunck_list[2][1].isPlayerOnChunck(self.x, self.y):
+                        #Left
                         self.is_map_generating = False
                         self.loadMapFromCenter(self.x, self.y, self.chunck_list[2][1])
                         self.x_coef -= size[0]
                         self.player.x -= size[0]
                     elif self.chunck_list[2][3].isPlayerOnChunck(self.x, self.y):
+                        #Right
                         self.is_map_generating = False
                         self.loadMapFromCenter(self.x, self.y, self.chunck_list[2][3])
                         self.x_coef += size[0]
                         self.player.x += size[0]
                     elif self.chunck_list[1][2].isPlayerOnChunck(self.x, self.y):
+                        #Up
                         self.is_map_generating = False
                         self.loadMapFromCenter(self.x, self.y, self.chunck_list[1][2])
                         self.y_coef -= size[1]
                         self.player.y -= size[1]
                     elif self.chunck_list[3][2].isPlayerOnChunck(self.x, self.y):
+                        #Down
                         self.is_map_generating = False
                         self.loadMapFromCenter(self.x, self.y, self.chunck_list[3][2])
                         self.y_coef += size[1]
                         self.player.y += size[1]
-                    else:
+                    elif self.chunck_list[1][3].isPlayerOnChunck(self.x, self.y):
+                        #Up right
+                        self.is_map_generating = False
+                        self.loadMapFromCenter(self.x, self.y, self.chunck_list[1][3])
+                        self.x_coef += size[0]
+                        self.player.x += size[0]
+                        self.y_coef -= size[1]
+                        self.player.y -= size[1]
+                    elif self.chunck_list[1][1].isPlayerOnChunck(self.x, self.y):
+                        #Up left
+                        self.is_map_generating = False
+                        self.loadMapFromCenter(self.x, self.y, self.chunck_list[1][1])
+                        self.x_coef -= size[0]
+                        self.player.x -= size[0]
+                        self.y_coef -= size[1]
+                        self.player.y -= size[1]
+                    elif self.chunck_list[3][3].isPlayerOnChunck(self.x, self.y):
+                        #Down right
+                        self.is_map_generating = False
+                        self.loadMapFromCenter(self.x, self.y, self.chunck_list[3][3])
+                        self.x_coef += size[0]
+                        self.player.x += size[0]
+                        self.y_coef += size[1]
+                        self.player.y += size[1]
+                    elif self.chunck_list[3][1].isPlayerOnChunck(self.x, self.y):
+                        #Down left
+                        self.is_map_generating = False
+                        self.loadMapFromCenter(self.x, self.y, self.chunck_list[3][1])
+                        self.x_coef -= size[0]
+                        self.player.x -= size[0]
+                        self.y_coef += size[1]
+                        self.player.y += size[1]
+                    elif False:
+                        #Disabled
                         self.is_map_generating = False
                         self.loadMapFromCenter(self.x, self.y)
                         self.x_coef = self.x // size[0] * size[0]
