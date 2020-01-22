@@ -112,7 +112,6 @@ class ChunckLoader():
         return True
     def assembleMap(self, _chunck_list):
         #assemble map with chunck objects
-        t1 = time.time()
         size = (self.options["x_window_size"], self.options["y_window_size"])
         pil_map = PIL.Image.new("RGB", (size[0] * 5, size[1] * 5))
         for y in range(5):
@@ -128,11 +127,8 @@ class ChunckLoader():
         try:
             convert_map = PIL.ImageTk.PhotoImage(image=pil_map)
             return convert_map
-        except RuntimeError as e:
-            #print(e)
+        except RuntimeError:
             return 1
-        #print("End")
-        #print(time.time() - t1)
     def loadMapFromCenter(self, _player_x, _player_y, _current_chunck=None):
         self.is_map_generating = True
         size = (self.options["x_window_size"], self.options["y_window_size"])

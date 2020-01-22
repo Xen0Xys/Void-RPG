@@ -1,6 +1,5 @@
 #from fight.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 import time
-from random import randint
 import threading
 from pynput import keyboard
 from tkinter import *
@@ -88,7 +87,6 @@ class Player():
         y_infos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
         x_dir =  self.x_dir_right - self.x_dir_left
         y_dir =  self.y_dir_down - self.y_dir_up
-        exec_time = 0
         #threading.Thread(target=self.calcPxPerSeconds).start()
         while self.parent.graphic_engine_on == True and self.player_loop == True:
             #60Hz loop
