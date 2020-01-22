@@ -26,7 +26,7 @@ class ChunckLoader():
             #print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], (self.chunck_list[2][2].real_chunck_coords[0] + size[0]) / (self.texture_size // 25), self.chunck_list[2][2].real_chunck_coords[1], (self.chunck_list[2][2].real_chunck_coords[1] + size[1]) / (self.texture_size // 25), self.is_map_generating)
             if self.is_map_generating == False and t <= 9999999:
                 if not self.chunck_list[2][2].isPlayerOnChunck(self.x, self.y):
-                    print("Round number :", t)
+                    #print("Round number :", t)
                     t += 1
                     if self.chunck_list[2][1].isPlayerOnChunck(self.x, self.y):
                         #Left
@@ -129,10 +129,10 @@ class ChunckLoader():
             convert_map = PIL.ImageTk.PhotoImage(image=pil_map)
             return convert_map
         except RuntimeError as e:
-            print(e)
+            #print(e)
             return 1
-        print("End")
-        print(time.time() - t1)
+        #print("End")
+        #print(time.time() - t1)
     def loadMapFromCenter(self, _player_x, _player_y, _current_chunck=None):
         self.is_map_generating = True
         size = (self.options["x_window_size"], self.options["y_window_size"])
@@ -149,7 +149,7 @@ class ChunckLoader():
         for chunck_y in range(chunck_00_y, chunck_00_y + 5):
             temp = []
             for chunck_x in range(chunck_00_x, chunck_00_x + 5):
-                print(chunck_x * size[0], chunck_y * size[1])
+                #print(chunck_x * size[0], chunck_y * size[1])
                 matrix_chunck = self.getMatrixChunck((chunck_x * size[0], chunck_y * size[1]), (int(size[0] / self.texture_size), int(size[1] / self.texture_size)), self.matrix)
                 temp.append(Chunck((int(size[0] / self.texture_size), int(size[1] / self.texture_size)), (chunck_x * center_x, chunck_y * center_y), matrix_chunck, (chunck_x, chunck_y), self.texture_size))
             chunck_list.append(temp)

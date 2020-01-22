@@ -31,13 +31,16 @@ class Player():
         self.player_move_loop.start()
         #self.parent.game_view.getCanvas().create_image(self.x, self.y, image=self.map, anchor=NW)
     def setupNewMap(self, _pil_map):
-        #self.player_loop = False
-        #self.player_move_loop.join(1)
+        """
         for c in self.window.winfo_children():
             c.destroy()
         self.parent.game_view.wallpaper_canvas = Canvas(self.parent, width=self.parent.options["x_window_size"], height=self.parent.options["y_window_size"], bg="#9a9a9a", highlightthickness=0)
         self.parent.game_view.wallpaper_canvas.place(x=0, y=0)
         self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
+        """
+        temp_picture = self.parent.game_view.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
+        self.parent.game_view.wallpaper_canvas.delete(self.parent.game_view.picture)
+        self.parent.game_view.picture = temp_picture
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
@@ -88,10 +91,8 @@ class Player():
         exec_time = 0
         #threading.Thread(target=self.calcPxPerSeconds).start()
         while self.parent.graphic_engine_on == True and self.player_loop == True:
-            sleep_time = 1/60 - exec_time
-            if sleep_time > 0:
-                time.sleep(1/60 - exec_time)
-            t1 = time.time()
+            #60Hz loop
+            time.sleep(1/60)
             try:
                 try:
                     last_x_dir = x_dir
@@ -159,7 +160,6 @@ class Player():
                         pass
                 else:
                     break
-                exec_time = time.time() - t1
             except RuntimeError:
                 pass
     def calcPxPerSeconds(self):
