@@ -703,6 +703,7 @@ class Init(SoundGestionnary, Fight):
         if "__class__" in obj_dict:
             if obj_dict["__class__"] == "Item":
                 obj = Item()
+                print(obj)
                 obj.name=obj_dict["name"]
                 obj.damage=obj_dict["damage"]
                 obj.magic_damages=obj_dict["magic_damages"]
@@ -1619,6 +1620,7 @@ class StoppingGestionnary():
         self.main_loop_on=False
         sleep(1)
         self.Save()
+        
     def Save(self):
         try:
             if self.Played[0]==True:
@@ -1645,6 +1647,7 @@ class StoppingGestionnary():
     def CreatePlayerDataSaving(self):
         dico={"x":self.x, "y":self.y, "mapX":self.mapX, "mapY":self.mapY, "PV":self.PV, "speed":self.Speed, "strength":self.Strength, "magic_affinity":self.Magic_Affinity, "mana":self.Mana, "PV_max":self.PV_Max, "mana_max":self.Mana_Max, "defense":self.defense, "house":self.house}
         return dico
+
     def DelRessourcesFolder(self):
         shutil.rmtree("ressources")
     def SaveConfig(self):
