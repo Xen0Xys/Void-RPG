@@ -1,8 +1,4 @@
 
-
-
-
-
 class PlayerStatsForFight():
     def __init__(self):
         print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
