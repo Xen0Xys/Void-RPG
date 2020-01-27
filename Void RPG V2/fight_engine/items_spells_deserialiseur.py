@@ -1,3 +1,4 @@
+from fight_engine.player_stats_for_fight import PlayerStatsForFight
 import os
 import json
 
@@ -37,6 +38,7 @@ class ItemsSpellsDeserialiseur():
         self.LoadItems()
         self.LoadSpells()
         print(self.spellsObjectList[0].name)
+        self.a = PlayerStatsForFight(self.itemObjectList, self.spellsObjectList)
     def AddToConfigList(self, arg):
         try:
             self.ConfigList.append(arg)
@@ -89,6 +91,3 @@ class ItemsSpellsDeserialiseur():
                 obj.texture_acces=obj_dict["texture_acces"]
                 return obj
         return obj_dict
-
-main = ItemsSpellsDeserialiseur()
-
