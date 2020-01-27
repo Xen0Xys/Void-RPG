@@ -1,18 +1,18 @@
 
 class PlayerStatsForFight():
     def __init__(self, itemObjectList, spellsObjectList):
+
         self.Equipment={
-            "principal_hand":self.itemObjectList[1],
-            "secondary_hand":self.itemObjectList[0]
+            "principal_hand":itemObjectList[1],
+            "secondary_hand":itemObjectList[0]
             }
         self.Spells_for_fight={
-            "first_spell":self.spellsObjectList[2],
+            "first_spell":spellsObjectList[2],
             "second_spell":None,
             "third_spell":None,
             "fourth_spell":None
             }
-        print(Equipment["principal_hand"].name)
-        print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        print(self.Equipment["principal_hand"].name)
         self.PV=100
         self.Speed=1
         self.Strength=10
@@ -22,4 +22,7 @@ class PlayerStatsForFight():
         self.Mana_Max=100
         self.defense=1.0
         self.statut="RAS"
-
+        self.armure=self.defense+self.Equipment["principal_hand"].prot+self.Equipment["secondary_hand"].prot
+        self.protection_attaque_leger=1
+        self.protection_attaque_lourde=1
+        self.magic_def=self.Equipment["principal_hand"].magic_prot+self.Equipment["secondary_hand"].magic_prot
