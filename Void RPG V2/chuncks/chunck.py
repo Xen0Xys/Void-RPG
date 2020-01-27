@@ -35,7 +35,7 @@ class Chunck():
     def generateChunck(self, _pil_textures_list, force=False):
         if (self.chunck_loaded == False) or (force == True):
             try:
-                pil_map = PIL.Image.open("cache/earth_{}_{}.png".format(self.chunck_coords[0], self.chunck_coords[1]))
+                pil_map = PIL.Image.open("cache/earth_{}_{}.png".format(self.chunck_number[0], self.chunck_number[1]))
             except FileNotFoundError:
                 pil_map = PIL.Image.new("RGB", ((self.size[0] * self.texture_size), (self.size[1] * self.texture_size)))
                 for y in range(self.size[1]):
@@ -48,7 +48,7 @@ class Chunck():
                                     loaded = True
                                 except AttributeError:
                                     pass
-                pil_map.save("cache/earth_{}_{}.png".format(self.chunck_coords[0], self.chunck_coords[1]))
+                pil_map.save("cache/earth_{}_{}.png".format(self.chunck_number[0], self.chunck_number[1]))
             self.map = pil_map
             self.chunck_loaded = True
             return pil_map
