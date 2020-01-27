@@ -1,1 +1,1 @@
-pyinstaller -F -w "game_engine.py"
+pyinstaller -F -w "game_engine.py" --hidden-import='PIL._tkinter_finder'
