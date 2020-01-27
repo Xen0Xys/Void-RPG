@@ -1,8 +1,8 @@
-from fight.items_spells_deserialiseur import ItemsSpellsDeserialiseur
-from fight.player_stats_for_fight import PlayerStatsForFight
+from fight_engine.items_spells_deserialiseur import ItemsSpellsDeserialiseur
+from fight_engine.player_stats_for_fight import PlayerStatsForFight
 from tkinter import *
 
-class Fight():
+class FightEngine():
     def __init__(self, _window, _window_options):
         self.statsPlayer()
     def statsPlayer(self):
