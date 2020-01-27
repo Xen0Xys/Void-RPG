@@ -45,9 +45,9 @@ class ItemsSpellsDeserialiseur():
             self.ConfigList.append(arg)
     def LoadItems(self):
         self.itemObjectList=[]
-        folderList = os.listdir("ressources/items")
+        folderList = os.listdir("ressources/inventory/items")
         for folder_name in folderList:
-            with open("ressources/items/{}/root.json".format(folder_name), "r") as file:
+            with open("ressources/inventory/items/{}/root.json".format(folder_name), "r") as file:
                 self.itemObjectList.append(json.load(file, object_hook=self.Deserialiseur))
     def Deserialiseur(self, obj_dict):
         if "__class__" in obj_dict:
@@ -68,9 +68,9 @@ class ItemsSpellsDeserialiseur():
         return obj_dict
     def LoadSpells(self):
         self.spellsObjectList=[]
-        folderList = os.listdir("ressources/spells")
+        folderList = os.listdir("ressources/inventory/spells")
         for folder_name in folderList:
-            with open("ressources/spells/{}/root.json".format(folder_name), "r") as file:
+            with open("ressources/inventory/spells/{}/root.json".format(folder_name), "r") as file:
                 self.spellsObjectList.append(json.load(file, object_hook=self.Deserialiseur_Spells))
     def Deserialiseur_Spells(self, obj_dict):
         if "__class__" in obj_dict:
