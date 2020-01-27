@@ -2,20 +2,21 @@ import PIL.ImageTk
 import PIL.Image
 
 class Chunck():
-    def __init__(self, _size, _canvas_coords, _matrix, _chunck_coords, _texture_size):
+    def __init__(self, _size, _canvas_coords, _matrix, _chunck_number, _texture_size):
+        self.collision_list = []
         self.map = None
         self.texture_size = _texture_size
         self.matrix = _matrix
         self.size = _size
         self.real_coords = _canvas_coords
-        self.chunck_coords = _chunck_coords
+        self.chunck_number = _chunck_number
         self.chunck_loaded = False
-        self.real_chunck_coords = self.getRealChunckCoords(self.chunck_coords[0], self.chunck_coords[1], self.size[0], self.size[1])
+        self.real_chunck_coords = self.getRealChunckCoords(self.chunck_number[0], self.chunck_number[1], self.size[0], self.size[1])
         self.chunck_center = self.getCenter(self.size[0], self.size[1], self.real_chunck_coords[0], self.real_chunck_coords[1])
         """
         print(self.chunck_center)
         print(self.real_chunck_coords)
-        print(self.chunck_coords)
+        print(self.chunck_number)
         print("-----------------")
         """
     def isPlayerOnChunck(self, _player_x, _player_y):

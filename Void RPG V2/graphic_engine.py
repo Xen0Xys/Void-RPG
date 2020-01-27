@@ -1,3 +1,4 @@
+from physical_engine.physical_engine import PhysicalEngine
 from chuncks.chunck_loader import ChunckLoader
 from views.main_menu_view import MainMenuView
 from views.game_view import GameView
@@ -103,6 +104,8 @@ class GraphicEngine(Tk):
         self.map = self.chunck_loader.loadMapFromCenter(x, y)
         self.player = Player(self.map_x, self.map_y, self.map, self, self)
         threading.Thread(target=self.chunck_loader.startCheckLoop, args=(self.player, )).start()
+        self.physical_engine = PhysicalEngine(self.chunck_loader, self)
+        self.physical_engine.start()
         self.displayMap()
     def displayMap(self):
         #Display map on screen
