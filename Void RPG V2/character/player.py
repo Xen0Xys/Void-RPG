@@ -3,7 +3,7 @@ import time
 import threading
 from pynput import keyboard
 from tkinter import *
-from fight_engine.fight_engine import FightEngine
+from fight_engine.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 
 class Player():
     def __init__(self, _x, _y, _map, _window, _parent):
@@ -81,6 +81,8 @@ class Player():
                 self.x_dir_right = 0
             elif key.char.lower()=="f":                #relier au sys de combats
                 self.fight = FightEngine(self.window, self.window.options)
+            elif key.char.lower()=="h":
+                self.fight = ItemsSpellsDeserialiseur()
         except AttributeError:
             pass
     def mainloop(self):
