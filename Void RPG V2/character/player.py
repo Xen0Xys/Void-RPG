@@ -80,10 +80,12 @@ class Player():
                 self.x_dir_left = 0
             elif key.char.lower() == "d":
                 self.x_dir_right = 0
-            #elif key.char.lower()=="f":                #relier au sys de combats
-                self.fight = FightEngine(self.window, self.window.options)
-            #elif key.char.lower()=="h":
-                self.fight = FightEngine(self.window, self.window.options)
+            elif key.char.lower()=="f":                #relier au sys de combats
+                #self.fight = FightEngine(self.window, self.window.options)
+                pass
+            elif key.char.lower()=="h":
+                #self.fight = FightEngine(self.window, self.window.options)
+                pass
         except AttributeError:
             pass
     def mainloop(self):
