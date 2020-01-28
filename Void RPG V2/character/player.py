@@ -84,8 +84,7 @@ class Player():
                 #self.fight = FightEngine(self.window, self.window.options)
                 pass
             elif key.char.lower()=="h":
-                #self.fight = FightEngine(self.window, self.window.options)
-                pass
+                self.fight = FightEngine(self.window, self.window.options)
         except AttributeError:
             pass
     def mainloop(self):

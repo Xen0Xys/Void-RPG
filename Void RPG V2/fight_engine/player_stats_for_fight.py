@@ -26,3 +26,4 @@ class PlayerStatsForFight():
         self.protection_attaque_leger=1
         self.protection_attaque_lourde=1
         self.magic_def=self.Equipment["principal_hand"].magic_prot+self.Equipment["secondary_hand"].magic_prot
+        self.stats = [self.PV, self.Speed, self.Strength,self.Magic_Affinity, self.Mana, self.PV_Max, self.Mana_Max, self.defense, self.statut, self.armure, self.magic_def]
