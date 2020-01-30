@@ -1,6 +1,17 @@
 import threading
 import time
 
+class Collider():
+    def __init__(self):
+        pass
+    def isCoordInCollider(self, coord):
+        pass
+        #...
+    def isThereCollision(self, collider):
+        if not isinstance(collider, Collider):
+            return "Error"
+        #...
+
 class PhysicalEngine(threading.Thread):
     def __init__(self, _chunck_loader, _graphic_engine):
         threading.Thread.__init__(self)
@@ -27,9 +38,8 @@ class PhysicalEngine(threading.Thread):
                     need_list.append(chunck_x)
         return need_list
     def run(self):
-        print("Running")
         while self.graphic_engine.graphic_engine_on:
-            time.sleep(1/60)
+            time.sleep(1/10)
             need_list = self.listChunckWhoNeedLoadingCollisions()
             for chunck in need_list:
-                pass
+                self.loadChunckCollisions(chunck)

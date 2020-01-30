@@ -20,7 +20,7 @@ class ChunckLoader():
         t = 0
         while self.graphic_engine.graphic_engine_on == True:
             #30Hz loop
-            time.sleep(1/30)
+            time.sleep(1/10)
             self.x = ((size[0] * (-1.5) - self.player.x) + self.x_coef) / (self.texture_size // 25)
             self.y = ((size[1] * (-1.5) - self.player.y) + self.y_coef) / (self.texture_size // 25)
             #print(int(self.x), int(self.y), int(self.player.x), int(self.player.y), self.chunck_list[2][2].real_chunck_coords[0], (self.chunck_list[2][2].real_chunck_coords[0] + size[0]) / (self.texture_size // 25), self.chunck_list[2][2].real_chunck_coords[1], (self.chunck_list[2][2].real_chunck_coords[1] + size[1]) / (self.texture_size // 25), self.is_map_generating)
