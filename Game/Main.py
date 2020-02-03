@@ -296,7 +296,7 @@ class Fight():
         self.PVELabel.place(x=10, y=90)
         self.ManaELabel=Label(self.MainCan, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
         self.ManaELabel.place(x=10, y=130)
-        
+
 
 
 
@@ -424,7 +424,7 @@ class Fight():
                     self.defenceE = 0
             else:
                 self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
-    def homeRunStrike(self): 
+    def homeRunStrike(self):
         a = randint(1,100)
         if a < 50:
             if self.defenceE > 0:
@@ -713,7 +713,7 @@ class Init(SoundGestionnary, Fight):
                 obj.magic_prot=obj_dict["magic_prot"]
                 obj.drop_proba=obj_dict["drop_proba"]
                 obj.type=obj_dict["type"]
-                obj.type_of_items=obj_dict ["type_of_items"]
+                #obj.type_of_items=obj_dict ["type_of_items"]
                 obj.texture_acces=obj_dict["texture_acces"]
                 return obj
         return obj_dict
@@ -1620,7 +1620,7 @@ class StoppingGestionnary():
         self.main_loop_on=False
         sleep(1)
         self.Save()
-        
+
     def Save(self):
         try:
             if self.Played[0]==True:
