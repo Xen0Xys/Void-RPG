@@ -1,9 +1,20 @@
 import threading
 import time
 
-class Collider():
+class Point():
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+    def getPoint(self):
+        return (self.x, self.y)
+
+class ColliderPolygon():
     def __init__(self):
         pass
+
+class Collider():
+    def __init__(self, collider_ploygon):
+        if not isinstance(collider_ploygon, ColliderPolygon):
+            pass
     def isCoordInCollider(self, coord):
         pass
         #...
@@ -29,6 +40,7 @@ class PhysicalEngine(threading.Thread):
         for y_collision in range(start_y, start_y + size_y):
             for x_collision in range(start_x, start_x + size_x):
                 pass
+        chunck.collision_list = [0]
     def listChunckWhoNeedLoadingCollisions(self):
         chunck_list = self.chunck_loader.chunck_list
         need_list = []
