@@ -28,7 +28,7 @@ class Collider():
     def adjustColliderCoords(self, x_adjust, y_adjust):
         for key in self.corner_dict.keys():
             self.corner_dict[key].adjustPoint(x_adjust, y_adjust)
-        return 0
+        return self
 
 class CornerManager():
     def __init__(self):
@@ -38,9 +38,12 @@ class CornerManager():
         with open(file, "r") as file:
             ct = json.dumps(file.read())
         return ct
+    def getDefaultCollider(self):
+        pass
     def getPoints(self, texture_index):
         try:
-            return self.textures_corner_dict[texture_index]
+            self.textures_corner_dict[texture_index]
+            
         except KeyError:
             return 1
 
