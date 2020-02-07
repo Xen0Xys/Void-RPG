@@ -7,13 +7,17 @@ class Point():
         self.x, self.y = x, y
     def getPoint(self):
         return (self.x, self.y)
+    def adjustPoint(self, x_adjust, y_adjust):
+        self.x = self.x + x_adjust
+        self.y = self.y + y_adjust
+        return 0
 
 class Collider():
     def __init__(self, NW, NE, SW, SE):
-        corner_dict = {"NW" : NW,
-                       "NE" : NE,
-                       "SW" : SW,
-                       "SE" : SE}
+        self.corner_dict = {"NW" : NW,
+                            "NE" : NE,
+                            "SW" : SW,
+                            "SE" : SE}
     def isCoordInCollider(self, coord):
         pass
         #...
@@ -22,7 +26,9 @@ class Collider():
             return 1
         #...
     def adjustColliderCoords(self, x_adjust, y_adjust):
-        pass
+        for key in self.corner_dict.keys():
+            self.corner_dict[key].adjustPoint(x_adjust, y_adjust)
+        return 0
 
 class CornerManager():
     def __init__(self):
