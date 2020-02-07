@@ -1,5 +1,6 @@
 import threading
 import time
+import json
 
 class Point():
     def __init__(self, x, y):
@@ -7,21 +8,35 @@ class Point():
     def getPoint(self):
         return (self.x, self.y)
 
-class ColliderPolygon():
-    def __init__(self):
-        pass
-
 class Collider():
-    def __init__(self, collider_ploygon):
-        if not isinstance(collider_ploygon, ColliderPolygon):
-            pass
+    def __init__(self, NW, NE, SW, SE):
+        corner_dict = {"NW" : NW,
+                       "NE" : NE,
+                       "SW" : SW,
+                       "SE" : SE}
     def isCoordInCollider(self, coord):
         pass
         #...
     def isThereCollision(self, collider):
         if not isinstance(collider, Collider):
-            return "Error"
+            return 1
         #...
+    def adjustColliderCoords(self, x_adjust, y_adjust):
+        pass
+
+class CornerManager():
+    def __init__(self):
+        CORNERFILE = ""
+        self.textures_corner_dict = self.loadTexturesCorners(CORNERFILE)
+    def loadTexturesCorners(self, file):
+        with open(file, "r") as file:
+            ct = json.dumps(file.read())
+        return ct
+    def getPoints(self, texture_index):
+        try:
+            return self.textures_corner_dict[texture_index]
+        except KeyError:
+            return 1
 
 class PhysicalEngine(threading.Thread):
     def __init__(self, _chunck_loader, _graphic_engine):
@@ -35,11 +50,19 @@ class PhysicalEngine(threading.Thread):
         chunck_matrix = chunck.matrix
         start_x = chunck.real_chunck_coords[0] // self.texture_size
         start_y = chunck.real_chunck_coords[1] // self.texture_size
-        size_x = self.size[0]
-        size_y = self.size[1]
+        size_x = self.size[0] // self.texture_size
+        size_y = self.size[1] // self.texture_size
+        collision_list = []
         for y_collision in range(start_y, start_y + size_y):
+            temp = []
             for x_collision in range(start_x, start_x + size_x):
-                pass
+                coord_x = x_collision * self.texture_size
+                coord_y = y_collision * self.texture_size
+                index_x = x_collision - start_x
+                index_y = y_collision - start_y
+                material = chunck_matrix[index_y][index_x]
+                print(material)
+            collision_list.append(temp)
         chunck.collision_list = [0]
     def listChunckWhoNeedLoadingCollisions(self):
         chunck_list = self.chunck_loader.chunck_list
