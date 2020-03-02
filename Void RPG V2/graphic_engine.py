@@ -102,7 +102,7 @@ class GraphicEngine(Tk):
         coef_y = y // self.screen_size[1] * self.screen_size[1]
         self.chunck_loader = ChunckLoader(x, y, self, self.pil_textures, self.matrix, (coef_x, coef_y))
         self.map = self.chunck_loader.loadMapFromCenter(x, y)
-        self.player = Player(self.map_x, self.map_y, self.map, self, self)
+        self.player = Player(self.map_x, self.map_y, self.map, self, self, self.textures["fight_ui"])
         threading.Thread(target=self.chunck_loader.startCheckLoop, args=(self.player, )).start()
         self.physical_engine = PhysicalEngine(self.chunck_loader, self)
         self.physical_engine.start()
