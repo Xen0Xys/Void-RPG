@@ -17,6 +17,7 @@ class GraphicEngine(Tk):
         #Initialize game engine
         super().__init__()
         self.graphic_engine_on = True
+        self.save_number = 0
         if _graphic_engine_options == None:
             self.options = self.loadGraphicEngineOptions()
         else:
@@ -39,7 +40,9 @@ class GraphicEngine(Tk):
             pass
 
         #Save game
-        with open("", "w") as f:
+        if not os.path.exists("saves"):
+            os.mkdir("saves")
+        with open("saves/{}".format(str(self.save_number)), "w") as f:
             f.write(self.createDataToSave())
         
 
