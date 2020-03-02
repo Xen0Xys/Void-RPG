@@ -39,6 +39,8 @@ class ItemsSpellsDeserialiseur():
         self.LoadSpells()
         print(self.spellsObjectList[0].name)
         self.a = PlayerStatsForFight(self.itemObjectList, self.spellsObjectList)
+        print("eeeeeeeeeeeeeeeeeeeeeeeeee")
+        print(self.stats["PV"])
     def AddToConfigList(self, arg):
         try:
             self.ConfigList.append(arg)

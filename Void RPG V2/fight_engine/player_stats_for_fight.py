@@ -26,4 +26,8 @@ class PlayerStatsForFight():
         self.protection_attaque_leger=1
         self.protection_attaque_lourde=1
         self.magic_def=self.Equipment["principal_hand"].magic_prot+self.Equipment["secondary_hand"].magic_prot
-        self.stats = [self.PV, self.Speed, self.Strength,self.Magic_Affinity, self.Mana, self.PV_Max, self.Mana_Max, self.defense, self.statut, self.armure, self.magic_def]
+        self.dicoCreation()
+    def dicoCreation(self):
+        self.stats = {"PV":self.PV, "speed":self.Speed, "Strength":self.Strength, "Maffinity":self.Magic_Affinity, "Mana":self.Mana, "PV_max":self.PV_Max, "Mana_max":self.Mana_Max, "defense":self.defense, "statut":self.statut, "armure":self.armure, "M_defense":self.magic_def}
+        print(self.stats["PV"])
+        return  self.stats
