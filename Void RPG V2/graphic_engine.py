@@ -37,6 +37,12 @@ class GraphicEngine(Tk):
             self.game_view.player.player_move_loop.join(1)
         except AttributeError:
             pass
+
+        #Save game
+        with open("", "w") as f:
+            f.write(self.createDataToSave())
+        
+
         self.destroy()
     def showWindow(self):
         self.geometry("{}x{}".format(self.options["x_window_size"], self.options["y_window_size"]))
@@ -114,3 +120,8 @@ class GraphicEngine(Tk):
             self.game_view.start()
         except AttributeError:
             return 1
+    def createDataToSave(self):
+        data_dict = {}
+        data_dict["x_player_coord"] = self.player.x
+        data_dict["y_player_coord"] = self.player.y
+        return json.dumps(data_dict)
