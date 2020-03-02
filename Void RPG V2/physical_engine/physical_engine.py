@@ -70,7 +70,7 @@ class PhysicalEngine(threading.Thread):
                 index_x = x_collision - start_x
                 index_y = y_collision - start_y
                 material = chunck_matrix[index_y][index_x]
-                print(material)
+                #print(material)
             collision_list.append(temp)
         chunck.collision_list = [0]
     def listChunckWhoNeedLoadingCollisions(self):
