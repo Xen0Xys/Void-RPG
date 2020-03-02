@@ -7,7 +7,8 @@ from fight_engine.fight_engine import FightEngine
 from fight_engine.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 
 class Player():
-    def __init__(self, _x, _y, _map, _window, _parent):
+    def __init__(self, _x, _y, _map, _window, _parent, texture_fight):
+        self.texture_fight = texture_fight
         self.size = (_window.options["x_window_size"], _window.options["y_window_size"])
         self.texture_size = _window.options["texture_size"]
         self.y_dir_up = 0
@@ -84,7 +85,7 @@ class Player():
                 #self.fight = FightEngine(self.window, self.window.options)
                 pass
             elif key.char.lower()=="h":
-                self.fight = FightEngine(self.window, self.window.options)
+                self.fight = FightEngine(self.window, self.window.options, self.texture_fight)
         except AttributeError:
             pass
     def mainloop(self):
