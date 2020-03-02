@@ -39,8 +39,9 @@ class ItemsSpellsDeserialiseur():
         self.LoadSpells()
         print(self.spellsObjectList[0].name)
         self.a = PlayerStatsForFight(self.itemObjectList, self.spellsObjectList)
-        print("eeeeeeeeeeeeeeeeeeeeeeeeee")
-        print(self.stats["PV"])
+        self.stats_for_player = self.a.stats_player
+        self.Equipment = self.a.Equipment
+        self.Spells_for_fight = self.a.Spells_for_fight
     def AddToConfigList(self, arg):
         try:
             self.ConfigList.append(arg)
