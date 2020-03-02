@@ -27,21 +27,21 @@ class MainMenuView():
         self.CanList=[]
         police = Font(family="Oldania ADF Std", size=10)
         Label(self.MainCan, text="Coding : Czekaj Tom, Duchêne Guillaume\nGraphics : Duchêne Guillaume, Choin Anatole", bg="#9a9a9a", justify="left", font=police).place(x=3,y=585)
-        self.createCustomCanvas(600, 75, 12.5, 50, self.ui_textures_list["baniere"], "", self.onClick)
-        self.createCustomCanvas(50, 50, 495, 560, self.ui_textures_list["option_wheel"], "option", self.onClick)
-        self.createCustomCanvas(50, 50, 560, 560, self.ui_textures_list["quit_button"], "quit", self.onClick)
+        self.createCustomCanvas(600, 75, 0, 50, self.ui_textures_list["baniere"], "", self.onClick)
+        self.createCustomCanvas(50, 50, 470, 535, self.ui_textures_list["option_wheel"], "option", self.onClick)
+        self.createCustomCanvas(50, 50, 535, 535, self.ui_textures_list["quit_button"], "quit", self.onClick)
         if os.path.exists("ressources/saves/save_1/configuration.json"):
             pass
         else:
-            self.createCustomCanvas(220, 75, 30, 200, self.ui_textures_list["create"], "playOne", self.onClick)
+            self.createCustomCanvas(220, 75, 30, 200, self.ui_textures_list["create"], "play_1", self.onClick)
         if os.path.exists("ressources/saves/save_1/configuration.json"):
             pass
         else:
-            self.createCustomCanvas(220, 75, 30, 300, self.ui_textures_list["create"], "playTwo", self.onClick)
+            self.createCustomCanvas(220, 75, 30, 300, self.ui_textures_list["create"], "play_2", self.onClick)
         if os.path.exists("ressources/saves/save_1/configuration.json"):
             pass
         else:
-            self.createCustomCanvas(220, 75, 30, 400, self.ui_textures_list["create"], "playThree", self.onClick)
+            self.createCustomCanvas(220, 75, 30, 400, self.ui_textures_list["create"], "play_3", self.onClick)
     def createCustomCanvas(self, canwidth, canheight, x, y, image, arg, funct):
         self.CanList.append(Canvas(self.MainCan, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
         self.CanList[len(self.CanList)-1].place(x=x, y=y)
@@ -54,7 +54,26 @@ class MainMenuView():
     def onClick(self, evt, arg):
         if arg=="quit":
             self.parent.onWindowClosing()
-        if arg=="playOne":
+        if arg=="play_1":
+            self.parent.save_number = 1
+            options = {}
+            #Temp
+            options["player_x"] = 10
+            options["player_y"] = 10
+            #
+            LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
+            threading.Thread(target=self.parent.loadMap, args=(options, )).start()
+        if arg=="play_2":
+            self.parent.save_number = 2
+            options = {}
+            #Temp
+            options["player_x"] = 10
+            options["player_y"] = 10
+            #
+            LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
+            threading.Thread(target=self.parent.loadMap, args=(options, )).start()
+        if arg=="play_3":
+            self.parent.save_number = 3
             options = {}
             #Temp
             options["player_x"] = 10

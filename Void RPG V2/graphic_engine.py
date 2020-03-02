@@ -48,8 +48,8 @@ class GraphicEngine(Tk):
             #Generate default options
             options = {}
             #Init all options here
-            options["x_window_size"] = 625
-            options["y_window_size"] = 625
+            options["x_window_size"] = 600
+            options["y_window_size"] = 600
             options["progressive_map_generation"] = False
             options["texture_size"] = 25
             with open("ressources/configuration/graphic_engine.json", "w") as file:
