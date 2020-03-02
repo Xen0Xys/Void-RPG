@@ -2,7 +2,8 @@ from tkinter import *
 from fight_engine.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 
 class FightEngine():
-    def __init__(self, _window, _window_options):
+    def __init__(self, _window, _window_options,texture_fight ):
+        self.fight_ui_texture_list = texture_fight
         self._window = _window
         self._window_options = _window_options
         self.fight = ItemsSpellsDeserialiseur()
