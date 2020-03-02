@@ -94,6 +94,19 @@
         "option_title": "option_title.png",
         "quitter": "cross.png",
         "fight": "cross.png",
-	"wallpaper": "wallpaper.png"
-    }
+		"wallpaper": "wallpaper.png"
+    },
+	
+	"fight_ui":{
+		"arme_principale": "arme_principale.png",
+		"arme_secondaire": "arme_secondaire.png",
+		"magie": "magie.png",
+		"defense": "defense.png",
+		"sac": "sac.png",
+		"fuite": "fuite.png",
+		"attaque_1": "attaque_1.png",
+		"attaque_2": "attaque_2.png",
+		"blanc": "blanc.png",
+		"retour": "retour.png"
+	}
 }
