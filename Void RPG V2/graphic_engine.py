@@ -42,7 +42,7 @@ class GraphicEngine(Tk):
         #Save game
         if not os.path.exists("saves"):
             os.mkdir("saves")
-        with open("saves/{}".format(str(self.save_number)), "w") as f:
+        with open("saves/save_{}.json".format(str(self.save_number)), "w") as f:
             f.write(self.createDataToSave())
         
 
