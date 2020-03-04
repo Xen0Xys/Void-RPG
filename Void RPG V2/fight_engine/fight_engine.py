@@ -12,7 +12,7 @@ class FightEngine():
         self.Spells_for_fight = self.fight.Spells_for_fight
         self.stats_enemie()
         print("eeeeeeeeeeeeeeeeee")
-        self.startFightEngine(self._window, self._window_options)
+        self.startFightEngine(self._window, self._window_options, self.fight_ui_texture_list)
     def stats_enemie(self):
         self.PVE=1500000
         self.PVE_max=1500000
@@ -24,7 +24,8 @@ class FightEngine():
         self.Magic_AffinityE=10
         self.esquiveE=5
         self.statutE="RAS"
-    def startFightEngine(self, _window, _window_options):
+    def startFightEngine(self, _window, _window_options, fight_ui_texture_list):
+        self.fight_ui_texture_list = fight_ui_texture_list
         self.fight_can = Canvas(_window, height=_window_options["y_window_size"], width=_window_options["x_window_size"], highlightthickness=0,bg="white")
         self.fight_can.place(x=0, y=0)
         self.fight_can.pack()
