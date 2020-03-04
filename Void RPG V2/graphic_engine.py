@@ -17,6 +17,7 @@ class GraphicEngine(Tk):
         #Initialize game engine
         super().__init__()
         self.graphic_engine_on = True
+        self.save_number = 0
         if _graphic_engine_options == None:
             self.options = self.loadGraphicEngineOptions()
         else:
@@ -37,6 +38,14 @@ class GraphicEngine(Tk):
             self.game_view.player.player_move_loop.join(1)
         except AttributeError:
             pass
+
+        #Save game
+        if not os.path.exists("saves"):
+            os.mkdir("saves")
+        with open("saves/save_{}.json".format(str(self.save_number)), "w") as f:
+            f.write(self.createDataToSave())
+        
+
         self.destroy()
     def showWindow(self):
         self.geometry("{}x{}".format(self.options["x_window_size"], self.options["y_window_size"]))
@@ -114,3 +123,8 @@ class GraphicEngine(Tk):
             self.game_view.start()
         except AttributeError:
             return 1
+    def createDataToSave(self):
+        data_dict = {}
+        data_dict["x_player_coord"] = self.player.x
+        data_dict["y_player_coord"] = self.player.y
+        return json.dumps(data_dict)

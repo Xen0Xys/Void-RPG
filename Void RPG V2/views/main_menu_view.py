@@ -52,32 +52,63 @@ class MainMenuView():
             ct = json.loads(file.read())
         return ct
     def onClick(self, evt, arg):
+        DEFAULT_X = 10
+        DEFAULT_Y = 10
         if arg=="quit":
             self.parent.onWindowClosing()
-        if arg=="play_1":
+        #Creating game
+        elif arg=="play_1":
             self.parent.save_number = 1
             options = {}
             #Temp
-            options["player_x"] = 10
-            options["player_y"] = 10
+            options["player_x"] = DEFAULT_X
+            options["player_y"] = DEFAULT_Y
             #
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
             threading.Thread(target=self.parent.loadMap, args=(options, )).start()
-        if arg=="play_2":
+        elif arg=="play_2":
             self.parent.save_number = 2
             options = {}
             #Temp
-            options["player_x"] = 10
-            options["player_y"] = 10
+            options["player_x"] = DEFAULT_X
+            options["player_y"] = DEFAULT_Y
             #
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
             threading.Thread(target=self.parent.loadMap, args=(options, )).start()
-        if arg=="play_3":
+        elif arg=="play_3":
             self.parent.save_number = 3
             options = {}
             #Temp
-            options["player_x"] = 10
-            options["player_y"] = 10
+            options["player_x"] = DEFAULT_X
+            options["player_y"] = DEFAULT_Y
+            #
+            LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
+            threading.Thread(target=self.parent.loadMap, args=(options, )).start()
+        #Loading
+        elif arg=="load_3":
+            self.parent.save_number = 1
+            options = {}
+            #Temp
+            options["player_x"] = DEFAULT_X
+            options["player_y"] = DEFAULT_Y
+            #
+            LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
+            threading.Thread(target=self.parent.loadMap, args=(options, )).start()
+        elif arg=="load_3":
+            self.parent.save_number = 2
+            options = {}
+            #Temp
+            options["player_x"] = DEFAULT_X
+            options["player_y"] = DEFAULT_Y
+            #
+            LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
+            threading.Thread(target=self.parent.loadMap, args=(options, )).start()
+        elif arg=="load_3":
+            self.parent.save_number = 3
+            options = {}
+            #Temp
+            options["player_x"] = DEFAULT_X
+            options["player_y"] = DEFAULT_Y
             #
             LoadingView(self.parent, self.parent.options["x_window_size"], self.parent.options["y_window_size"])
             threading.Thread(target=self.parent.loadMap, args=(options, )).start()
