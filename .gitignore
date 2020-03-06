@@ -1,0 +1,24 @@
+Game/.vscode/launch.json
+Void RPG V2/.vscode/launch.json
+Void RPG V2/__pycache__/game_engine.cpython-37.pyc
+Void RPG V2/views/__pycache__/game_view.cpython-37.pyc
+Void RPG V2/views/__pycache__/main_menu_view.cpython-37.pyc
+Void RPG V2/views/__pycache__/loading_view.cpython-37.pyc
+Void RPG V2/__pycache__/graphic_engine.cpython-37.pyc
+Void RPG V2/ressources/configuration/graphic_engine.json
+Void RPG V2/cache/
+Void RPG V2/character/__pycache__/player.cpython-37.pyc
+Void RPG V2/__pycache__/player.cpython-37.pyc
+Void RPG V2/chuncks/__pycache__/chunck_loader.cpython-37.pyc
+Void RPG V2/chuncks/__pycache__/chunck.cpython-37.pyc
+Void RPG V2/game_engine.spec
+Void RPG V2/fight/__pycache__/fight.cpython-37.pyc
+Void RPG V2/fight/__pycache__/items_spells_deserialiseur.cpython-37.pyc
+Void RPG V2/fight/__pycache__/player_stats_for_fight.cpython-37.pyc
+Void RPG V2/fight_engine/__pycache__/fight_engine.cpython-37.pyc
+Void RPG V2/fight_engine/__pycache__/fight.cpython-37.pyc
+Void RPG V2/fight_engine/__pycache__/items_spells_deserialiseur.cpython-37.pyc
+Void RPG V2/fight_engine/__pycache__/player_stats_for_fight.cpython-37.pyc
+Void RPG V2/graphic_engine.pyc
+Void RPG V2/physical_engine/__pycache__/physical_engine.cpython-37.pyc
+Void RPG V2/saves/save_1.json
