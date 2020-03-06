@@ -21,4 +21,4 @@ Void RPG V2/fight_engine/__pycache__/items_spells_deserialiseur.cpython-37.pyc
 Void RPG V2/fight_engine/__pycache__/player_stats_for_fight.cpython-37.pyc
 Void RPG V2/graphic_engine.pyc
 Void RPG V2/physical_engine/__pycache__/physical_engine.cpython-37.pyc
-Void RPG V2/saves/save_1.json
+Void RPG V2/saves/*
