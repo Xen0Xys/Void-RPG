@@ -12,7 +12,7 @@ class FightEngine():
         self.Spells_for_fight = self.fight.Spells_for_fight
         self.stats_enemie()
         print("eeeeeeeeeeeeeeeeee")
-        self.startFightEngine(self._window, self._window_options)
+        self.startFightEngine(self._window, self._window_options, self.fight_ui_texture_list)
     def stats_enemie(self):
         self.PVE=1500000
         self.PVE_max=1500000
@@ -24,20 +24,27 @@ class FightEngine():
         self.Magic_AffinityE=10
         self.esquiveE=5
         self.statutE="RAS"
-    def startFightEngine(self, _window, _window_options):
+    def startFightEngine(self, _window, _window_options, fight_ui_texture_list):
+        self.CanList=[]
+        self.fight_ui_texture_list = fight_ui_texture_list
         self.fight_can = Canvas(_window, height=_window_options["y_window_size"], width=_window_options["x_window_size"], highlightthickness=0,bg="white")
         self.fight_can.place(x=0, y=0)
         self.fight_can.pack()
         self.MainCan()
-    def MainCan(self):
+    def onClick(self, evt, arg):
+        if arg=="quit":
+            pass
         pass
+    def MainCan(self):
+        self.createCustomCanvas(600, 75, 100, 100, self.fight_ui_texture_list["attaque_1"], "", self.onClick)
     def Reset(self):
         self.fight_can.destroy()
         self.startFightEngine
     def createCustomCanvas(self, canwidth, canheight, x, y, image, arg, funct):
-        self.CanList.append(Canvas(self.MainCan, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
+        self.CanList.append(Canvas(self.fight_can, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
         self.CanList[len(self.CanList)-1].place(x=x, y=y)
         self.CanList[len(self.CanList)-1].create_image(0,0, image=image, anchor=NW)
         self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:funct(arg1, arg2))
+        print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
     def stopFightEngine(self, _window):
         self.fight_can.destroy()
