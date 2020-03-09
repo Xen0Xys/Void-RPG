@@ -125,7 +125,7 @@ class FightEngine():
         a = randint(1,100)
         if a < 90:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                self.defenceE = self.defenceE-self.stats["Strength"]*self.Equipment["principal_hand"].damage
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
