@@ -100,7 +100,7 @@
 	"fight_ui":{
 		"arme_principale": "arme_principale.png",
 		"arme_secondaire": "arme_secondaire.png",
-		"magie": "magie.png",
+		"abilite": "abilite.png",
 		"defense": "defense.png",
 		"sac": "sac.png",
 		"fuite": "fuite.png",
