@@ -101,7 +101,24 @@ class ChunckLoader():
         for y in range(_size[1]):
             temp = []
             for x in range(_size[0]):
-                temp.append(_global_matrix[y_matrix_coord + y][x_matrix_coord + x])
+                x_load = (x_matrix_coord + x)
+                y_load = (y_matrix_coord + y)
+                if x_load >= 0:
+                    if y_load >= 0:
+                        x_load = x_load % 600
+                        y_load = y_load % 600
+                    else:
+                        x_load = x_load % 600
+                        y_load = y_load % -600
+                elif x_load <= 0:
+                    if y_load >= 0:
+                        x_load = x_load % -600
+                        y_load = y_load % 600
+                    else:
+                        x_load = x_load % -600
+                        y_load = y_load % -600
+                
+                temp.append(_global_matrix[y_load][x_load])
             matrix.append(temp)
         return matrix
     def isAllMapGenerated(self, _chunck_list):

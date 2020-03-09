@@ -127,8 +127,20 @@ class GraphicEngine(Tk):
     def createDataToSave(self):
         try:
             data_dict = {}
-            data_dict["player_x"] = self.chunck_loader.x
-            data_dict["player_y"] = self.chunck_loader.y
+            if self.chunck_loader.x >= 0:
+                if self.chunck_loader.y >= 0:
+                    data_dict["player_x"] = self.chunck_loader.x % 15000
+                    data_dict["player_y"] = self.chunck_loader.y % 15000
+                else:
+                    data_dict["player_x"] = self.chunck_loader.x % 15000
+                    data_dict["player_y"] = self.chunck_loader.y % -15000
+            elif self.chunck_loader.x <= 0:
+                if self.chunck_loader.y >= 0:
+                    data_dict["player_x"] = self.chunck_loader.x % -15000
+                    data_dict["player_y"] = self.chunck_loader.y % 15000
+                else:
+                    data_dict["player_x"] = self.chunck_loader.x % -15000
+                    data_dict["player_y"] = self.chunck_loader.y % -15000
             return json.dumps(data_dict)
         except AttributeError as e:
             return str(e)
