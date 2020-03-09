@@ -36,15 +36,16 @@ class FightEngine():
             pass
         pass
     def MainCan(self):
-        self.createCustomCanvas(600, 75, 100, 100, self.fight_ui_texture_list["attaque_1"], "", self.onClick)
+        print(self._window_options)
+        self.createCustomCanvas(100, 40, 10, 515, self.fight_ui_texture_list["arme_principale"], "", self.onClick)
+        self.createCustomCanvas(100, 40, 10, 575, self.fight_ui_texture_list["arme_secondaire"], "", self.onClick)
     def Reset(self):
         self.fight_can.destroy()
-        self.startFightEngine
+        self.startFightEngine()
     def createCustomCanvas(self, canwidth, canheight, x, y, image, arg, funct):
         self.CanList.append(Canvas(self.fight_can, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
         self.CanList[len(self.CanList)-1].place(x=x, y=y)
         self.CanList[len(self.CanList)-1].create_image(0,0, image=image, anchor=NW)
         self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:funct(arg1, arg2))
-        print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
     def stopFightEngine(self, _window):
         self.fight_can.destroy()
