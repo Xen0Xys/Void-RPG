@@ -248,7 +248,7 @@ class FightEngine():
         elif arg == "stun":
             self.stun()
         elif arg == "boneBreaker":
-            self.boneBreaker
+            self.boneBreaker()
         elif arg == "rotatingAttack":
             self.rotatingAttack()
     def simpleHit(self):
