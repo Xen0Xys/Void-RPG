@@ -40,9 +40,15 @@ class Player():
         self.parent.game_view.wallpaper_canvas.place(x=0, y=0)
         self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
         """
+        """
         temp_picture = self.parent.game_view.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
         self.parent.game_view.wallpaper_canvas.delete(self.parent.game_view.picture)
         self.parent.game_view.picture = temp_picture
+        """
+        self.parent.update()
+        self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(self.x, self.y, image=_pil_map, anchor=NW)
+        self.parent.update()
+
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
@@ -89,8 +95,9 @@ class Player():
         except AttributeError:
             pass
     def mainloop(self):
-        x_infos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
-        y_infos={"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
+        base_settings = {"multiplier":1, "deceleration":False, "accel_nbre":1, "decel_nbre":1, "speed_lim":5, "accel_speed":2}
+        x_infos = base_settings.copy()
+        y_infos = base_settings.copy()
         x_dir =  self.x_dir_right - self.x_dir_left
         y_dir =  self.y_dir_down - self.y_dir_up
         #threading.Thread(target=self.calcPxPerSeconds).start()
