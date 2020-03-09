@@ -125,40 +125,40 @@ class FightEngine():
         a = randint(1,100)
         if a < 90:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-self.stats["Strength"]*self.Equipment["principal_hand"].damage
+                self.defenceE = self.defenceE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
     def homeRunStrike(self): 
         a = randint(1,100)
         if a < 50:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)*2*self.Strength
+                self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)*2*self.stats.get("Strength")
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
     def skullBreach(self):
         a = randint(1,100)
         if a < 90:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)
+                self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-(self.Strength*self.Equipment["principal_hand"].damage)
+                self.PVE = self.PVE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
                 if 25<a<35:
                     self.statutE = "skullBreach"
     def legBreakage(self):
         a = randint(1,100)
         if a < 90:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-(self.Strength*self.Equipment["principal_hand"].damage)
+                self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-(self.Strength*self.Equipment["principal_hand"].damage)
+                self.PVE = self.PVE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
                 if 25<a<35:
                     self.statutE = "leg_Break"
 
@@ -177,11 +177,11 @@ class FightEngine():
         a = randint(1,100)
         if a < 90:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                self.defenceE = self.defenceE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
     def riposte(self):
         self.statut = "riposte"
     def weakPointHit(self):
@@ -192,11 +192,11 @@ class FightEngine():
         if a < 90-self.b:
             self.b -= 20
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-((self.Strength*self.Equipment["principal_hand"].damage)+self.b*2)
+                self.defenceE = self.defenceE-((self.stats.get("Strength")*self.Equipment["principal_hand"].damage)+self.b*2)
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
             if self.nombre_de_fois_attack < 3:
                 self.sequenceOfBlows()
     def onAttackWhitAxesClick(self, evt, arg):
@@ -212,11 +212,11 @@ class FightEngine():
         a = randint(1,100)
         if a < 90:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                self.defenceE = self.defenceE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
     def shieldBreaking(self):
         pass
     def decapitation(self):
@@ -255,11 +255,11 @@ class FightEngine():
         a = randint(1,100)
         if a < 90:
             if self.defenceE > 0:
-                self.defenceE = self.defenceE-self.Strength*self.Equipment["principal_hand"].damage
+                self.defenceE = self.defenceE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-self.Strength*self.Equipment["principal_hand"].damage
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
     def stun(self):
         pass
     def boneBreaker(self):
