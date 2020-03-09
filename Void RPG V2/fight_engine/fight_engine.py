@@ -181,7 +181,7 @@ class FightEngine():
                 if self.defenceE < 0:
                     self.defenceE = 0
             else:
-                self.PVE = self.PVE-sself.stats.get("Strength")*self.Equipment["principal_hand"].damage
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
     def riposte(self):
         self.statut = "riposte"
     def weakPointHit(self):
