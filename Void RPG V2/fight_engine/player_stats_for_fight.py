@@ -30,4 +30,5 @@ class PlayerStatsForFight():
         self.stats_player = self.stats
     def dicoCreation(self):
         self.stats = {"PV":self.PV, "speed":self.Speed, "Strength":self.Strength, "Maffinity":self.Magic_Affinity, "Mana":self.Mana, "PV_max":self.PV_Max, "Mana_max":self.Mana_Max, "defense":self.defense, "statut":self.statut, "armure":self.armure, "M_defense":self.magic_def}
+        print(self.stats.get("PV"))
         return  self.stats
