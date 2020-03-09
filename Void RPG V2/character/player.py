@@ -48,7 +48,6 @@ class Player():
         self.parent.update()
         self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(self.x, self.y, image=_pil_map, anchor=NW)
         self.parent.update()
-
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
