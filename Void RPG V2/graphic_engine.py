@@ -42,8 +42,9 @@ class GraphicEngine(Tk):
         #Save game
         if not os.path.exists("saves"):
             os.mkdir("saves")
-        with open("saves/save_{}.json".format(str(self.save_number)), "w") as f:
-            f.write(self.createDataToSave())
+        if self.save_number != 0:
+            with open("saves/save_{}.json".format(str(self.save_number)), "w") as f:
+                f.write(self.createDataToSave())
         
 
         self.destroy()
@@ -124,7 +125,10 @@ class GraphicEngine(Tk):
         except AttributeError:
             return 1
     def createDataToSave(self):
-        data_dict = {}
-        data_dict["x_player_coord"] = self.player.x
-        data_dict["y_player_coord"] = self.player.y
-        return json.dumps(data_dict)
+        try:
+            data_dict = {}
+            data_dict["player_x"] = self.chunck_loader.x
+            data_dict["player_y"] = self.chunck_loader.y
+            return json.dumps(data_dict)
+        except AttributeError as e:
+            return str(e)
