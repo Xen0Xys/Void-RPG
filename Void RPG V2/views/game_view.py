@@ -10,7 +10,7 @@ class GameView():
         self.map_picture = _map_picture
         self.screen_size = (_graphic_engine_options["x_window_size"], _graphic_engine_options["y_window_size"])
         self.map_x, self.map_y = self.screen_size[0] * (-2), self.screen_size[1] * (-2)
-        print(self.map_x, self.map_y)
+        #print(self.map_x, self.map_y)
         self.resetUI()
         self.setupElements()
         #Player setup

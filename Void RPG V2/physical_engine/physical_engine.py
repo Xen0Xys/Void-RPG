@@ -13,11 +13,21 @@ class Point():
         return 0
 
 class Collider():
-    def __init__(self, NW, NE, SW, SE):
-        self.corner_dict = {"NW" : NW,
-                            "NE" : NE,
-                            "SW" : SW,
-                            "SE" : SE}
+    def __init__(self, args):
+        try:
+            NW = Point(args[0][0], args[0][1])
+            NE = Point(args[1][0], args[1][1])
+            SW = Point(args[2][0], args[2][1])
+            SE = Point(args[3][0], args[3][1])
+            self.corner_dict = {"NW" : NW,
+                                "NE" : NE,
+                                "SW" : SW,
+                                "SE" : SE}
+        except TypeError:
+            self.corner_dict = None
+        except IndexError:
+            self.corner_dict = None
+        
     def isCoordInCollider(self, coord):
         pass
         #...
@@ -32,24 +42,24 @@ class Collider():
 
 class CornerManager():
     def __init__(self):
-        CORNERFILE = ""
+        CORNERFILE = "ressources/configuration/corners.json"
         self.textures_corner_dict = self.loadTexturesCorners(CORNERFILE)
     def loadTexturesCorners(self, file):
         with open(file, "r") as file:
-            ct = json.dumps(file.read())
+            ct = json.loads(file.read())
         return ct
     def getDefaultCollider(self):
         pass
-    def getPoints(self, texture_index):
+    def getCornerArgs(self, texture_index):
         try:
-            self.textures_corner_dict[texture_index]
-            
+            return self.textures_corner_dict[texture_index]
         except KeyError:
             return 1
 
 class PhysicalEngine(threading.Thread):
     def __init__(self, _chunck_loader, _graphic_engine):
         threading.Thread.__init__(self)
+        self.corner_manager = CornerManager()
         self.graphic_engine = _graphic_engine
         self.chunck_loader = _chunck_loader
         self.global_matrix = self.chunck_loader.matrix
@@ -71,6 +81,10 @@ class PhysicalEngine(threading.Thread):
                 index_y = y_collision - start_y
                 material = chunck_matrix[index_y][index_x]
                 #print(material)
+                ##Do loading here
+                args = self.corner_manager.getCornerArgs(material)
+                if args != 1:
+                    temp.append(Collider(args))
             collision_list.append(temp)
         chunck.collision_list = [0]
     def listChunckWhoNeedLoadingCollisions(self):
