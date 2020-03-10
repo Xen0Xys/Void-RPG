@@ -52,7 +52,11 @@ class CornerManager():
         pass
     def getCornerArgs(self, texture_index):
         try:
-            return self.textures_corner_dict[texture_index]
+            args = self.textures_corner_dict[texture_index]
+            if type(args) == list:
+                return args
+            else:
+                return 1
         except KeyError:
             return 1
 
@@ -98,6 +102,7 @@ class PhysicalEngine(threading.Thread):
     def run(self):
         while self.graphic_engine.graphic_engine_on:
             time.sleep(1/10)
-            need_list = self.listChunckWhoNeedLoadingCollisions()
-            for chunck in need_list:
-                self.loadChunckCollisions(chunck)
+            if False:
+                need_list = self.listChunckWhoNeedLoadingCollisions()
+                for chunck in need_list:
+                    self.loadChunckCollisions(chunck)
