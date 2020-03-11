@@ -26,7 +26,8 @@ class MainMenuView():
     def setButtons(self):
         self.CanList=[]
         police = Font(family="Oldania ADF Std", size=10)
-        Label(self.MainCan, text="Coding : Czekaj Tom, Duchêne Guillaume\nGraphics : Duchêne Guillaume, Choin Anatole", bg="#9a9a9a", justify="left", font=police).place(x=3,y=585)
+        self.createCustomLabel(3, 560, "Coding : Czekaj Tom, Duchêne Guillaume\nGraphics : Duchêne Guillaume, Choin Anatole", police)
+        #Label(self.MainCan, text="Coding : Czekaj Tom, Duchêne Guillaume\nGraphics : Duchêne Guillaume, Choin Anatole", bg="#9a9a9a", justify="left", font=police).place(x=3,y=585)
         self.createCustomCanvas(600, 75, 0, 50, self.ui_textures_list["baniere"], "", self.onClick)
         self.createCustomCanvas(50, 50, 470, 535, self.ui_textures_list["option_wheel"], "option", self.onClick)
         self.createCustomCanvas(50, 50, 535, 535, self.ui_textures_list["quit_button"], "quit", self.onClick)
@@ -43,10 +44,16 @@ class MainMenuView():
         else:
             self.createCustomCanvas(220, 75, 30, 400, self.ui_textures_list["create"], "play_3", self.onClick)
     def createCustomCanvas(self, canwidth, canheight, x, y, image, arg, funct):
+        modulate_x = x + (self.size_x - 600) / 4
+        modulate_y = y + (self.size_y - 600) / 4
         self.CanList.append(Canvas(self.MainCan, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
-        self.CanList[len(self.CanList)-1].place(x=x, y=y)
+        self.CanList[len(self.CanList)-1].place(x=modulate_x, y=modulate_y)
         self.CanList[len(self.CanList)-1].create_image(0,0, image=image, anchor=NW)
         self.CanList[len(self.CanList)-1].bind("<Button-1>", lambda arg1=None, arg2=arg:funct(arg1, arg2))
+    def createCustomLabel(self, x, y, text, police):
+        modulate_x = x + (self.size_x - 600) / 4
+        modulate_y = y + (self.size_y - 600) / 4
+        Label(self.MainCan, text=text, bg="#9a9a9a", justify="left", font=police).place(x=modulate_x,y=modulate_y)
     def loadSave(self, save_number):
         with open("saves/save_{}.json".format(str(save_number)), "r") as file:
             ct = json.loads(file.read())
