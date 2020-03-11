@@ -1,5 +1,6 @@
 from tkinter import *
 from random import randint
+from tkinter.font import Font
 from fight_engine.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 
 class FightEngine():
@@ -28,9 +29,8 @@ class FightEngine():
     def startFightEngine(self, _window, _window_options, fight_ui_texture_list):
         self.CanList=[]
         self.fight_ui_texture_list = fight_ui_texture_list
-        self.fight_can = Canvas(_window, height=_window_options["y_window_size"], width=_window_options["x_window_size"], highlightthickness=0,bg="white")
-        self.fight_can.place(x=0, y=0)
-        self.fight_can.pack()
+        self._window = _window
+        self._window_options = _window_options
         self.MainCan()
 
 
@@ -130,6 +130,7 @@ class FightEngine():
                     self.defenceE = 0
             else:
                 self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
+        self.Reset()
     def homeRunStrike(self): 
         a = randint(1,100)
         if a < 50:
@@ -139,6 +140,7 @@ class FightEngine():
                     self.defenceE = 0
             else:
                 self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
+        self.Reset()
     def skullBreach(self):
         a = randint(1,100)
         if a < 90:
@@ -287,7 +289,9 @@ class FightEngine():
 
 
     def MainCan(self):
-        print(self._window_options)
+        self.fight_can = Canvas(self._window, height=self._window_options["y_window_size"], width=self._window_options["x_window_size"], highlightthickness=0,bg="white")
+        self.fight_can.place(x=0, y=0)
+        self.fight_can.pack()
         self.createCustomCanvas(100, 40, 10, 515, self.fight_ui_texture_list["arme_principale"], "arme_principale", self.onFightClick)
         self.createCustomCanvas(100, 40, 10, 575, self.fight_ui_texture_list["arme_secondaire"], "", self.onFightClick)
         self.createCustomCanvas(100, 40, 110, 515, self.fight_ui_texture_list["abilite"], "", self.onFightClick)
@@ -295,25 +299,26 @@ class FightEngine():
         self.createCustomCanvas(100, 40, 210, 515, self.fight_ui_texture_list["retour"], "", self.onFightClick)
         self.statsUi()
     def statsUi(self):
-        self.armureLabel=Label(self.fight_can, text="Armure: "+str(int(self.stats.get("defense"))), bg="white")
-        self.armureLabel.place(x=500, y=515)
-        self.armureELabel=Label(self.fight_can, text="Armure: "+str(int(self.defenceE)), bg="white")
+        self.font=Font(family="Helvetica",size=14)
+        self.armureLabel=Label(self.fight_can, text="Armure: "+str(int(self.stats.get("defense"))),font=self.font, bg="white")
+        self.armureLabel.place(x=490, y=505)
+        self.armureELabel=Label(self.fight_can, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
         self.armureELabel.place(x=10, y=50)
-        self.StatutLabel=Label(self.fight_can, text="statut:"+self.stats.get("statut"), bg="white")
-        self.StatutLabel.place(x=600, y=550)
-        self.StatutELabel=Label(self.fight_can, text="statut:"+self.statutE, bg="white")
+        self.StatutLabel=Label(self.fight_can, text="statut:"+self.stats.get("statut"),font=self.font, bg="white")
+        self.StatutLabel.place(x=490, y=540)
+        self.StatutELabel=Label(self.fight_can, text="statut:"+self.statutE,font=self.font ,bg="white")
         self.StatutELabel.place(x=10, y=10)
-        self.PVLabel=Label(self.fight_can, text="PV: "+str(int(self.stats.get("PV")))+"/"+str(int(self.stats.get("PV_max"))), bg="white")
-        self.PVLabel.place(x=600, y=630)
-        self.ManaLabel=Label(self.fight_can, text="Mana: "+str(int(self.stats.get("Mana")))+"/"+str(int(self.stats.get("Mana_max"))), bg="white")
-        self.ManaLabel.place(x=600, y=670)
-        self.PVELabel=Label(self.fight_can, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)), bg="white")
+        self.PVLabel=Label(self.fight_can, text="PV: "+str(int(self.stats.get("PV")))+"/"+str(int(self.stats.get("PV_max"))),font=self.font, bg="white")
+        self.PVLabel.place(x=490, y=570)
+        self.ManaLabel=Label(self.fight_can, text="Mana: "+str(int(self.stats.get("Mana")))+"/"+str(int(self.stats.get("Mana_max"))),font=self.font, bg="white")
+        self.ManaLabel.place(x=490, y=600)
+        self.PVELabel=Label(self.fight_can, text="PV: "+str(int(self.PVE))+"/"+str(int(self.PVE_max)),font=self.font, bg="white")
         self.PVELabel.place(x=10, y=90)
-        self.ManaELabel=Label(self.fight_can, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)), bg="white")
+        self.ManaELabel=Label(self.fight_can, text="Mana: "+str(int(self.manaE))+"/"+str(int(self.manaE_max)),font=self.font, bg="white")
         self.ManaELabel.place(x=10, y=130)
     def Reset(self):
         self.fight_can.destroy()
-        self.startFightEngine()
+        self.MainCan()
     def createCustomCanvas(self, canwidth, canheight, x, y, image, arg, funct):
         self.CanList.append(Canvas(self.fight_can, width=canwidth, height=canheight, bg="#9a9a9a", highlightthickness=0))
         self.CanList[len(self.CanList)-1].place(x=x, y=y)
