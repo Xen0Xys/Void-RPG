@@ -27,7 +27,6 @@ class Collider():
             self.corner_dict = None
         except IndexError:
             self.corner_dict = None
-        
     def isCoordInCollider(self, coord):
         pass
         #...
@@ -53,7 +52,7 @@ class CornerManager():
     def getCornerArgs(self, texture_index):
         try:
             args = self.textures_corner_dict[texture_index]
-            if type(args) == list:
+            if args.isinstance(list):
                 return args
             else:
                 return 1
@@ -79,8 +78,8 @@ class PhysicalEngine(threading.Thread):
         for y_collision in range(start_y, start_y + size_y):
             temp = []
             for x_collision in range(start_x, start_x + size_x):
-                coord_x = x_collision * self.texture_size
-                coord_y = y_collision * self.texture_size
+                #coord_x = x_collision * self.texture_size
+                #coord_y = y_collision * self.texture_size
                 index_x = x_collision - start_x
                 index_y = y_collision - start_y
                 material = chunck_matrix[index_y][index_x]

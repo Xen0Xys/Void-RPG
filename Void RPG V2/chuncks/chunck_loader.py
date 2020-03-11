@@ -117,7 +117,6 @@ class ChunckLoader():
                     else:
                         x_load = x_load % -600
                         y_load = y_load % -600
-                
                 temp.append(_global_matrix[y_load][x_load])
             matrix.append(temp)
         return matrix

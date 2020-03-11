@@ -38,15 +38,12 @@ class GraphicEngine(Tk):
             self.game_view.player.player_move_loop.join(1)
         except AttributeError:
             pass
-
         #Save game
         if not os.path.exists("saves"):
             os.mkdir("saves")
         if self.save_number != 0:
             with open("saves/save_{}.json".format(str(self.save_number)), "w") as f:
                 f.write(self.createDataToSave())
-        
-
         self.destroy()
     def showWindow(self):
         self.geometry("{}x{}".format(self.options["x_window_size"], self.options["y_window_size"]))

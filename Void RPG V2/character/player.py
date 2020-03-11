@@ -1,4 +1,3 @@
-#from fight.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 import time
 import threading
 from pynput import keyboard
