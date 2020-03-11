@@ -293,9 +293,8 @@ class FightEngine():
         self.createCustomCanvas(100, 40, 110, 515, self.fight_ui_texture_list["abilite"], "", self.onFightClick)
         self.createCustomCanvas(100, 40, 110, 575, self.fight_ui_texture_list["sac"], "", self.onFightClick)
         self.createCustomCanvas(100, 40, 210, 515, self.fight_ui_texture_list["retour"], "", self.onFightClick)
-        self.statsUi()
+        #self.statsUi()
     def statsUi(self):
-        print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         self.armureLabel=Label(self.MainCan, text="Armure: "+str(int(self.armure)),font=self.font, bg="white")
         self.armureLabel.place(x=500, y=515)
         self.armureELabel=Label(self.MainCan, text="Armure: "+str(int(self.defenceE)),font=self.font, bg="white")
