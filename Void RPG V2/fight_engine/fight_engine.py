@@ -121,6 +121,28 @@ class FightEngine():
             self.skullBreach()
         elif arg == "legBreakage":
             self.legBreakage()
+    def Attack(self, _attack_type, _attack_percentage, _secondary_effect_percentage=0):
+        # Fonction a appeler pour attaquer un ennemi en passant les différents arguments et en complétant la fonction (évite la dupplication).
+        a = randint(0, 100)
+        if a < _attack_percentage:
+            if self.defenceE > 0:
+                if _attack_type == "batting_strike":
+                    self.defenceE = self.defenceE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
+                elif _attack_type == "home_run_strike":
+                    self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)*2*self.stats.get("Strength")
+                elif _attack_type == "skull_breach":
+                    self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
+                elif _attack_type == "leg_breackage":
+                    self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
+                if self.defenceE < 0:
+                    self.defenceE = 0
+            else:
+                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
+                if a < _secondary_effect_percentage:
+                    if _attack_type == "skull_breach":
+                        self.statutE = "skullBreach"
+                    if _attack_type == "leg_breackage":
+                        self.statutE = "leg_Break"
     def battingStrike(self):
         a = randint(1,100)
         if a < 90:

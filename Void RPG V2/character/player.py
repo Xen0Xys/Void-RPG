@@ -3,7 +3,6 @@ import threading
 from pynput import keyboard
 from tkinter import *
 from fight_engine.fight_engine import FightEngine
-from fight_engine.items_spells_deserialiseur import ItemsSpellsDeserialiseur
 
 class Player():
     def __init__(self, _x, _y, _map, _window, _parent, texture_fight):
@@ -32,21 +31,9 @@ class Player():
         self.player_move_loop.start()
         #self.parent.game_view.getCanvas().create_image(self.x, self.y, image=self.map, anchor=NW)
     def setupNewMap(self, _pil_map):
-        """
-        for c in self.window.winfo_children():
-            c.destroy()
-        self.parent.game_view.wallpaper_canvas = Canvas(self.parent, width=self.parent.options["x_window_size"], height=self.parent.options["y_window_size"], bg="#9a9a9a", highlightthickness=0)
-        self.parent.game_view.wallpaper_canvas.place(x=0, y=0)
-        self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(0, 0, image=_pil_map, anchor=NW)
-        """
         temp_picture = self.parent.game_view.wallpaper_canvas.create_image(self.x, self.y, image=_pil_map, anchor=NW)
         self.parent.game_view.wallpaper_canvas.delete(self.parent.game_view.picture)
         self.parent.game_view.picture = temp_picture
-        """
-        self.parent.update()
-        self.parent.game_view.picture = self.parent.game_view.wallpaper_canvas.create_image(self.x, self.y, image=_pil_map, anchor=NW)
-        self.parent.update()
-        """
     def keyPress(self, key):
         try:
             if key.char.lower() == "z":
