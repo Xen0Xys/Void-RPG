@@ -83,8 +83,8 @@ class FightEngine():
             print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
             self.createCustomCanvas(100, 40, 10, 515,self.fight_ui_texture_list["attaque_1"], "battingStrike", self.onAttackWhitBatClick)
             self.createCustomCanvas(100, 40, 10, 575,self.fight_ui_texture_list["attaque_2"], "homeRunStrike", self.onAttackWhitBatClick)
-            self.createCustomCanvas(100,40,110,640,self.fight_ui_texture_list["attaque_3"], "skullBreach", self.onAttackWhitBatClick)
-            self.createCustomCanvas(100,40,110,680,self.fight_ui_texture_list["attaque_4"], "legBreakage", self.onAttackWhitBatClick)
+            self.createCustomCanvas(100,40,110,515,self.fight_ui_texture_list["attaque_3"], "skullBreach", self.onAttackWhitBatClick)
+            self.createCustomCanvas(100,40,110,575,self.fight_ui_texture_list["attaque_4"], "legBreakage", self.onAttackWhitBatClick)
             print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         elif type_of_items == "sword":
             self.createCustomCanvas(100,40,10,640,self.fight_ui_texture_list["attaque_1"], "flankStroke", self.onAttackWhitSwordClick)
@@ -114,13 +114,14 @@ class FightEngine():
 
     def onAttackWhitBatClick(self, evt, arg):
         if arg == "battingStrike":
-            self.battingStrike()
+            self.Attack("batting_strike", 90)
         elif arg == "homeRunStrike":
-            self.homeRunStrike()
+            self.Attack("home_run_strike", 50)
         elif arg == "skullBreach":
-            self.skullBreach()
+            self.Attack("skull_breach", 50, 40)
         elif arg == "legBreakage":
-            self.legBreakage()
+            self.Attack("leg_breackage", 50, 40)
+
     def Attack(self, _attack_type, _attack_percentage, _secondary_effect_percentage=0):
         # Fonction a appeler pour attaquer un ennemi en passant les différents arguments et en complétant la fonction (évite la dupplication).
         a = randint(0, 100)
@@ -143,48 +144,9 @@ class FightEngine():
                         self.statutE = "skullBreach"
                     if _attack_type == "leg_breackage":
                         self.statutE = "leg_Break"
-    def battingStrike(self):
-        a = randint(1,100)
-        if a < 90:
-            if self.defenceE > 0:
-                self.defenceE = self.defenceE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
-                if self.defenceE < 0:
-                    self.defenceE = 0
-            else:
-                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
         self.Reset()
-    def homeRunStrike(self): 
-        a = randint(1,100)
-        if a < 50:
-            if self.defenceE > 0:
-                self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)*2*self.stats.get("Strength")
-                if self.defenceE < 0:
-                    self.defenceE = 0
-            else:
-                self.PVE = self.PVE-self.stats.get("Strength")*self.Equipment["principal_hand"].damage
-        self.Reset()
-    def skullBreach(self):
-        a = randint(1,100)
-        if a < 90:
-            if self.defenceE > 0:
-                self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
-                if self.defenceE < 0:
-                    self.defenceE = 0
-            else:
-                self.PVE = self.PVE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
-                if 25<a<35:
-                    self.statutE = "skullBreach"
-    def legBreakage(self):
-        a = randint(1,100)
-        if a < 90:
-            if self.defenceE > 0:
-                self.defenceE = self.defenceE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
-                if self.defenceE < 0:
-                    self.defenceE = 0
-            else:
-                self.PVE = self.PVE-(self.stats.get("Strength")*self.Equipment["principal_hand"].damage)
-                if 25<a<35:
-                    self.statutE = "leg_Break"
+
+
 
     def onAttackWhitSwordClick(self, evt, arg):
         if arg == "flankStroke":
@@ -319,6 +281,13 @@ class FightEngine():
         self.createCustomCanvas(100, 40, 110, 515, self.fight_ui_texture_list["abilite"], "", self.onFightClick)
         self.createCustomCanvas(100, 40, 110, 575, self.fight_ui_texture_list["sac"], "", self.onFightClick)
         self.createCustomCanvas(100, 40, 210, 515, self.fight_ui_texture_list["retour"], "", self.onFightClick)
+        if self.statutE != "RAS":
+            self.StatutEffect()
+        self.statsUi()
+    
+    def StatutEffect(self):
+        if self.statutE == "skullBreach":
+            self.PVE = self.PVE- ((10/100)*self.PVE)
         self.statsUi()
     def statsUi(self):
         self.font=Font(family="Helvetica",size=14)
